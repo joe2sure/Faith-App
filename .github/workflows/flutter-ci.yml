@@ -2,44 +2,277 @@ name: Flutter CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
+  workflow_dispatch: # Allow manual trigger
+
+env:
+  FLUTTER_VERSION: "3.29.2"
 
 jobs:
-  build:
+  test:
+    name: Test & Analyze
     runs-on: ubuntu-latest
-
+    
     steps:
-      # 1. Checkout repo
+      # 1. Checkout repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2' # set your Flutter version
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      # 3. Verify Flutter installation
+      - name: Verify Flutter
+        run: flutter doctor -v
+
+      # 4. Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. Verify dependencies
+      - name: Check dependencies
+        run: flutter pub deps
+
+      # 6. Run code formatting check
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      # 7. Run analyzer
+      - name: Analyze code
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      # 8. Run tests with coverage
+      - name: Run tests
+        run: flutter test --coverage
+
+      # 9. Upload coverage to Codecov (optional)
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage/lcov.info
+          fail_ci_if_error: false
+
+  build-android:
+    name: Build Android
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
 
       # 3. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 4. Run analyzer
-      - name: Run analyzer
-        run: flutter analyze
+      # 4. Build Android APK
+      - name: Build APK (Release)
+        run: flutter build apk --release --split-per-abi
 
-      # 5. Run tests
-      - name: Run tests
-        run: flutter test
+      # 5. Build Android App Bundle
+      - name: Build AAB (Release)
+        run: flutter build appbundle --release
 
-      # 6. Build Android APK
-      - name: Build APK
-        run: flutter build apk --release
-
-      # 7. Upload artifact (APK)
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
+      # 6. Upload APK artifacts
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: android-apk-${{ github.sha }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+          retention-days: 30
+
+      # 7. Upload AAB artifact
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab-${{ github.sha }}
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+  build-ios:
+    name: Build iOS
+    needs: test
+    runs-on: macos-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 4. Build iOS (no code signing)
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
+
+      # 5. Create iOS archive
+      - name: Archive iOS build
+        run: |
+          cd build/ios/iphoneos
+          tar -czf Runner.app.tar.gz Runner.app
+
+      # 6. Upload iOS artifact
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-${{ github.sha }}
+          path: build/ios/iphoneos/Runner.app.tar.gz
+          retention-days: 30
+
+  build-web:
+    name: Build Web
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 4. Build web
+      - name: Build Web
+        run: flutter build web --release
+
+      # 5. Upload web artifact
+      - name: Upload Web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build-${{ github.sha }}
+          path: build/web/
+          retention-days: 30
+
+  # Optional: Deploy to Firebase Hosting
+  # deploy-web:
+  #   name: Deploy Web to Firebase
+  #   needs: build-web
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #     
+  #     - name: Download web artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: web-build-${{ github.sha }}
+  #         path: build/web
+  #     
+  #     - name: Deploy to Firebase
+  #       uses: FirebaseExtended/action-hosting-deploy@v0
+  #       with:
+  #         repoToken: '${{ secrets.GITHUB_TOKEN }}'
+  #         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+  #         projectId: your-firebase-project-id
+  #         channelId: live
+
+  create-release:
+    name: Create Release
+    needs: [build-android, build-ios, build-web]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Generate release tag
+      - name: Generate release tag
+        id: tag
+        run: |
+          echo "release_tag=v1.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
+
+      # 3. Download all artifacts
+      - name: Download Android APK
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk-${{ github.sha }}
+          path: ./artifacts/android-apk
+
+      - name: Download Android AAB
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab-${{ github.sha }}
+          path: ./artifacts/android-aab
+
+      - name: Download iOS build
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-build-${{ github.sha }}
+          path: ./artifacts/ios
+
+      - name: Download Web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build-${{ github.sha }}
+          path: ./artifacts/web
+
+      # 4. Create GitHub Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          name: Release ${{ steps.tag.outputs.release_tag }}
+          draft: false
+          prerelease: false
+          files: |
+            ./artifacts/android-apk/*.apk
+            ./artifacts/android-aab/*.aab
+            ./artifacts/ios/*.tar.gz
+          body: |
+            ## What's Changed
+            * Automated release from main branch
+            * Build artifacts for Android, iOS, and Web platforms
+            
+            ## Download Links
+            * **Android APK**: Download from the assets below
+            * **Android AAB**: For Google Play Store deployment
+            * **iOS**: Unsigned build for development/testing
+            * **Web**: Hosted separately or download from artifacts
+            
+            **Full Changelog**: ${{ github.event.compare }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
