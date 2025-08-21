@@ -1,4 +1,6 @@
 
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -49,6 +51,111 @@ class SectionHeader extends StatelessWidget {
                 color: Color(0xFF1E63FF),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class DevotionTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String imageUrl;
+  final double? progress;
+  final String actionLabel;
+  const DevotionTile({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.imageUrl,
+    this.progress,
+    required this.actionLabel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RoundedCard(
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: AspectRatio(
+              aspectRatio: 16 / 5,
+              child: Image.network(imageUrl, fit: BoxFit.cover),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(subtitle, style: const TextStyle(color: Colors.black54)),
+                const SizedBox(height: 12),
+                if (progress != null) ...[
+                  LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 8,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Material(
+                          color: const Color.fromARGB(255, 13, 40, 86).withOpacity(0.2),
+                          shape: const CircleBorder(),
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(
+                                Icons.play_arrow,
+                                color: Color(0xFF0D2856),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        const Text('Listen'),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF0D2856),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      child: Text('Read Now'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

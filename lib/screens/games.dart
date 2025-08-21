@@ -1,4 +1,6 @@
 
+// ignore_for_file: deprecated_member_use
+
 import 'package:church_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -737,7 +739,7 @@ class _SmallMediaTile extends StatelessWidget {
                   child: InkWell(
                     customBorder: const CircleBorder(),
                     onTap: () {
-                      // TODO: handle favourite tap
+                      
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

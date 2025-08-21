@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:church_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -111,111 +113,6 @@ class VirtualCandles extends StatelessWidget {
 }
 
 
-class DevotionTile extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String imageUrl;
-  final double? progress;
-  final String actionLabel;
-  const DevotionTile({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.imageUrl,
-    this.progress,
-    required this.actionLabel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return RoundedCard(
-      padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: AspectRatio(
-              aspectRatio: 16 / 5,
-              child: Image.network(imageUrl, fit: BoxFit.cover),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(subtitle, style: const TextStyle(color: Colors.black54)),
-                const SizedBox(height: 12),
-                if (progress != null) ...[
-                  LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 8,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  const SizedBox(height: 12),
-                ],
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Material(
-                          color: const Color(0xFF0D2856).withOpacity(0.2),
-                          shape: const CircleBorder(),
-                          child: InkWell(
-                            customBorder: const CircleBorder(),
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Icon(
-                                Icons.play_arrow,
-                                color: Color(0xFF0D2856),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 3),
-                        const Text('Listen'),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0D2856),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
-                        ),
-                        textStyle: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      child: Text('Read Now'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
 
 class QuoteCard extends StatelessWidget {
   const QuoteCard({super.key});
@@ -302,6 +199,7 @@ class QuickGrid extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
+                
                   color: Colors.black.withOpacity(0.08),
                   blurRadius: 8,
                   offset: Offset(0, 4),
@@ -314,11 +212,11 @@ class QuickGrid extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: (it.$4 as Color).withOpacity(0.2),
+                    color: (it.$4).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   padding: const EdgeInsets.all(8),
-                  child: Icon(it.$2, size: 28, color: it.$4 as Color),
+                  child: Icon(it.$2, size: 28, color: it.$4),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -367,7 +265,7 @@ class _PrayerStreakCard extends StatelessWidget {
                         'Prayer Streak',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.local_fire_department,
                         color: Color.fromARGB(255, 225, 88, 14),
                         size: 40,
