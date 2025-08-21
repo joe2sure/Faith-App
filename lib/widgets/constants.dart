@@ -1,4 +1,3 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
@@ -56,7 +55,6 @@ class SectionHeader extends StatelessWidget {
     );
   }
 }
-
 
 class DevotionTile extends StatelessWidget {
   final String title;
@@ -116,7 +114,12 @@ class DevotionTile extends StatelessWidget {
                     Row(
                       children: [
                         Material(
-                          color: const Color.fromARGB(255, 13, 40, 86).withOpacity(0.2),
+                          color: const Color.fromARGB(
+                            255,
+                            13,
+                            40,
+                            86,
+                          ).withOpacity(0.2),
                           shape: const CircleBorder(),
                           child: InkWell(
                             customBorder: const CircleBorder(),
@@ -161,7 +164,6 @@ class DevotionTile extends StatelessWidget {
     );
   }
 }
-
 
 class RoundedCard extends StatelessWidget {
   final Widget child;

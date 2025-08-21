@@ -14,13 +14,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-  
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-      
-      ),
+      theme: ThemeData(),
       home: RootShell(),
     );
   }
@@ -75,17 +72,10 @@ class _RootShellState extends State<RootShell> {
 
 // -- Common UI bits ---------------------------------------------------------
 
-
 // -- Screen 1: Faith Dashboard ----------------------------------------------
-
 
 // -- Screen 2: Devotionals ---------------------------------------------------
 
-
-
 // -- Screen 3: Fun Zone ------------------------------------------------------
 
-
-
 // -- Screen 4: Profile -------------------------------------------------------
-

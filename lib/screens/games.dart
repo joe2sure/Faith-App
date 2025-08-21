@@ -1,4 +1,3 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:church_app/widgets/constants.dart';
@@ -720,7 +719,9 @@ class _SmallMediaTile extends StatelessWidget {
                 top: 8,
                 bottom: 8,
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(20)),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                  ),
                   child: Image.network(
                     randomPhoto(400, 300),
                     width: 84,
@@ -734,13 +735,13 @@ class _SmallMediaTile extends StatelessWidget {
                 top: 12,
                 right: 16,
                 child: Material(
-                  color: const Color(0xFFB39DDB).withOpacity(0.18), // light purple with low opacity
+                  color: const Color(
+                    0xFFB39DDB,
+                  ).withOpacity(0.18), // light purple with low opacity
                   shape: const CircleBorder(),
                   child: InkWell(
                     customBorder: const CircleBorder(),
-                    onTap: () {
-                      
-                    },
+                    onTap: () {},
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
@@ -756,7 +757,11 @@ class _SmallMediaTile extends StatelessWidget {
               Positioned.fill(
                 left: 96, // 84 image + 12 spacing
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 12.0, top: 8, bottom: 8),
+                  padding: const EdgeInsets.only(
+                    right: 12.0,
+                    top: 8,
+                    bottom: 8,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -796,10 +801,22 @@ class _SmallMediaTile extends StatelessWidget {
                         children: [
                           Row(
                             children: const [
-                              Icon(Icons.star, color:Colors.amberAccent, size: 18),
-                              Icon(Icons.star, color: Colors.amberAccent, size: 18),
-                              Icon(Icons.star, color:Colors.amberAccent, size: 18),
-                              Text('New Age')
+                              Icon(
+                                Icons.star,
+                                color: Colors.amberAccent,
+                                size: 18,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Colors.amberAccent,
+                                size: 18,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Colors.amberAccent,
+                                size: 18,
+                              ),
+                              Text('New Age'),
                             ],
                           ),
                           const SizedBox(width: 12),
@@ -811,9 +828,12 @@ class _SmallMediaTile extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
                                 onPressed: () {},
-                                
+
                                 child: const Text(
                                   'Start Praying',
                                   style: TextStyle(
@@ -850,7 +870,8 @@ class _TwoPillTilesRow extends StatelessWidget {
             child: _PillTile(
               title: 'Memory Cards',
               c: Color(0xFFE8F3FF),
-              imageUrl: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80', // cards/flashcards
+              imageUrl:
+                  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80', // cards/flashcards
             ),
           ),
           SizedBox(width: 12),
@@ -858,7 +879,8 @@ class _TwoPillTilesRow extends StatelessWidget {
             child: _PillTile(
               title: 'Faith Quiz',
               c: Color(0xFFFFF1E8),
-              imageUrl: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
+              imageUrl:
+                  'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
             ),
           ),
         ],
@@ -871,7 +893,11 @@ class _PillTile extends StatelessWidget {
   final String title;
   final Color c;
   final String imageUrl;
-  const _PillTile({required this.title, required this.c, required this.imageUrl});
+  const _PillTile({
+    required this.title,
+    required this.c,
+    required this.imageUrl,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -892,15 +918,11 @@ class _PillTile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           Row(
-
             children: [
-              Icon(Icons.star,color: Colors.amberAccent,size: 20,),
+              Icon(Icons.star, color: Colors.amberAccent, size: 20),
               const Text('Easy'),
               const Spacer(),
               MaterialButton(
@@ -909,7 +931,10 @@ class _PillTile extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal:8, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 10,
+                ),
                 onPressed: () {},
                 child: const Text(
                   'Play',
@@ -938,57 +963,57 @@ class _ThreeMiniTilesRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: 3,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, i) => Container(
-          width: 160,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-
-                  child: Image.network(
-               'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
-
-               height: 48,
-              width: 48,
-                    fit: BoxFit.cover,
+        itemBuilder:
+            (context, i) => Container(
+              width: 160,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 8),
-              const Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Daily Challenge',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w700),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
+
+                        height: 48,
+                        width: 48,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    Text(
-                      'bible Stories',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  ),
+                  const SizedBox(height: 8),
+                  const Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Daily Challenge',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          'bible Stories',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                      ],
                     ),
-                   
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }

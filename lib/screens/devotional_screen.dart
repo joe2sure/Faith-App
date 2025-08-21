@@ -52,8 +52,6 @@ class DevotionalsScreen extends StatelessWidget {
   }
 }
 
-
-
 class VirtualCandles extends StatelessWidget {
   const VirtualCandles({super.key});
   @override
@@ -112,8 +110,6 @@ class VirtualCandles extends StatelessWidget {
   }
 }
 
-
-
 class QuoteCard extends StatelessWidget {
   const QuoteCard({super.key});
   @override
@@ -163,8 +159,6 @@ class QuoteCard extends StatelessWidget {
   }
 }
 
-
-
 class QuickGrid extends StatelessWidget {
   const QuickGrid({super.key});
   @override
@@ -199,7 +193,6 @@ class QuickGrid extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                
                   color: Colors.black.withOpacity(0.08),
                   blurRadius: 8,
                   offset: Offset(0, 4),
@@ -233,9 +226,6 @@ class QuickGrid extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class _PrayerStreakCard extends StatelessWidget {
   const _PrayerStreakCard();

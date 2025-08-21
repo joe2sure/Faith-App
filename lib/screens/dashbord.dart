@@ -27,8 +27,8 @@ class FaithDashboardScreen extends StatelessWidget {
 
           // Bible & Scripture
           const SectionHeader(title: 'Bible & Scripture', trailing: 'View All'),
-             for (int i = 0; i < 1; i++)
-         DevotionTile(
+          for (int i = 0; i < 1; i++)
+            DevotionTile(
               title:
                   ['Mass Readings', 'Divine Office', 'Interactive Rosary'][i],
               subtitle:
@@ -52,15 +52,18 @@ class FaithDashboardScreen extends StatelessWidget {
 
           // Catholic Teachings
           const SectionHeader(title: 'Catholic Teachings', trailing: 'Explore'),
-           _TwoGameTilesRow(),
-           SizedBox(height: 8,),
-             _TwoGameTilesRow(),
+          _TwoGameTilesRow(),
+          SizedBox(height: 8),
+          _TwoGameTilesRow(),
           const SizedBox(height: 16),
 
           // Saints & Feast Days
-          const SectionHeader(title: 'Saints & Feast Days', trailing: 'Calendar'),
-            for (int i = 0; i < 1; i++)
-         DevotionTile(
+          const SectionHeader(
+            title: 'Saints & Feast Days',
+            trailing: 'Calendar',
+          ),
+          for (int i = 0; i < 1; i++)
+            DevotionTile(
               title:
                   ['Mass Readings', 'Divine Office', 'Interactive Rosary'][i],
               subtitle:
@@ -79,11 +82,14 @@ class FaithDashboardScreen extends StatelessWidget {
                       : 'Read Now',
             ),
           const SizedBox(height: 12),
-      _ThreeMiniTilesRow(),
+          _ThreeMiniTilesRow(),
           const SizedBox(height: 16),
 
           // Church Calendar
-          const SectionHeader(title: 'Church Calendar', trailing: 'Full Calendar'),
+          const SectionHeader(
+            title: 'Church Calendar',
+            trailing: 'Full Calendar',
+          ),
           // Realtime Calendar Widget
           RoundedCard(
             child: Column(
@@ -94,7 +100,10 @@ class FaithDashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
                   child: Text(
                     '${_monthName(DateTime.now().month)} ${DateTime.now().year}',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -121,15 +130,16 @@ class FaithDashboardScreen extends StatelessWidget {
               ],
             ),
           ),
+
           // Helper widgets and functions for the calendar
           // Place these outside the build method, e.g. at the bottom of the file:
-        
-
-         
           const SizedBox(height: 16),
 
           // Spiritual Resources
-          const SectionHeader(title: 'Spiritual Resources', trailing: 'View All'),
+          const SectionHeader(
+            title: 'Spiritual Resources',
+            trailing: 'View All',
+          ),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -138,7 +148,10 @@ class FaithDashboardScreen extends StatelessWidget {
             mainAxisSpacing: 0,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             children: const [
-              _MiniCard(title: 'Prayer Collection', count: 'Traditional Prayers'),
+              _MiniCard(
+                title: 'Prayer Collection',
+                count: 'Traditional Prayers',
+              ),
               _MiniCard(title: 'Meditation Guides', count: 'Daily Reflections'),
               _MiniCard(title: 'Spiritual Articles', count: 'Inspiring Reads'),
               _MiniCard(title: 'Study Materials', count: 'Learning Resources'),
@@ -147,100 +160,132 @@ class FaithDashboardScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Daily Reflection
-          QuoteCard()
+          QuoteCard(),
         ],
       ),
     );
   }
 }
 
- class _SimpleCalendar extends StatelessWidget {
-            @override
-            Widget build(BuildContext context) {
-              final now = DateTime.now();
-              final firstDayOfMonth = DateTime(now.year, now.month, 1);
-              final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-              final firstWeekday = firstDayOfMonth.weekday; // 1=Mon, 7=Sun
+class _SimpleCalendar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final firstDayOfMonth = DateTime(now.year, now.month, 1);
+    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
+    final firstWeekday = firstDayOfMonth.weekday; // 1=Mon, 7=Sun
 
-              // Build a list of day numbers, with leading blanks for the first week
-              final List<Widget> dayWidgets = [];
-              for (int i = 1; i < firstWeekday; i++) {
-                dayWidgets.add(const SizedBox());
-              }
-              for (int day = 1; day <= daysInMonth; day++) {
-                final isToday = day == now.day;
-                dayWidgets.add(
-                  Container(
-                    margin: const EdgeInsets.all(2),
-                    decoration: isToday
-                        ? BoxDecoration(
-                            color: Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(8),
-                          )
-                        : null,
-                    child: Center(
-                      child: Text(
-                        '$day',
-                        style: TextStyle(
-                          fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                          color: isToday ? Colors.blue : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }
+    // Build a list of day numbers, with leading blanks for the first week
+    final List<Widget> dayWidgets = [];
+    for (int i = 1; i < firstWeekday; i++) {
+      dayWidgets.add(const SizedBox());
+    }
+    for (int day = 1; day <= daysInMonth; day++) {
+      final isToday = day == now.day;
+      dayWidgets.add(
+        Container(
+          margin: const EdgeInsets.all(2),
+          decoration:
+              isToday
+                  ? BoxDecoration(
+                    color: Colors.blue.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  )
+                  : null,
+          child: Center(
+            child: Text(
+              '$day',
+              style: TextStyle(
+                fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                color: isToday ? Colors.blue : Colors.black,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  children: [
-                    // Weekday headers
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('Mon', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Tue', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Wed', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Thu', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Fri', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Sat', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                        Text('Sun', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    // Calendar grid
-                    GridView.count(
-                      crossAxisCount: 7,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 1.2,
-                      children: dayWidgets,
-                    ),
-                  ],
-                ),
-              );
-            }
-          }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          // Weekday headers
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                'Mon',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Tue',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Wed',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Thu',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Fri',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Sat',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Text(
+                'Sun',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          // Calendar grid
+          GridView.count(
+            crossAxisCount: 7,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: 1.2,
+            children: dayWidgets,
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-            // (If you want, you can move them to a separate file for cleanliness)
-          String _monthName(int month) {
-            const months = [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
-            ];
-            return months[month - 1];
-          }
+// (If you want, you can move them to a separate file for cleanliness)
+String _monthName(int month) {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return months[month - 1];
+}
 
-          String _todayFeast() {
-            // In a real app, lookup today's feast from a data source.
-            // For demo, return a placeholder.
-            final now = DateTime.now();
-            if (now.month == 8 && now.day == 9) return 'St. Teresa Benedicta';
-            if (now.month == 8 && now.day == 15) return 'Assumption of Mary';
-            if (now.month == 8 && now.day == 22) return 'Queenship of Mary';
-            return 'Ordinary Time';
-          }
+String _todayFeast() {
+  // In a real app, lookup today's feast from a data source.
+  // For demo, return a placeholder.
+  final now = DateTime.now();
+  if (now.month == 8 && now.day == 9) return 'St. Teresa Benedicta';
+  if (now.month == 8 && now.day == 15) return 'Assumption of Mary';
+  if (now.month == 8 && now.day == 22) return 'Queenship of Mary';
+  return 'Ordinary Time';
+}
 
 class _ThreeMiniTilesRow extends StatelessWidget {
   const _ThreeMiniTilesRow();
@@ -253,66 +298,63 @@ class _ThreeMiniTilesRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: 3,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, i) => Container(
-          width: 160,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                // ignore: duplicate_ignore
-                // ignore: deprecated_member_use
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-
-                  child: Image.network(
-               'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
-
-               height: 48,
-              width: 48,
-                    fit: BoxFit.cover,
+        itemBuilder:
+            (context, i) => Container(
+              width: 160,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    // ignore: duplicate_ignore
+                    // ignore: deprecated_member_use
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 8),
-              const Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Daily Challenge',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w700),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80', // quiz/brain
+
+                        height: 48,
+                        width: 48,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    Text(
-                      'bible Stories',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  ),
+                  const SizedBox(height: 8),
+                  const Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Daily Challenge',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          'bible Stories',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                      ],
                     ),
-                   
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
 }
-
-
-
 
 class _TwoGameTilesRow extends StatelessWidget {
   const _TwoGameTilesRow();
@@ -396,10 +438,7 @@ class _GameTile extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-               
-               
-              ],
+              children: [],
             ),
           ),
         ],
@@ -407,7 +446,6 @@ class _GameTile extends StatelessWidget {
     );
   }
 }
-
 
 class QuickGrid extends StatelessWidget {
   const QuickGrid({super.key});
@@ -488,7 +526,6 @@ class _MiniCard extends StatelessWidget {
     final imageUrl = randomPhoto(120, 120);
 
     return RoundedCard(
-      
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -499,19 +536,26 @@ class _MiniCard extends StatelessWidget {
               width: 40,
               height: 40,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
+              errorBuilder:
+                  (context, error, stackTrace) => const Icon(
+                    Icons.image_not_supported,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
             ),
           ),
           const SizedBox(height: 6),
           Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 4),
-          Text(count, style: const TextStyle(color: Colors.black54, fontSize: 12)),
+          Text(
+            count,
+            style: const TextStyle(color: Colors.black54, fontSize: 12),
+          ),
         ],
       ),
     );
   }
 }
-
 
 class QuoteCard extends StatelessWidget {
   const QuoteCard({super.key});
@@ -572,7 +616,6 @@ class QuoteCard extends StatelessWidget {
   }
 }
 
-
 class _PrayerStreakCard extends StatelessWidget {
   const _PrayerStreakCard();
   @override
@@ -601,11 +644,7 @@ class _PrayerStreakCard extends StatelessWidget {
                         'Prayer Streak',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      Icon(
-                        Icons.add_to_photos,
-                        color: Colors.white,
-                        size: 40,
-                      ),
+                      Icon(Icons.add_to_photos, color: Colors.white, size: 40),
                     ],
                   ),
 
@@ -627,10 +666,6 @@ class _PrayerStreakCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 // import 'package:church_app/widgets/constants.dart';
 // import 'package:flutter/material.dart';
