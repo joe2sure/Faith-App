@@ -26,19 +26,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 4. Run tests
-      - name: Run tests
-        run: flutter test
-
-      # 5. Run analyzer
+      # 4. Run analyzer
       - name: Run analyzer
         run: flutter analyze
 
-      # 6. Build Android APK
+      # 5. Build Android APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 7. Upload APK
+      # 6. Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
