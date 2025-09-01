@@ -10,11 +10,16 @@ class FaithDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppTopBar(
+        
         title: 'Catholic Faith',
         actions: [
           Padding(
+            padding: EdgeInsets.only(right: 25),
+            child: Icon(Icons.notifications),
+          ),
+           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.search),
+            child: Icon(Icons.settings),
           ),
         ],
       ),
@@ -22,40 +27,550 @@ class FaithDashboardScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
           // Welcome Card
-          _PrayerStreakCard(),
-          const SizedBox(height: 16),
+          Padding(padding: EdgeInsets.symmetric(horizontal: 16),
+          
+         child: Container(
+         padding: EdgeInsets.all(20),
+         decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(22),
+         ),
+         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // texts on the left
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Welcome to Faith",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  "Explore Catholic teachings, scriptures and spiritual resources",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  
+                  ),
+                ),
+            
+              ],
+            ),
+          
+            ),
+         
+              Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 24,
+            ),
+          ],
+         )
+         ),
+          ),
 
           // Bible & Scripture
-          const SectionHeader(title: 'Bible & Scripture', trailing: 'View All'),
-          for (int i = 0; i < 1; i++)
-            DevotionTile(
-              title:
-                  ['Mass Readings', 'Divine Office', 'Interactive Rosary'][i],
-              subtitle:
-                  [
-                    'Today\'s Scripture',
-                    'Morning Prayer',
-                    'Joyful Mysteries',
-                  ][i],
-              imageUrl: randomPhoto(1200, 700),
-              progress: i == 2 ? 0.3 : null,
-              actionLabel:
-                  i == 1
-                      ? 'Pray Now'
-                      : i == 1
-                      ? 'Resume'
-                      : 'Read Now',
-            ),
-          const SizedBox(height: 12),
-          _ThreeMiniTilesRow(),
-          const SizedBox(height: 16),
+          SizedBox(height: 23),
+         Padding(
+  padding: EdgeInsets.symmetric(horizontal: 17),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: const [
+      Text('Bible & Scripture',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 20,
+      ),
+      ),
+      Text('View All',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 14,
+      ),
+      ), // right-side text; fill later
+    ],
+  ),
+),
 
-          // Catholic Teachings
-          const SectionHeader(title: 'Catholic Teachings', trailing: 'Explore'),
-          _TwoGameTilesRow(),
-          SizedBox(height: 8),
-          _TwoGameTilesRow(),
-          const SizedBox(height: 16),
+
+
+
+
+
+// Bible and Scriptures
+    SizedBox(height: 15),  
+    Padding(padding: EdgeInsets.symmetric(horizontal: 14), // space at the ends  
+    child: Card(
+      shape: 
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 4,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // image with texts inside
+          Stack(
+            children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: Image.asset(
+              "assets/images/Image_fx (1).jpg",
+              height: 150,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          // texts in the image
+          Positioned(
+            left: 12,
+            bottom: 15,
+         
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Daily Bible Reading",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(blurRadius: 3, color: Colors.black),
+                  ],
+                
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Today`s Scripture",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                   shadows: [
+                    Shadow(blurRadius: 3, color: Colors.black),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          ),
+            ]
+          ),
+          
+              Padding(
+                padding: EdgeInsets.all(12.0),
+              child: Text(
+                "Mathew 13: 1-23 - The Parable of the Sower",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 15,
+                 // decoration: TextDecoration.underline,
+                ),
+              ),
+              ),
+      
+          
+          
+          // bottom row with save, share and button
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              Icon(Icons.bookmark_border, size: 20, color: Colors.grey),
+              SizedBox(width: 4),
+              Text("Save", style: TextStyle(color: Colors.grey)),
+              SizedBox(width: 20),
+              Icon(Icons.share, size: 20, color: Colors.grey),
+              const SizedBox(width: 4),
+              const Text("Share", style: TextStyle(color: Colors.grey)),
+              Spacer(),
+              ElevatedButton(onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+              ),
+               child: const Text("Read Now",
+               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+               ),
+              ),
+            ],
+          ),
+          )
+        ],
+      ),
+    ),
+    ),
+   
+        
+
+// Old testament and New testament 
+    SizedBox(height: 20),
+   // ...existing code...
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    // Old Testament Card
+    Container(
+      width: 170,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Image.asset(
+            "assets/images/Image_fx (4).jpg",
+            width: 50,
+            height: 50,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            "Old Testament",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "39 Books",
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+    ),
+    // New Testament Card
+    Container(
+      width: 170,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Image.asset(
+            "assets/images/Image_fx (4).jpg",
+            width: 50,
+            height: 50,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "New Testament",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "27 Books",
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+    ),
+  ],
+),
+// ...existing code...
+
+
+
+
+
+
+
+
+      // Catholic Teachings
+          SizedBox(height: 24),
+         Padding(
+  padding: EdgeInsets.symmetric(horizontal: 17),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: const [
+      Text('Catholic Teachings',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 20,
+      ),
+      ),
+      Text('Explore',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 14,
+      ),
+      ), // right-side text; fill later
+    ],
+  ),
+),
+
+
+
+
+
+// catechism
+SizedBox(height: 14),
+// After your SizedBox widget, add this:
+// After your SizedBox widget, add this:
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 16.0), // space at the ends
+  child: Wrap(
+    spacing: 16, // space between items (horizontally)
+    runSpacing: 16, // space between rows (vertically)
+    alignment: WrapAlignment.center, // keep items centered
+    children: [
+      // 1st container
+      Container(
+        width: 170, // fixed width
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(
+                "assets/images/Image_fx (1).jpg",
+                height: 90, // fixed image height
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Catechism",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "Core Teachings",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // 2nd container
+      Container(
+        width: 170,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(
+                "assets/images/Image_fx (1).jpg",
+                height: 90,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Encyclicals",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "Papal Letters",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // 3rd container
+      Container(
+        width: 170,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(
+                "assets/images/Image_fx (1).jpg",
+                height: 90,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Church Documents",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "Official Texts",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // 4th container
+      Container(
+        width: 170,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(
+                "assets/images/Image_fx (1).jpg",
+                height: 90,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Fundamental Beliefs",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "Core Faith",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
 
           // Saints & Feast Days
           const SectionHeader(
