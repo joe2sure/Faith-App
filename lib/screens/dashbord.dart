@@ -1,8 +1,10 @@
 // ignore_for_file: deprecated_member_use, duplicate_ignore
 
+import 'package:church_app/screens/readnow_screen.dart';
 import 'package:church_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 class FaithDashboardScreen extends StatelessWidget {
   const FaithDashboardScreen({super.key});
@@ -201,7 +203,12 @@ CarouselSlider(
                   Text("Share", style: TextStyle(color: Colors.grey)),
                   Spacer(),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Navigate to ReadNowScreen
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ReadNowScreen()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
@@ -1015,196 +1022,243 @@ Padding(
     ),
    
         
-
-// Old testament and New testament 
-    SizedBox(height: 20),
-   // ...existing code...
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    // Old Testament Card
-    Container(
-      width: 130,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            "assets/images/Image_fx (4).jpg",
-            width: 40,
-            height: 40,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 6),
-          const Text(
-            "Saints Directory",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+SizedBox(height: 25),
+// ...existing code...
+SingleChildScrollView(
+  scrollDirection: Axis.horizontal,
+  child: Row(
+    children: [
+      // Old Testament Card
+      Container(
+        width: 130,
+        margin: const EdgeInsets.only(left: 16, right: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "500+ Saints",
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, // <-- Center content horizontally
+          children: [
+            Image.asset(
+              "assets/images/Image_fx (4).jpg",
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
             ),
-          ),
-        ],
-      ),
-    ),
-    // New Testament Card
-    Container(
-      width: 130,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            "assets/images/Image_fx (4).jpg",
-            width: 40,
-            height: 40,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            "Feast Calendar",
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 6),
+            const Text(
+              "Saints Directory",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center, // <-- Center text
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "Liturgical Year",
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+            const SizedBox(height: 4),
+            Text(
+              "500+ Saints",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center, // <-- Center text
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-    Container(
-      width: 130,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            "assets/images/Image_fx (4).jpg",
-            width: 40,
-            height: 40,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            "Patron Saints",
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+      // New Testament Card
+      Container(
+        width: 130,
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "Finf Your Saint",
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/Image_fx (4).jpg",
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            const Text(
+              "Feast Calendar",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              "Liturgical Year",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
-    ),
-  ],
+      // Patron Saints Card
+      Container(
+        width: 130,
+        margin: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/Image_fx (4).jpg",
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              "Patron Saints",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              "Find Your Saint",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
 ),
 // ...existing code...
 
 
 
+   // Church Calendar
+          SizedBox(height: 23),
+         Padding(
+  padding: EdgeInsets.symmetric(horizontal: 17),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: const [
+      Text('Church Calendar',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 20,
+      ),
+      ),
+      Text('Full Calendar',
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 14,
+      ),
+      ), // right-side text; fill later
+    ],
+  ),
+),
 
 
-          // Church Calendar
-          const SectionHeader(
-            title: 'Church Calendar',
-            trailing: 'Full Calendar',
-          ),
-          // Realtime Calendar Widget
-          RoundedCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Show current month and year dynamically
-                Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                  child: Text(
-                    '${_monthName(DateTime.now().month)} ${DateTime.now().year}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // Simple calendar grid for current month
-                _SimpleCalendar(),
-                const SizedBox(height: 8),
-                // Today and upcoming feast days (example, could be dynamic)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Today: ${_todayFeast()}',
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text('Aug 15 - Assumption of Mary'),
-                      const Text('Aug 22 - Queenship of Mary'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
 
-          // Helper widgets and functions for the calendar
-          // Place these outside the build method, e.g. at the bottom of the file:
-          const SizedBox(height: 16),
+Column(
+  children: [
+    SizedBox(height: 23),
+    // calendar goes here
+    CalendarWidget(),
+  ],
+),
+
+
+
+
+          // // Church Calendar
+          // const SectionHeader(
+          //   title: 'Church Calendar',
+          //   trailing: 'Full Calendar',
+          // ),
+          // // Realtime Calendar Widget
+          // RoundedCard(
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       // Show current month and year dynamically
+          //       Padding(
+          //         padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
+          //         child: Text(
+          //           '${_monthName(DateTime.now().month)} ${DateTime.now().year}',
+          //           style: const TextStyle(
+          //             fontWeight: FontWeight.bold,
+          //             fontSize: 16,
+          //           ),
+          //         ),
+          //       ),
+          //       const SizedBox(height: 8),
+          //       // Simple calendar grid for current month
+          //       _SimpleCalendar(),
+          //       const SizedBox(height: 8),
+          //       // Today and upcoming feast days (example, could be dynamic)
+          //       Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 12),
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Text(
+          //               'Today: ${_todayFeast()}',
+          //               style: const TextStyle(fontWeight: FontWeight.w600),
+          //             ),
+          //             const SizedBox(height: 4),
+          //             const Text('Aug 15 - Assumption of Mary'),
+          //             const Text('Aug 22 - Queenship of Mary'),
+          //           ],
+          //         ),
+          //       ),
+          //       const SizedBox(height: 8),
+          //     ],
+          //   ),
+          // ),
+
+          // // Helper widgets and functions for the calendar
+          // // Place these outside the build method, e.g. at the bottom of the file:
+          // const SizedBox(height: 16),
 
 
 
@@ -1539,33 +1593,7 @@ Padding(
     ],
   ),
 ),
-          // // Spiritual Resources
-          // const SectionHeader(
-          //   title: 'Spiritual Resources',
-          //   trailing: 'View All',
-          // ),
-          // GridView.count(
-          //   crossAxisCount: 2,
-          //   shrinkWrap: true,
-          //   physics: const NeverScrollableScrollPhysics(),
-          //   crossAxisSpacing: 0,
-          //   mainAxisSpacing: 0,
-          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          //   children: const [
-          //     _MiniCard(
-          //       title: 'Prayer Collection',
-          //       count: 'Traditional Prayers',
-          //     ),
-          //     _MiniCard(title: 'Meditation Guides', count: 'Daily Reflections'),
-          //     _MiniCard(title: 'Spiritual Articles', count: 'Inspiring Reads'),
-          //     _MiniCard(title: 'Study Materials', count: 'Learning Resources'),
-          //   ],
-          // ),
-          // const SizedBox(height: 16),
-
-          // // Daily Reflection
-          // QuoteCard(),
-
+        
 
 
 
@@ -1935,6 +1963,189 @@ class _GameTile extends StatelessWidget {
 }
 
 
+
+class CalendarWidget extends StatefulWidget {
+  @override
+  _CalendarWidgetState createState() => _CalendarWidgetState();
+}
+
+class _CalendarWidgetState extends State<CalendarWidget> {
+  DateTime _focusedMonth = DateTime(2025, 8); // Start at August 2025
+
+  // Events (with colors)
+  final Map<DateTime, Map<String, dynamic>> _events = {
+    DateTime(2025, 8, 9): {
+      "title": "St. Teresa Benedicta",
+      "color": Colors.blue,
+    },
+    DateTime(2025, 8, 15): {
+      "title": "Assumption of Mary",
+      "color": Colors.orange,
+    },
+    DateTime(2025, 8, 22): {
+      "title": "Queenship of Mary",
+      "color": Colors.orange,
+    },
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with arrows
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  setState(() {
+                    _focusedMonth =
+                        DateTime(_focusedMonth.year, _focusedMonth.month - 1);
+                  });
+                },
+              ),
+              Text(
+                DateFormat.yMMMM().format(_focusedMonth), // August 2025
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                icon: Icon(Icons.arrow_forward_ios),
+                onPressed: () {
+                  setState(() {
+                    _focusedMonth =
+                        DateTime(_focusedMonth.year, _focusedMonth.month + 1);
+                  });
+                },
+              ),
+            ],
+          ),
+
+          SizedBox(height: 10),
+
+          // Days of the week header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: ["S", "M", "T", "W", "T", "F", "S"]
+                .map((e) => Expanded(
+                      child: Center(
+                          child: Text(
+                        e,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )),
+                    ))
+                .toList(),
+          ),
+
+          SizedBox(height: 8),
+
+          // Calendar Grid
+          _buildCalendarGrid(),
+
+          SizedBox(height: 12),
+
+          // Events text with colored dots
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _events.entries
+                .where((entry) =>
+                    entry.key.year == _focusedMonth.year &&
+                    entry.key.month == _focusedMonth.month)
+                .map(
+                  (entry) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: entry.value["color"],
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "${DateFormat.MMMd().format(entry.key)} - ${entry.value["title"]}",
+                          style: TextStyle(
+                              fontSize: 14, color: Colors.grey[800]),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalendarGrid() {
+    final firstDayOfMonth =
+        DateTime(_focusedMonth.year, _focusedMonth.month, 1);
+    final lastDayOfMonth =
+        DateTime(_focusedMonth.year, _focusedMonth.month + 1, 0);
+
+    int startWeekday = firstDayOfMonth.weekday % 7;
+    List<Widget> dayWidgets = [];
+
+    // Empty slots before first day
+    for (int i = 0; i < startWeekday; i++) {
+      dayWidgets.add(Container());
+    }
+
+    // Days of the month
+    for (int day = 1; day <= lastDayOfMonth.day; day++) {
+      DateTime currentDate =
+          DateTime(_focusedMonth.year, _focusedMonth.month, day);
+
+      bool hasEvent = _events.containsKey(currentDate);
+
+      dayWidgets.add(
+        Container(
+          margin: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: hasEvent ? _events[currentDate]!["color"].withOpacity(0.2) : null,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              "$day",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: hasEvent ? _events[currentDate]!["color"] : Colors.black,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return GridView.count(
+      crossAxisCount: 7,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: dayWidgets,
+    );
+  }
+}
 
 
 
