@@ -1,10 +1,10 @@
 import 'package:church_app/common/custom_calendar.dart';
 import 'package:church_app/screens/readnow_screen.dart';
-// import 'package:church_app/screens/ui/faith/bible_version_screen.dart';
 import 'package:church_app/common/constants.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/bible_readnow_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/catholic_document_detail_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/dashboard_read_biography.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail_screen/spiritual_resource_detail_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/testament_books_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
@@ -95,6 +95,52 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     _reflectionTimer?.cancel();
     super.dispose();
   }
+
+ // Navigation helper method for Daily Challenges
+  void _navigateToChallenge(String challengeTitle) {
+    Widget screen;
+    switch (challengeTitle) {
+      case "Scripture Memory":
+        screen = const ScriptureMemoryScreen();
+        break;
+      case "Prayer Challenge":
+        screen = const PrayerChallengeScreen();
+        break;
+      case "Bible Trivia":
+        screen = const BibleTriviaScreen();
+        break;
+      case "Faith Journey":
+        screen = const FaithJourneyScreen();
+        break;
+      default:
+        // Fallback - show a snackbar if screen not found
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$challengeTitle screen coming soon!"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        return;
+    }
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
+
+  // Navigation helper method for Spiritual Resources
+  void _navigateToSpiritualResource(String resourceTitle, String resourceSubtitle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpiritualResourceDetailScreen(
+          resourceTitle: resourceTitle,
+          resourceSubtitle: resourceSubtitle,
+        ),
+      ),
+    );
+  }  
 
   @override
   Widget build(BuildContext context) {
