@@ -1,5 +1,5 @@
+// import 'package:intl/intl.dart';
 import 'package:church_app/common/custom_calendar.dart';
-import 'package:church_app/screens/readnow_screen.dart';
 import 'package:church_app/common/constants.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail/bible_readnow_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail/catholic_document_detail_screen.dart';
@@ -13,9 +13,7 @@ import 'package:church_app/screens/ui/faith/dashboard_view_all/daily_challenge_v
 import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:intl/intl.dart';
 import 'dart:async';
-import 'dart:math';
 
 class FaithDashboardScreen extends StatefulWidget {
   const FaithDashboardScreen({super.key});
@@ -679,105 +677,6 @@ Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
   );
 }
 
-
-
-  // Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
-  //   return SizedBox(
-  //     height: 160,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-  //       itemCount: items.length,
-  //       itemBuilder: (context, index) {
-  //         return Container(
-  //           width: 140,
-  //           margin: const EdgeInsets.only(right: 16),
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(12),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.black12,
-  //                 blurRadius: 6,
-  //                 offset: const Offset(0, 3),
-  //               ),
-  //             ],
-  //           ),
-  //           child: InkWell(
-  //             onTap: () {
-  //               // Check if this is a Catholic Document card
-  //               final catholicDocs = _getCatholicDocuments();
-  //               final isCatholicDoc = catholicDocs
-  //                   .any((doc) => doc["title"] == items[index]["title"]);
-
-  //               if (isCatholicDoc) {
-  //                 Navigator.push(
-  //                   context,
-  //                   MaterialPageRoute(
-  //                     builder: (context) => CatholicDocumentDetailScreen(
-  //                       documentTitle: items[index]["title"]!,
-  //                       documentSubtitle: items[index]["subtitle"]!,
-  //                     ),
-  //                   ),
-  //                 );
-  //               } else {
-  //                 // Handle other types of cards (Spiritual Resources, etc.)
-  //                 ScaffoldMessenger.of(context).showSnackBar(
-  //                   SnackBar(
-  //                     content: Text("Opening ${items[index]["title"]}..."),
-  //                     duration: const Duration(seconds: 2),
-  //                   ),
-  //                 );
-  //               }
-  //             },
-  //             borderRadius: BorderRadius.circular(12),
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 ClipRRect(
-  //                   borderRadius:
-  //                       const BorderRadius.vertical(top: Radius.circular(12)),
-  //                   child: Image.asset(
-  //                     "assets/images/Image_fx (1).jpg",
-  //                     height: 80,
-  //                     width: double.infinity,
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.all(8.0),
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text(
-  //                         items[index]["title"]!,
-  //                         style: const TextStyle(
-  //                           fontWeight: FontWeight.bold,
-  //                           fontSize: 14,
-  //                         ),
-  //                         maxLines: 2,
-  //                         overflow: TextOverflow.ellipsis,
-  //                       ),
-  //                       const SizedBox(height: 4),
-  //                       Text(
-  //                         items[index]["subtitle"]!,
-  //                         style: const TextStyle(
-  //                           color: Colors.grey,
-  //                           fontSize: 12,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   List<Map<String, String>> _getCatholicDocuments() {
     return [
       {
@@ -1094,99 +993,6 @@ Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
     );
   }
 
-  // Widget _buildDailyChallenges() {
-  //   final challenges = [
-  //     {
-  //       "title": "Scripture Memory",
-  //       "subtitle": "Memorize Verses",
-  //       "icon": Icons.psychology,
-  //       "color": Colors.purple,
-  //     },
-  //     {
-  //       "title": "Prayer Challenge",
-  //       "subtitle": "Daily Prayers",
-  //       "icon": Icons.favorite,
-  //       "color": Colors.red,
-  //     },
-  //     {
-  //       "title": "Bible Trivia",
-  //       "subtitle": "Test Knowledge",
-  //       "icon": Icons.quiz,
-  //       "color": Colors.green,
-  //     },
-  //     {
-  //       "title": "Faith Journey",
-  //       "subtitle": "Daily Reflection",
-  //       "icon": Icons.auto_awesome,
-  //       "color": Colors.orange,
-  //     },
-  //   ];
-
-  //   return SizedBox(
-  //     height: 120,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-  //       itemCount: challenges.length,
-  //       itemBuilder: (context, index) {
-  //         return Container(
-  //           width: 100,
-  //           margin: const EdgeInsets.only(right: 16),
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(16),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: challenges[index]["color"] as Color,
-  //                 blurRadius: 10,
-  //                 offset: const Offset(0, 4),
-  //                 spreadRadius: -5,
-  //               ),
-  //             ],
-  //           ),
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Container(
-  //                 padding: const EdgeInsets.all(12),
-  //                 decoration: BoxDecoration(
-  //                   color: (challenges[index]["color"] as Color).withOpacity(0.1),
-  //                   borderRadius: BorderRadius.circular(12),
-  //                 ),
-  //                 child: Icon(
-  //                   challenges[index]["icon"] as IconData,
-  //                   color: challenges[index]["color"] as Color,
-  //                   size: 24,
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 8),
-  //               Text(
-  //                 challenges[index]["title"] as String,
-  //                 style: const TextStyle(
-  //                   fontWeight: FontWeight.bold,
-  //                   fontSize: 12,
-  //                 ),
-  //                 textAlign: TextAlign.center,
-  //                 maxLines: 2,
-  //                 overflow: TextOverflow.ellipsis,
-  //               ),
-  //               const SizedBox(height: 4),
-  //               Text(
-  //                 challenges[index]["subtitle"] as String,
-  //                 style: TextStyle(
-  //                   fontSize: 10,
-  //                   color: Colors.grey[600],
-  //                 ),
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget _buildEnhancedReflectionCard() {
     return AnimatedBuilder(
       animation: _reflectionPulseAnimation,
@@ -1297,3 +1103,99 @@ Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
     );
   }
 }
+
+
+
+
+  // Widget _buildDailyChallenges() {
+  //   final challenges = [
+  //     {
+  //       "title": "Scripture Memory",
+  //       "subtitle": "Memorize Verses",
+  //       "icon": Icons.psychology,
+  //       "color": Colors.purple,
+  //     },
+  //     {
+  //       "title": "Prayer Challenge",
+  //       "subtitle": "Daily Prayers",
+  //       "icon": Icons.favorite,
+  //       "color": Colors.red,
+  //     },
+  //     {
+  //       "title": "Bible Trivia",
+  //       "subtitle": "Test Knowledge",
+  //       "icon": Icons.quiz,
+  //       "color": Colors.green,
+  //     },
+  //     {
+  //       "title": "Faith Journey",
+  //       "subtitle": "Daily Reflection",
+  //       "icon": Icons.auto_awesome,
+  //       "color": Colors.orange,
+  //     },
+  //   ];
+
+  //   return SizedBox(
+  //     height: 120,
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       padding: const EdgeInsets.symmetric(horizontal: 16),
+  //       itemCount: challenges.length,
+  //       itemBuilder: (context, index) {
+  //         return Container(
+  //           width: 100,
+  //           margin: const EdgeInsets.only(right: 16),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(16),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: challenges[index]["color"] as Color,
+  //                 blurRadius: 10,
+  //                 offset: const Offset(0, 4),
+  //                 spreadRadius: -5,
+  //               ),
+  //             ],
+  //           ),
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Container(
+  //                 padding: const EdgeInsets.all(12),
+  //                 decoration: BoxDecoration(
+  //                   color: (challenges[index]["color"] as Color).withOpacity(0.1),
+  //                   borderRadius: BorderRadius.circular(12),
+  //                 ),
+  //                 child: Icon(
+  //                   challenges[index]["icon"] as IconData,
+  //                   color: challenges[index]["color"] as Color,
+  //                   size: 24,
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 8),
+  //               Text(
+  //                 challenges[index]["title"] as String,
+  //                 style: const TextStyle(
+  //                   fontWeight: FontWeight.bold,
+  //                   fontSize: 12,
+  //                 ),
+  //                 textAlign: TextAlign.center,
+  //                 maxLines: 2,
+  //                 overflow: TextOverflow.ellipsis,
+  //               ),
+  //               const SizedBox(height: 4),
+  //               Text(
+  //                 challenges[index]["subtitle"] as String,
+  //                 style: TextStyle(
+  //                   fontSize: 10,
+  //                   color: Colors.grey[600],
+  //                 ),
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
