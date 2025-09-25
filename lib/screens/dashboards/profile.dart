@@ -1,4 +1,4 @@
-import 'package:church_app/widgets/constants.dart';
+import 'package:church_app/common/constants.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {

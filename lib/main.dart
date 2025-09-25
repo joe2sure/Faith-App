@@ -1,7 +1,7 @@
-import 'package:church_app/screens/dashbord.dart';
-import 'package:church_app/screens/devotional_screen.dart';
-import 'package:church_app/screens/games.dart';
-import 'package:church_app/screens/profile.dart';
+import 'package:church_app/screens/dashboards/dashboard.dart';
+import 'package:church_app/screens/dashboards/devotional_screen.dart';
+import 'package:church_app/screens/dashboards/games.dart';
+import 'package:church_app/screens/dashboards/profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:church_app/widgets/constants.dart';
+import 'package:church_app/common/constants.dart';
 import 'package:flutter/material.dart';
 
 class FunZoneScreen extends StatelessWidget {
