@@ -2,6 +2,8 @@ import 'package:church_app/common/custom_calendar.dart';
 import 'package:church_app/screens/readnow_screen.dart';
 // import 'package:church_app/screens/ui/faith/bible_version_screen.dart';
 import 'package:church_app/common/constants.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail_screen/bible_readnow_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail_screen/dashboard_read_biography.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
@@ -315,154 +317,157 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
         "title": "Daily Bible Reading",
         "subtitle": "Today's Scripture",
         "content": "John 3:16 - For God so loved the world...",
-        "hasNavigation": false,
+        "hasNavigation": true,
       },
       {
         "title": "Daily Bible Reading",
         "subtitle": "Today's Scripture",
         "content": "Psalm 23 - The Lord is my Shepherd",
-        "hasNavigation": false,
+        "hasNavigation": true,
       },
     ];
 
-    return scriptures.map((scripture) {
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          elevation: 8,
-          shadowColor: Colors.blue.withOpacity(0.3),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
+  return scriptures.map((scripture) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 8,
+        shadowColor: Colors.blue.withOpacity(0.3),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  child: Image.asset(
+                    "assets/images/Image_fx (1).jpg",
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  height: 120,
+                  decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    child: Image.asset(
-                      "assets/images/Image_fx (1).jpg",
-                      height: 120,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.6),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 12,
-                    bottom: 15,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          scripture["title"] as String,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(blurRadius: 3, color: Colors.black),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          scripture["subtitle"] as String,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            shadows: [
-                              Shadow(blurRadius: 3, color: Colors.black),
-                            ],
-                          ),
-                        ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.6),
                       ],
                     ),
                   ),
-                ],
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                ),
+                Positioned(
+                  left: 12,
+                  bottom: 15,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        scripture["content"] as String,
+                        scripture["title"] as String,
                         style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(blurRadius: 3, color: Colors.black),
+                          ],
                         ),
                       ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          const Icon(Icons.bookmark_border, size: 20, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          const Text("Save", style: TextStyle(color: Colors.grey)),
-                          const SizedBox(width: 20),
-                          const Icon(Icons.share, size: 20, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          const Text("Share", style: TextStyle(color: Colors.grey)),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: scripture["hasNavigation"] == true
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ReadNowScreen()),
-                                    );
-                                  }
-                                : () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                            ),
-                            child: const Text(
-                              "Read Now",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 4),
+                      Text(
+                        scripture["subtitle"] as String,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          shadows: [
+                            Shadow(blurRadius: 3, color: Colors.black),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      scripture["content"] as String,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        const Icon(Icons.bookmark_border, size: 20, color: Colors.grey),
+                        const SizedBox(width: 4),
+                        const Text("Save", style: TextStyle(color: Colors.grey)),
+                        const SizedBox(width: 20),
+                        const Icon(Icons.share, size: 20, color: Colors.grey),
+                        const SizedBox(width: 4),
+                        const Text("Share", style: TextStyle(color: Colors.grey)),
+                        const Spacer(),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScriptureReadingScreen(
+                                  title: scripture["title"] as String,
+                                  content: scripture["content"] as String,
+                                  reference: scripture["subtitle"] as String,
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                          child: const Text(
+                            "Read Now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
-      );
-    }).toList();
-  }
+      ),
+    );
+  }).toList();
+}
 
   Widget _buildTestamentCards() {
     return Row(
@@ -616,109 +621,119 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     ];
   }
 
-  Widget _buildSaintCard() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 8,
-        shadowColor: Colors.orange.withOpacity(0.3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  child: Image.asset(
-                    "assets/images/Image_fx (1).jpg",
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+Widget _buildSaintCard() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 14),
+    child: Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 8,
+      shadowColor: Colors.orange.withOpacity(0.3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
-                Positioned(
-                  left: 12,
-                  bottom: 15,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Saint of the Day",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(blurRadius: 3, color: Colors.black),
-                          ],
+                child: Image.asset(
+                  "assets/images/Image_fx (1).jpg",
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                left: 12,
+                bottom: 15,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Saint of the Day",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(blurRadius: 3, color: Colors.black),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "St. Teresa Benedicta",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        shadows: [
+                          Shadow(blurRadius: 3, color: Colors.black),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: const Text(
+              "Patron Saint of Europe, Philosopher and martyr",
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              children: [
+                const Icon(Icons.calendar_month, size: 20, color: Colors.grey),
+                const SizedBox(width: 4),
+                const Text("Aug 9", style: TextStyle(color: Colors.grey)),
+                const SizedBox(width: 20),
+                const Icon(Icons.favorite_border, size: 20, color: Colors.grey),
+                const SizedBox(width: 4),
+                const Text("Pray", style: TextStyle(color: Colors.grey)),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SaintBiographyScreen(
+                          saintName: "St. Teresa Benedicta",
+                          feastDay: "Aug 9",
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        "St. Teresa Benedicta",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          shadows: [
-                            Shadow(blurRadius: 3, color: Colors.black),
-                          ],
-                        ),
-                      ),
-                    ],
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 22, vertical: 8),
+                  ),
+                  child: const Text(
+                    "Read Biography",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: const Text(
-                "Patron Saint of Europe, Philosopher and martyr",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.calendar_month, size: 20, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text("Aug 9", style: TextStyle(color: Colors.grey)),
-                  const SizedBox(width: 20),
-                  const Icon(Icons.favorite_border, size: 20, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text("Pray", style: TextStyle(color: Colors.grey)),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 8),
-                    ),
-                    child: const Text(
-                      "Read Biography",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildSaintsHorizontalList() {
     final saints = [
