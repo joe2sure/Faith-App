@@ -9,7 +9,9 @@ import 'package:church_app/screens/ui/faith/dashboard_detail/spiritual_resource_
 import 'package:church_app/screens/ui/faith/dashboard_detail/testament_books_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_view_all/church_full_calender.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/daily_challenge_view_all_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_view_all/saint_feast_calender_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -165,7 +167,14 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Saints & Feast Days
           const SizedBox(height: 23),
-          _buildSectionHeader('Saints & Feast Days', 'Calendar', () {}),
+          _buildSectionHeader('Saints & Feast Days', 'Calendar', () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SaintsCalendarScreen(),
+              ),
+            );
+          }),
 
           const SizedBox(height: 15),
           _buildSaintCard(),
@@ -175,7 +184,14 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Church Calendar
           const SizedBox(height: 23),
-          _buildSectionHeader('Church Calendar', 'Full Calendar', () {}),
+          _buildSectionHeader('Church Calendar', 'Full Calendar', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FullCalendarScreen(),
+            ),
+          );
+          }),
 
           CustomCalendar(),
 
@@ -567,115 +583,117 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-
-Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
-  return SizedBox(
-    height: 160,
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return Container(
-          width: 140,
-          margin: const EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: InkWell(
-            onTap: () {
-              // Check if this is a Catholic Document card
-              final catholicDocs = _getCatholicDocuments();
-              final spiritualResources = _getSpiritualResources();
-              
-              final isCatholicDoc = catholicDocs.any((doc) => doc["title"] == items[index]["title"]);
-              final isSpiritualResource = spiritualResources.any((resource) => resource["title"] == items[index]["title"]);
-              
-              if (isCatholicDoc) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CatholicDocumentDetailScreen(
-                      documentTitle: items[index]["title"]!,
-                      documentSubtitle: items[index]["subtitle"]!,
-                    ),
-                  ),
-                );
-              } else if (isSpiritualResource) {
-                // Navigate to Spiritual Resource Detail Screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SpiritualResourceDetailScreen(
-                      resourceTitle: items[index]["title"]!,
-                      resourceSubtitle: items[index]["subtitle"]!,
-                    ),
-                  ),
-                );
-              } else {
-                // Handle other types of cards
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Opening ${items[index]["title"]}..."),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              }
-            },
-            borderRadius: BorderRadius.circular(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: Image.asset(
-                    "assets/images/Image_fx (1).jpg",
-                    height: 80,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        items[index]["title"]!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        items[index]["subtitle"]!,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
+  Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
+    return SizedBox(
+      height: 160,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 140,
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
+            child: InkWell(
+              onTap: () {
+                // Check if this is a Catholic Document card
+                final catholicDocs = _getCatholicDocuments();
+                final spiritualResources = _getSpiritualResources();
+
+                final isCatholicDoc = catholicDocs
+                    .any((doc) => doc["title"] == items[index]["title"]);
+                final isSpiritualResource = spiritualResources.any(
+                    (resource) => resource["title"] == items[index]["title"]);
+
+                if (isCatholicDoc) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CatholicDocumentDetailScreen(
+                        documentTitle: items[index]["title"]!,
+                        documentSubtitle: items[index]["subtitle"]!,
+                      ),
+                    ),
+                  );
+                } else if (isSpiritualResource) {
+                  // Navigate to Spiritual Resource Detail Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SpiritualResourceDetailScreen(
+                        resourceTitle: items[index]["title"]!,
+                        resourceSubtitle: items[index]["subtitle"]!,
+                      ),
+                    ),
+                  );
+                } else {
+                  // Handle other types of cards
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Opening ${items[index]["title"]}..."),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(12)),
+                    child: Image.asset(
+                      "assets/images/Image_fx (1).jpg",
+                      height: 80,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          items[index]["title"]!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          items[index]["subtitle"]!,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 
   List<Map<String, String>> _getCatholicDocuments() {
     return [
