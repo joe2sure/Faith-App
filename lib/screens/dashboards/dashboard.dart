@@ -1,11 +1,11 @@
 import 'package:church_app/common/custom_calendar.dart';
 import 'package:church_app/screens/readnow_screen.dart';
 import 'package:church_app/common/constants.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail_screen/bible_readnow_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail_screen/catholic_document_detail_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail_screen/dashboard_read_biography.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail_screen/spiritual_resource_detail_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail_screen/testament_books_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail/bible_readnow_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail/catholic_document_detail_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail/dashboard_read_biography.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail/spiritual_resource_detail_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail/testament_books_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
-  const AppTopBar({super.key, required this.title, this.actions});
+  const AppTopBar({super.key, required this.title, this.actions, required bool showBackButton});
 
   @override
   Widget build(BuildContext context) {
