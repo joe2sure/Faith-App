@@ -3,7 +3,9 @@ import 'package:church_app/screens/readnow_screen.dart';
 // import 'package:church_app/screens/ui/faith/bible_version_screen.dart';
 import 'package:church_app/common/constants.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/bible_readnow_screen.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail_screen/catholic_document_detail_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_detail_screen/dashboard_read_biography.dart';
+import 'package:church_app/screens/ui/faith/dashboard_detail_screen/testament_books_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
 import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
@@ -487,8 +489,19 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  Widget _buildTestamentCard(String title, String subtitle, String imagePath) {
-    return Container(
+Widget _buildTestamentCard(String title, String subtitle, String imagePath) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TestamentBooksScreen(
+            initialTab: title, // This will open the correct tab
+          ),
+        ),
+      );
+    },
+    child: Container(
       width: MediaQuery.of(context).size.width * 0.42,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -529,31 +542,59 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
-    return SizedBox(
-      height: 160,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
+Widget _buildHorizontalScrollableCards(List<Map<String, String>> items) {
+  return SizedBox(
+    height: 160,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return Container(
+          width: 140,
+          margin: const EdgeInsets.only(right: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: () {
+              // Check if this is a Catholic Document card
+              final catholicDocs = _getCatholicDocuments();
+              final isCatholicDoc = catholicDocs.any((doc) => doc["title"] == items[index]["title"]);
+              
+              if (isCatholicDoc) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CatholicDocumentDetailScreen(
+                      documentTitle: items[index]["title"]!,
+                      documentSubtitle: items[index]["subtitle"]!,
+                    ),
+                  ),
+                );
+              } else {
+                // Handle other types of cards (Spiritual Resources, etc.)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Opening ${items[index]["title"]}..."),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            borderRadius: BorderRadius.circular(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -593,11 +634,12 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                 ),
               ],
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
   List<Map<String, String>> _getCatholicDocuments() {
     return [
