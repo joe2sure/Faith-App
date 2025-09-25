@@ -1,5 +1,5 @@
 import 'package:church_app/screens/dashboards/dashboard.dart';
-import 'package:church_app/screens/dashboards/devotional_screen.dart';
+import 'package:church_app/screens/dashboards/devotional.dart';
 import 'package:church_app/screens/dashboards/games.dart';
 import 'package:church_app/screens/dashboards/profile.dart';
 import 'package:flutter/material.dart';
