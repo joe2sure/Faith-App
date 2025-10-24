@@ -1,18 +1,18 @@
 // import 'package:intl/intl.dart';
-import 'package:church_app/common/custom_calendar.dart';
-import 'package:church_app/common/constants.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/bible_readnow_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/catholic_document_detail_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/daily_challenge_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/dashboard_read_biography.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/spiritual_resource_detail_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/testament_books_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/church_full_calender.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/daily_challenge_view_all_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/saint_feast_calender_screen.dart';
-import 'package:church_app/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
+import 'package:faith_plus/common/custom_calendar.dart';
+import 'package:faith_plus/common/constants.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/bible_readnow_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/catholic_document_detail_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/daily_challenge_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/dashboard_read_biography.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/spiritual_resource_detail_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/testament_books_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/bible_version_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/catholic_documents_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/church_full_calender.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/daily_challenge_view_all_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/saint_feast_calender_screen.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_view_all/spiritual_resources_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:async';
@@ -137,7 +137,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Bible & Scripture Section
           const SizedBox(height: 23),
-          _buildSectionHeader('Bible & Scripture', 'View All', () {
+          _buildSectionHeader('Bible', 'View All', () {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -184,7 +184,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Church Calendar
           const SizedBox(height: 23),
-          _buildSectionHeader('Church Calendar', 'Full Calendar', () {
+          _buildSectionHeader('Church', 'Full Calendar', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -383,7 +383,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                       topRight: Radius.circular(20),
                     ),
                     child: Image.asset(
-                      "assets/images/Image_fx (1).jpg",
+                      "assets/images/Image_fx_1.jpg",
                       height: 120,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -515,12 +515,12 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
         _buildTestamentCard(
           "Old Testament",
           "39 Books",
-          "assets/images/Image_fx (4).jpg",
+          "assets/images/Image_fx_4.jpg",
         ),
         _buildTestamentCard(
           "New Testament",
           "27 Books",
-          "assets/images/Image_fx (4).jpg",
+          "assets/images/Image_fx_4.jpg",
         ),
       ],
     );
@@ -655,7 +655,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(12)),
                     child: Image.asset(
-                      "assets/images/Image_fx (1).jpg",
+                      "assets/images/Image_fx_1.jpg",
                       height: 80,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -738,7 +738,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                     topRight: Radius.circular(20),
                   ),
                   child: Image.asset(
-                    "assets/images/Image_fx (1).jpg",
+                    "assets/images/Image_fx_1.jpg",
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -870,7 +870,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/Image_fx (4).jpg",
+                  "assets/images/Image_fx_4.jpg",
                   width: 30,
                   height: 30,
                   fit: BoxFit.contain,
@@ -1121,99 +1121,3 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 }
-
-
-
-
-  // Widget _buildDailyChallenges() {
-  //   final challenges = [
-  //     {
-  //       "title": "Scripture Memory",
-  //       "subtitle": "Memorize Verses",
-  //       "icon": Icons.psychology,
-  //       "color": Colors.purple,
-  //     },
-  //     {
-  //       "title": "Prayer Challenge",
-  //       "subtitle": "Daily Prayers",
-  //       "icon": Icons.favorite,
-  //       "color": Colors.red,
-  //     },
-  //     {
-  //       "title": "Bible Trivia",
-  //       "subtitle": "Test Knowledge",
-  //       "icon": Icons.quiz,
-  //       "color": Colors.green,
-  //     },
-  //     {
-  //       "title": "Faith Journey",
-  //       "subtitle": "Daily Reflection",
-  //       "icon": Icons.auto_awesome,
-  //       "color": Colors.orange,
-  //     },
-  //   ];
-
-  //   return SizedBox(
-  //     height: 120,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-  //       itemCount: challenges.length,
-  //       itemBuilder: (context, index) {
-  //         return Container(
-  //           width: 100,
-  //           margin: const EdgeInsets.only(right: 16),
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(16),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: challenges[index]["color"] as Color,
-  //                 blurRadius: 10,
-  //                 offset: const Offset(0, 4),
-  //                 spreadRadius: -5,
-  //               ),
-  //             ],
-  //           ),
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Container(
-  //                 padding: const EdgeInsets.all(12),
-  //                 decoration: BoxDecoration(
-  //                   color: (challenges[index]["color"] as Color).withOpacity(0.1),
-  //                   borderRadius: BorderRadius.circular(12),
-  //                 ),
-  //                 child: Icon(
-  //                   challenges[index]["icon"] as IconData,
-  //                   color: challenges[index]["color"] as Color,
-  //                   size: 24,
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 8),
-  //               Text(
-  //                 challenges[index]["title"] as String,
-  //                 style: const TextStyle(
-  //                   fontWeight: FontWeight.bold,
-  //                   fontSize: 12,
-  //                 ),
-  //                 textAlign: TextAlign.center,
-  //                 maxLines: 2,
-  //                 overflow: TextOverflow.ellipsis,
-  //               ),
-  //               const SizedBox(height: 4),
-  //               Text(
-  //                 challenges[index]["subtitle"] as String,
-  //                 style: TextStyle(
-  //                   fontSize: 10,
-  //                   color: Colors.grey[600],
-  //                 ),
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }

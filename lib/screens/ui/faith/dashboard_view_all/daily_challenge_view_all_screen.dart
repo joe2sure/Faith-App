@@ -1,6 +1,8 @@
-import 'package:church_app/screens/ui/faith/dashboard_detail/daily_challenge_screen.dart';
+import 'package:faith_plus/common/constants.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/daily_challenge_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:church_app/common/constants.dart';
+// import 'package:church_app/screens/ui/faith/dashboard_detail/daily_challenge_screen.dart';
+// import 'package:church_app/common/constants.dart';
 // import 'package:church_app/screens/ui/faith/daily_challenge_screen.dart';
 
 class DailyChallengesViewAllScreen extends StatefulWidget {

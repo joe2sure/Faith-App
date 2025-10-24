@@ -1,7 +1,7 @@
-import 'package:church_app/screens/dashboards/dashboard.dart';
-import 'package:church_app/screens/dashboards/devotional.dart';
-import 'package:church_app/screens/dashboards/games.dart';
-import 'package:church_app/screens/dashboards/profile.dart';
+import 'package:faith_plus/screens/dashboards/dashboard.dart';
+import 'package:faith_plus/screens/dashboards/devotional.dart';
+import 'package:faith_plus/screens/dashboards/games.dart';
+import 'package:faith_plus/screens/dashboards/profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,12 +11,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Faith',
+      title: 'Faith Plus',
       theme: ThemeData(),
       home: RootShell(),
     );
@@ -35,7 +34,7 @@ class _RootShellState extends State<RootShell> {
 
   final _pages = const [
     FaithDashboardScreen(),
-    DevotionalsScreen(),
+    DevotionalDashboardScreen(),
     FunZoneScreen(),
     ProfileScreen(),
   ];
@@ -69,13 +68,3 @@ class _RootShellState extends State<RootShell> {
     );
   }
 }
-
-// -- Common UI bits ---------------------------------------------------------
-
-// -- Screen 1: Faith Dashboard ----------------------------------------------
-
-// -- Screen 2: Devotionals ---------------------------------------------------
-
-// -- Screen 3: Fun Zone ------------------------------------------------------
-
-// -- Screen 4: Profile -------------------------------------------------------

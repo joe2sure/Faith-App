@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:church_app/common/constants.dart';
-import 'package:church_app/screens/ui/faith/dashboard_detail/dashboard_read_biography.dart';
+import 'package:faith_plus/common/constants.dart';
+import 'package:faith_plus/screens/ui/faith/dashboard_detail/dashboard_read_biography.dart';
 
 class SaintsCalendarScreen extends StatefulWidget {
   const SaintsCalendarScreen({super.key});

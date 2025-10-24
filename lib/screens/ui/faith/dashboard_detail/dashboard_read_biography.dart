@@ -35,7 +35,7 @@ class _SaintBiographyScreenState extends State<SaintBiographyScreen>
       "feastDay": "August 9",
       "patronOf": "Europe, Philosophers, Martyrs, Loss of parents",
       "canonized": "October 11, 1998 by Pope John Paul II",
-      "image": "assets/images/Image_fx (1).jpg",
+      "image": "assets/images/Image_fx_1.jpg",
       "shortDescription": "German-Jewish philosopher who converted to Christianity, became a Carmelite nun, and died in Auschwitz.",
       "earlyLife": "Edith Stein was born into a Jewish family in Breslau, Prussia (now Wrocław, Poland). She was an outstanding student and became one of the first women to receive a doctorate in philosophy. As a young woman, she was an atheist, but through her philosophical studies and personal experiences, she gradually opened her heart to faith.",
       "conversion": "Her conversion to Christianity began through reading the autobiography of Saint Teresa of Ávila. After reading it in one night, she said, 'This is the truth.' She was baptized as a Catholic in 1922, taking the name Teresa Benedicta.",

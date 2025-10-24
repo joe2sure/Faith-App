@@ -1,12 +1,11 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.church_app"
+    namespace = "com.example.faith_plus"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -19,26 +18,62 @@ android {
         jvmTarget = "1.8"
     }
 
+    sourceSets {
+        getByName("main") {
+            java.srcDirs("src/main/kotlin")
+        }
+    }
+
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.church_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.example.faith_plus"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("C:\\Users\\IFEANYI\\faith_plus.jks")
+            storePassword = "faith_plus"
+            keyAlias = "faith_plus"
+            keyPassword = "faith_plus"
+        }
+    }
+
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
 
-flutter {
-    source = "../.."
+// IMPORTANT: Wrap everything in afterEvaluate
+afterEvaluate {
+    tasks.register<Copy>("copyDebugApk") {
+        from(layout.buildDirectory.dir("outputs/apk/debug"))
+        into(layout.projectDirectory.dir("../../build/app/outputs/flutter-apk"))
+        include("*.apk")
+    }
+
+    tasks.register<Copy>("copyReleaseApk") {
+        from(layout.buildDirectory.dir("outputs/apk/release"))
+        into(layout.projectDirectory.dir("../../build/app/outputs/flutter-apk"))
+        include("*.apk")
+    }
+
+    tasks.named("assembleDebug") {
+        finalizedBy("copyDebugApk")
+    }
+
+    tasks.named("assembleRelease") {
+        finalizedBy("copyReleaseApk")
+    }
 }

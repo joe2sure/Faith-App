@@ -4,7 +4,8 @@ class SpiritualResourcesScreen extends StatefulWidget {
   const SpiritualResourcesScreen({super.key});
 
   @override
-  State<SpiritualResourcesScreen> createState() => _SpiritualResourcesScreenState();
+  State<SpiritualResourcesScreen> createState() =>
+      _SpiritualResourcesScreenState();
 }
 
 class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
@@ -13,7 +14,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
   String _searchQuery = '';
   bool _isGridView = true;
   late TabController _tabController;
-  
+
   final List<String> _categories = [
     'All',
     'Prayers',
@@ -139,7 +140,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.green : Colors.grey[100],
                       borderRadius: BorderRadius.circular(20),
@@ -152,7 +154,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                         _categories[index],
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.grey[700],
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.normal,
                           fontSize: 14,
                         ),
                       ),
@@ -186,19 +189,27 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
 
   Widget _buildResourcesView() {
     final filteredResources = _getFilteredResources();
-    
+
     if (filteredResources.isEmpty) {
       return _buildEmptyState();
     }
 
     return _isGridView
         ? GridView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(
+              16,
+              16,
+              16,
+              MediaQuery.of(context).viewInsets.bottom +
+                  MediaQuery.of(context).padding.bottom +
+                  88,
+            ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: 0.85,
+              childAspectRatio:
+                  0.85, // if overflow persists, try 0.78 or 0.75 to allow taller cards
             ),
             itemCount: filteredResources.length,
             itemBuilder: (context, index) {
@@ -217,8 +228,9 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
   }
 
   Widget _buildFavoritesView() {
-    final favorites = _getAllResources().where((r) => r['isBookmarked'] == true).toList();
-    
+    final favorites =
+        _getAllResources().where((r) => r['isBookmarked'] == true).toList();
+
     if (favorites.isEmpty) {
       return _buildEmptyFavoritesState();
     }
@@ -232,7 +244,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
 
   Widget _buildRecentView() {
     final recent = _getAllResources().take(5).toList();
-    
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: recent.length,
@@ -310,7 +322,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Morning Prayers",
         "subtitle": "Start Your Day Right",
         "category": "Prayers",
-        "description": "Collection of traditional morning prayers including the Our Father, Hail Mary, and Glory Be.",
+        "description":
+            "Collection of traditional morning prayers including the Our Father, Hail Mary, and Glory Be.",
         "duration": "10 min",
         "difficulty": "Beginner",
         "icon": Icons.wb_sunny,
@@ -336,7 +349,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Lectio Divina Guide",
         "subtitle": "Divine Reading",
         "category": "Meditation",
-        "description": "Step-by-step guide to the ancient practice of meditative scripture reading.",
+        "description":
+            "Step-by-step guide to the ancient practice of meditative scripture reading.",
         "duration": "30 min",
         "difficulty": "Intermediate",
         "icon": Icons.menu_book,
@@ -349,7 +363,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Rosary Meditation",
         "subtitle": "Mysteries of Faith",
         "category": "Meditation",
-        "description": "Guided meditations on the Joyful, Sorrowful, Glorious, and Luminous Mysteries.",
+        "description":
+            "Guided meditations on the Joyful, Sorrowful, Glorious, and Luminous Mysteries.",
         "duration": "20 min",
         "difficulty": "Beginner",
         "icon": Icons.circle_outlined,
@@ -362,7 +377,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Understanding Saints",
         "subtitle": "Lives of Holiness",
         "category": "Saints",
-        "description": "In-depth articles about the lives and teachings of Catholic saints.",
+        "description":
+            "In-depth articles about the lives and teachings of Catholic saints.",
         "duration": "5-10 min",
         "difficulty": "Beginner",
         "icon": Icons.person,
@@ -375,7 +391,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Catholic Theology",
         "subtitle": "Deep Dive",
         "category": "Articles",
-        "description": "Advanced theological concepts explained in accessible language.",
+        "description":
+            "Advanced theological concepts explained in accessible language.",
         "duration": "15-20 min",
         "difficulty": "Advanced",
         "icon": Icons.school,
@@ -401,7 +418,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Catechism Study",
         "subtitle": "Learn Your Faith",
         "category": "Study Materials",
-        "description": "Interactive study materials based on the Catechism of the Catholic Church.",
+        "description":
+            "Interactive study materials based on the Catechism of the Catholic Church.",
         "duration": "60 min",
         "difficulty": "Intermediate",
         "icon": Icons.quiz,
@@ -414,7 +432,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Daily Devotions",
         "subtitle": "Spiritual Growth",
         "category": "Devotions",
-        "description": "Daily reflections and prayers for spiritual development.",
+        "description":
+            "Daily reflections and prayers for spiritual development.",
         "duration": "10 min",
         "difficulty": "Beginner",
         "icon": Icons.favorite,
@@ -427,7 +446,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Novenas",
         "subtitle": "Nine Days of Prayer",
         "category": "Devotions",
-        "description": "Traditional nine-day prayer devotions to various saints and Mary.",
+        "description":
+            "Traditional nine-day prayer devotions to various saints and Mary.",
         "duration": "15 min",
         "difficulty": "Beginner",
         "icon": Icons.calendar_view_week,
@@ -453,7 +473,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Liturgical Calendar",
         "subtitle": "Church Year",
         "category": "Liturgy",
-        "description": "Complete guide to the liturgical seasons and feast days.",
+        "description":
+            "Complete guide to the liturgical seasons and feast days.",
         "duration": "5 min",
         "difficulty": "Beginner",
         "icon": Icons.date_range,
@@ -466,7 +487,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Gospel Reflections",
         "subtitle": "Daily Insights",
         "category": "Scripture",
-        "description": "Daily reflections on the Gospel readings with practical applications.",
+        "description":
+            "Daily reflections on the Gospel readings with practical applications.",
         "duration": "12 min",
         "difficulty": "Beginner",
         "icon": Icons.auto_stories,
@@ -479,7 +501,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Psalms for Prayer",
         "subtitle": "Songs of the Heart",
         "category": "Scripture",
-        "description": "Selected psalms with meditation guides for personal prayer.",
+        "description":
+            "Selected psalms with meditation guides for personal prayer.",
         "duration": "20 min",
         "difficulty": "Beginner",
         "icon": Icons.music_note,
@@ -492,7 +515,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
         "title": "Saint of the Day",
         "subtitle": "Daily Inspiration",
         "category": "Saints",
-        "description": "Learn about a different saint each day with their story and prayers.",
+        "description":
+            "Learn about a different saint each day with their story and prayers.",
         "duration": "5 min",
         "difficulty": "Beginner",
         "icon": Icons.today,
@@ -506,19 +530,28 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
 
   List<Map<String, dynamic>> _getFilteredResources() {
     var resources = _getAllResources();
-    
+
     if (_selectedCategory != 'All') {
-      resources = resources.where((resource) => resource['category'] == _selectedCategory).toList();
+      resources = resources
+          .where((resource) => resource['category'] == _selectedCategory)
+          .toList();
     }
-    
+
     if (_searchQuery.isNotEmpty) {
-      resources = resources.where((resource) => 
-        resource['title'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
-        resource['subtitle'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
-        resource['description'].toLowerCase().contains(_searchQuery.toLowerCase())
-      ).toList();
+      resources = resources
+          .where((resource) =>
+              resource['title']
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ||
+              resource['subtitle']
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ||
+              resource['description']
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()))
+          .toList();
     }
-    
+
     return resources;
   }
 
@@ -564,8 +597,12 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                       });
                     },
                     child: Icon(
-                      resource['isBookmarked'] ? Icons.bookmark : Icons.bookmark_border,
-                      color: resource['isBookmarked'] ? resource['color'] as Color : Colors.grey,
+                      resource['isBookmarked']
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
+                      color: resource['isBookmarked']
+                          ? resource['color'] as Color
+                          : Colors.grey,
                     ),
                   ),
                 ],
@@ -578,6 +615,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  // allow this column to size to the available space inside the Expanded
                   children: [
                     Text(
                       resource['title'],
@@ -599,7 +637,10 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Expanded(
+
+                    // <-- Flexible replaces the inner Expanded
+                    Flexible(
+                      fit: FlexFit.loose,
                       child: Text(
                         resource['description'],
                         style: TextStyle(
@@ -611,16 +652,19 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
                     const SizedBox(height: 12),
-                    
+
                     // Metadata row
                     Row(
                       children: [
-                        Icon(Icons.access_time, size: 14, color: Colors.grey[500]),
+                        Icon(Icons.access_time,
+                            size: 14, color: Colors.grey[500]),
                         const SizedBox(width: 4),
                         Text(
                           resource['duration'],
-                          style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                          style:
+                              TextStyle(fontSize: 11, color: Colors.grey[600]),
                         ),
                         const Spacer(),
                         Row(
@@ -629,20 +673,23 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                             const SizedBox(width: 2),
                             Text(
                               resource['rating'].toString(),
-                              style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                              style: TextStyle(
+                                  fontSize: 11, color: Colors.grey[600]),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 8),
-                    
+
                     // Difficulty badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getDifficultyColor(resource['difficulty']).withOpacity(0.1),
+                        color: _getDifficultyColor(resource['difficulty'])
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: _getDifficultyColor(resource['difficulty']),
@@ -724,9 +771,11 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _getDifficultyColor(resource['difficulty']).withOpacity(0.1),
+                    color: _getDifficultyColor(resource['difficulty'])
+                        .withOpacity(0.1),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: _getDifficultyColor(resource['difficulty']),
@@ -754,7 +803,9 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
           },
           child: Icon(
             resource['isBookmarked'] ? Icons.bookmark : Icons.bookmark_border,
-            color: resource['isBookmarked'] ? resource['color'] as Color : Colors.grey,
+            color: resource['isBookmarked']
+                ? resource['color'] as Color
+                : Colors.grey,
           ),
         ),
       ),
@@ -774,7 +825,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
     }
   }
 
-  void _showResourceDetails(BuildContext context, Map<String, dynamic> resource) {
+  void _showResourceDetails(
+      BuildContext context, Map<String, dynamic> resource) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -802,7 +854,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Header
               Row(
                 children: [
@@ -848,16 +900,20 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                       });
                     },
                     child: Icon(
-                      resource['isBookmarked'] ? Icons.bookmark : Icons.bookmark_border,
-                      color: resource['isBookmarked'] ? resource['color'] as Color : Colors.grey,
+                      resource['isBookmarked']
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
+                      color: resource['isBookmarked']
+                          ? resource['color'] as Color
+                          : Colors.grey,
                       size: 28,
                     ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Metadata
               Row(
                 children: [
@@ -865,12 +921,13 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                   const SizedBox(width: 12),
                   _buildMetadataChip(Icons.star, resource['rating'].toString()),
                   const SizedBox(width: 12),
-                  _buildMetadataChip(Icons.download, '${resource['downloads']}'),
+                  _buildMetadataChip(
+                      Icons.download, '${resource['downloads']}'),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Description
               Expanded(
                 child: SingleChildScrollView(
@@ -894,7 +951,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                         ),
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Action Buttons
                       Row(
                         children: [
@@ -907,7 +964,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: resource['color'] as Color,
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -927,8 +985,10 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                               // Add share logic
                             },
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: resource['color'] as Color),
-                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                              side:
+                                  BorderSide(color: resource['color'] as Color),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 20),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -997,7 +1057,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
               ),
             ),
             const SizedBox(height: 20),
-            
+
             const Text(
               'Options',
               style: TextStyle(
@@ -1006,7 +1066,7 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
               ),
             ),
             const SizedBox(height: 20),
-            
+
             ListTile(
               leading: const Icon(Icons.sort),
               title: const Text('Sort Resources'),
@@ -1094,7 +1154,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Difficulty Level:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Difficulty Level:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             CheckboxListTile(
               title: const Text('Beginner'),
               value: true,
@@ -1111,7 +1172,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
               onChanged: (v) {},
             ),
             const SizedBox(height: 16),
-            const Text('Duration:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Duration:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             CheckboxListTile(
               title: const Text('Under 15 minutes'),
               value: true,
@@ -1210,7 +1272,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
                   labelText: 'Difficulty',
                   border: OutlineInputBorder(),
                 ),
-                items: ['Beginner', 'Intermediate', 'Advanced'].map((difficulty) {
+                items:
+                    ['Beginner', 'Intermediate', 'Advanced'].map((difficulty) {
                   return DropdownMenuItem(
                     value: difficulty,
                     child: Text(difficulty),
@@ -1230,8 +1293,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
           ),
           ElevatedButton(
             onPressed: () {
-              if (titleController.text.isNotEmpty && 
-                  subtitleController.text.isNotEmpty && 
+              if (titleController.text.isNotEmpty &&
+                  subtitleController.text.isNotEmpty &&
                   descriptionController.text.isNotEmpty) {
                 // Here you would typically add the resource to your data source
                 Navigator.pop(context);
@@ -1251,8 +1314,9 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
   }
 
   void _downloadFavorites() {
-    final favorites = _getAllResources().where((r) => r['isBookmarked'] == true).toList();
-    
+    final favorites =
+        _getAllResources().where((r) => r['isBookmarked'] == true).toList();
+
     if (favorites.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -1267,7 +1331,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Download Favorites'),
-        content: Text('Download ${favorites.length} favorite resources for offline access?'),
+        content: Text(
+            'Download ${favorites.length} favorite resources for offline access?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -1306,7 +1371,8 @@ class _SpiritualResourcesScreenState extends State<SpiritualResourcesScreen>
       Navigator.pop(context); // Close download dialog
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Successfully downloaded ${resources.length} resources!'),
+          content:
+              Text('Successfully downloaded ${resources.length} resources!'),
           backgroundColor: Colors.green,
           action: SnackBarAction(
             label: 'View',

@@ -1,3551 +1,1588 @@
-// ignore_for_file: deprecated_member_use
-
-import 'package:church_app/common/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:glass/glass.dart';
+import 'package:faith_plus/common/constants.dart';
+import 'dart:async';
+import 'dart:math' as math;
 
-class DevotionalsScreen extends StatelessWidget {
-  const DevotionalsScreen({super.key});
+class DevotionalDashboardScreen extends StatefulWidget {
+  const DevotionalDashboardScreen({super.key});
+
+  @override
+  State<DevotionalDashboardScreen> createState() => _DevotionalDashboardScreenState();
+}
+
+class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _headerAnimationController;
+  late AnimationController _cardsAnimationController;
+  late AnimationController _floatingAnimationController;
+  late AnimationController _progressAnimationController;
+  late AnimationController _pulseAnimationController;
+  
+  late Animation<double> _headerSlideAnimation;
+  late Animation<double> _cardsFadeAnimation;
+  late Animation<double> _floatingAnimation;
+  late Animation<double> _progressAnimation;
+  late Animation<double> _pulseAnimation;
+
+  int _currentDevotionalIndex = 0;
+  Timer? _devotionalTimer;
+  int _todayProgress = 65;
+  int _streakDays = 12;
+  int _currentInspirationIndex = 0;
+  Timer? _inspirationTimer;
+
+  final List<Map<String, dynamic>> _devotionalContent = [
+    {
+      "title": "Morning Prayer",
+      "time": "6:00 AM",
+      "duration": "10 min",
+      "description": "Start your day with gratitude and surrender to God's will",
+      "icon": Icons.wb_sunny,
+      "color": Colors.orange,
+      "gradient": [Colors.orange.shade300, Colors.deepOrange.shade400],
+    },
+    {
+      "title": "Scripture Reading",
+      "time": "12:00 PM",
+      "duration": "15 min",
+      "description": "Dive deep into God's Word and find wisdom for today",
+      "icon": Icons.menu_book,
+      "color": Colors.blue,
+      "gradient": [Colors.blue.shade300, Colors.indigo.shade400],
+    },
+    {
+      "title": "Rosary",
+      "time": "3:00 PM",
+      "duration": "20 min",
+      "description": "Meditate on the mysteries of Christ through Mary's eyes",
+      "icon": Icons.circle_outlined,
+      "color": Colors.purple,
+      "gradient": [Colors.purple.shade300, Colors.deepPurple.shade400],
+    },
+    {
+      "title": "Evening Reflection",
+      "time": "8:00 PM",
+      "duration": "10 min",
+      "description": "Review your day and thank God for His blessings",
+      "icon": Icons.nightlight_round,
+      "color": Colors.indigo,
+      "gradient": [Colors.indigo.shade300, Colors.blue.shade900],
+    },
+  ];
+
+  final List<Map<String, String>> _quickPrayers = [
+    {"title": "Our Father", "duration": "2 min"},
+    {"title": "Hail Mary", "duration": "1 min"},
+    {"title": "Glory Be", "duration": "30 sec"},
+    {"title": "Guardian Angel", "duration": "1 min"},
+    {"title": "St. Michael", "duration": "2 min"},
+    {"title": "Angelus", "duration": "3 min"},
+    {"title": "Apostles' Creed", "duration": "2 min"},
+    {"title": "Act of Contrition", "duration": "1 min"},
+  ];
+
+  final List<Map<String, String>> _inspirationalQuotes = [
+    {
+      "quote": "The greatest act of faith is when a man understands he is not God.",
+      "author": "Oliver Wendell Holmes"
+    },
+    {
+      "quote": "Faith is to believe what you do not see; the reward of this faith is to see what you believe.",
+      "author": "Saint Augustine"
+    },
+    {
+      "quote": "Prayer is the raising of one's mind and heart to God.",
+      "author": "Saint John Damascene"
+    },
+    {
+      "quote": "The rosary is the most beautiful and the most rich in graces of all prayers.",
+      "author": "Pope Pius IX"
+    },
+  ];
+
+  final List<Map<String, dynamic>> _devotionalCategories = [
+    {
+      "title": "Liturgy of Hours",
+      "subtitle": "Daily Office",
+      "icon": Icons.access_time,
+      "color": Colors.indigo,
+      "count": "7 prayers"
+    },
+    {
+      "title": "Novenas",
+      "subtitle": "9-Day Prayers",
+      "icon": Icons.calendar_today,
+      "color": Colors.purple,
+      "count": "15 available"
+    },
+    {
+      "title": "Chaplets",
+      "subtitle": "Divine Mercy & More",
+      "icon": Icons.spa,
+      "color": Colors.pink,
+      "count": "8 chaplets"
+    },
+    {
+      "title": "Lectio Divina",
+      "subtitle": "Sacred Reading",
+      "icon": Icons.auto_stories,
+      "color": Colors.teal,
+      "count": "Daily guide"
+    },
+    {
+      "title": "Stations of the Cross",
+      "subtitle": "Way of the Cross",
+      "icon": Icons.add,
+      "color": Colors.brown,
+      "count": "14 stations"
+    },
+    {
+      "title": "Marian Prayers",
+      "subtitle": "Honoring Mary",
+      "icon": Icons.favorite,
+      "color": Colors.blue,
+      "count": "20+ prayers"
+    },
+  ];
+
+  final List<Map<String, dynamic>> _weeklyGoals = [
+    {
+      "title": "Daily Mass Attendance",
+      "progress": 0.4,
+      "current": 2,
+      "target": 5,
+      "icon": Icons.church,
+      "color": Colors.red
+    },
+    {
+      "title": "Rosary Completion",
+      "progress": 0.7,
+      "current": 5,
+      "target": 7,
+      "icon": Icons.brightness_1,
+      "color": Colors.blue
+    },
+    {
+      "title": "Scripture Reading",
+      "progress": 0.86,
+      "current": 6,
+      "target": 7,
+      "icon": Icons.menu_book,
+      "color": Colors.green
+    },
+    {
+      "title": "Acts of Charity",
+      "progress": 0.6,
+      "current": 3,
+      "target": 5,
+      "icon": Icons.volunteer_activism,
+      "color": Colors.orange
+    },
+  ];
+
+  final List<Map<String, String>> _upcomingFeasts = [
+    {"name": "Feast of St. Francis", "date": "Oct 4", "type": "Memorial"},
+    {"name": "Our Lady of Rosary", "date": "Oct 7", "type": "Memorial"},
+    {"name": "Feast of St. Teresa", "date": "Oct 15", "type": "Memorial"},
+    {"name": "All Saints Day", "date": "Nov 1", "type": "Solemnity"},
+  ];
+
+  final List<Map<String, dynamic>> _spiritualPractices = [
+    {
+      "title": "Eucharistic Adoration",
+      "subtitle": "Spend time with Jesus",
+      "duration": "30 min",
+      "icon": Icons.wb_sunny_outlined,
+      "color": Colors.amber
+    },
+    {
+      "title": "Examination of Conscience",
+      "subtitle": "Daily self-reflection",
+      "duration": "15 min",
+      "icon": Icons.psychology,
+      "color": Colors.indigo
+    },
+    {
+      "title": "Spiritual Reading",
+      "subtitle": "Saints & theology",
+      "duration": "20 min",
+      "icon": Icons.library_books,
+      "color": Colors.brown
+    },
+    {
+      "title": "Fasting & Abstinence",
+      "subtitle": "Sacrifice for God",
+      "duration": "All day",
+      "icon": Icons.no_meals,
+      "color": Colors.purple
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _headerAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _cardsAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _floatingAnimationController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+
+    _progressAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+
+    _pulseAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _headerSlideAnimation = Tween<double>(begin: -100.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _headerAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    _cardsFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _cardsAnimationController,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    _floatingAnimation = Tween<double>(begin: -10.0, end: 10.0).animate(
+      CurvedAnimation(
+        parent: _floatingAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _progressAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(
+        parent: _pulseAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _headerAnimationController.forward();
+    _cardsAnimationController.forward();
+    _floatingAnimationController.repeat(reverse: true);
+    _progressAnimationController.forward();
+    _pulseAnimationController.repeat(reverse: true);
+
+    _devotionalTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      setState(() {
+        _currentDevotionalIndex = (_currentDevotionalIndex + 1) % _devotionalContent.length;
+      });
+    });
+
+    _inspirationTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
+      setState(() {
+        _currentInspirationIndex = (_currentInspirationIndex + 1) % _inspirationalQuotes.length;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _headerAnimationController.dispose();
+    _cardsAnimationController.dispose();
+    _floatingAnimationController.dispose();
+    _progressAnimationController.dispose();
+    _pulseAnimationController.dispose();
+    _devotionalTimer?.cancel();
+    _inspirationTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(""),
-          backgroundColor: Colors.blue,
-          centerTitle: true,
+      appBar: const AppTopBar(
+        title: 'Daily Devotional',
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 25),
+            child: Icon(Icons.notifications),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Icon(Icons.settings),
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.blue.shade50,
+              Colors.purple.shade50,
+              Colors.pink.shade50,
+            ],
+          ),
         ),
-        //backgroundColor: Colors.pink,
-        body: SingleChildScrollView(
-            // padding: EdgeInsets.only(bottom: 500),
-            child: Column(children: [
-          // First Container
-          Container(
-            height: 270,
-            padding: const EdgeInsets.all(16),
-            color: Colors.blue,
-            child: Column(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          children: [
+            _buildWelcomeHeader(),
+            const SizedBox(height: 20),
+            _buildProgressCard(),
+            const SizedBox(height: 25),
+            _buildFeaturedDevotional(),
+            const SizedBox(height: 25),
+            _buildSectionHeader('Today\'s Schedule', 'Customize'),
+            const SizedBox(height: 12),
+            _buildDailySchedule(),
+            const SizedBox(height: 25),
+            _buildSectionHeader('Quick Prayers', 'View All'),
+            const SizedBox(height: 12),
+            _buildQuickPrayers(),
+            const SizedBox(height: 25),
+            _buildSectionHeader('Devotional Practices', 'Explore'),
+            const SizedBox(height: 12),
+            _buildDevotionalCategories(),
+            const SizedBox(height: 25),
+            _buildWeeklyGoals(),
+            const SizedBox(height: 25),
+            _buildSectionHeader('Spiritual Practices', 'Learn More'),
+            const SizedBox(height: 12),
+            _buildSpiritualPractices(),
+            const SizedBox(height: 25),
+            _buildInspirationalQuote(),
+            const SizedBox(height: 25),
+            _buildUpcomingFeasts(),
+            const SizedBox(height: 25),
+            _buildSpiritualGrowthTracker(),
+            const SizedBox(height: 25),
+            _buildPrayerIntentions(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWelcomeHeader() {
+    return AnimatedBuilder(
+      animation: _headerSlideAnimation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _headerSlideAnimation.value),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Top Row: Avatar and Texts
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 24),
-                        const CircleAvatar(
-                          radius: 22,
-                          backgroundColor: Colors.white,
-                          child:
-                              Icon(Icons.church, color: Colors.blue, size: 30),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "St Micheal's",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 0),
-                        Text(
-                          "Parish",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          "Daily Devotional",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 15,
-                          ),
-                        ),
-                        SizedBox(height: 0),
-                        Text(
-                          "Dashboard",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    // Right side: Current time texts at top right
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [
-                        SizedBox(height: 10),
-                        Text(
-                          "Current Time",
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "12:39:22",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "PM",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                // Glassmorphism Container at the bottom
-                Center(
-                  child: Container(
-                    width: 340,
-                    height: 120,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        // Left side texts
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Wednesday, September 3",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              "2025",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Oridinary Time - Week 32",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        // Right side texts with custom spacing
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: 13),
-                            const Text(
-                              "Liturgical",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
-                            ),
-                            const SizedBox(height: 2),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 18), // Move second text right
-                              child: const Text(
-                                "Color",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 13),
-                              ),
-                            ),
-                            const SizedBox(height: 3),
-                            Row(
-                              children: const [
-                                Icon(Icons.circle,
-                                    color: Colors.green, size: 10),
-                                SizedBox(width: 6),
-                                Text(
-                                  "Green",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ).asGlass(
-                    tintColor: Colors.white.withOpacity(0.3),
-                    clipBorderRadius: BorderRadius.circular(12),
-                    blurX: 20,
-                    blurY: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-// First Container
-          const SizedBox(height: 20),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 18), // space at the ends
-            child: Container(
-              height: 90,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.07),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Left side: Location icon and texts
-                  Row(
-                    children: [
-                      const SizedBox(width: 16),
-                      const Icon(Icons.location_on,
-                          color: Colors.red, size: 25),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Chicago, IL",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "Archdiocese of Chicago",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  // Right side: Sun icon and texts
-                  Row(
-                    children: [
-                      const Icon(Icons.wb_sunny,
-                          color: Colors.orange, size: 25),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            " 72\u00B0F",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "Sunny",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 16),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-// Second Container
-          SizedBox(height: 30),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 18), // Space outside container (ends)
-            child: Container(
-              height: 320,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.07),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              // Reduce horizontal padding inside the container for more space for the 3 vertical containers
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Centered Calendar icon and texts
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 18,
-                        left: 32,
-                        right: 8), // Reduce left/right padding
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.calendar_today,
-                            color: Colors.blue, size: 28),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Today's Mass Schedule",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 0),
-                            Text(
-                              "St. Micheal`s Catholic Church",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10), // Reduce vertical space
-                  // Middle: 3 vertical containers with centered text
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 2), // Reduce horizontal padding inside
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // First vertical container
-                        Container(
-                          height: 125,
-                          width: 88, // Slightly wider for better fit
-                          decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 4), // Reduce inner padding
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("6:30",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("AM",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Daily Mass",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Fr.",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Martinez",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 15), // Less space between containers
-                        // Second vertical container
-                        Container(
-                          height: 125,
-                          width: 88,
-                          decoration: BoxDecoration(
-                            color: Colors.green[50],
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 4),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("12:00",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("PM",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Noon",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Mass",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Fr.",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("O Connor",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        // Third vertical container
-                        Container(
-                          height: 125,
-                          width: 88,
-                          decoration: BoxDecoration(
-                            color: Colors.purple[50],
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 4),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("6:00",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("PM",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Evening",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Mass",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Fr",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Johnson",
-                                  style: TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  // Bottom: Note and schedule in a container
-                  Center(
-                    child: Container(
-                      width: 294,
-                      height: 70,
-                      margin: const EdgeInsets.symmetric(horizontal: 6),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.info_rounded,
-                              color: Colors.redAccent, size: 20),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "Confession available 30 minutes",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 0),
-                              Text(
-                                "before each Mass",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-// Third Container
-          const SizedBox(height: 30),
-
-          // 🔹 Main Container
-          Container(
-              height: 760,
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 16), // space from screen edges
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // 🔹 Image with content overlay
-                  Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(16)),
-                      image: DecorationImage(
-                        image: AssetImage(
-                            "assets/images/Image_fx (1).jpg"), // your image
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(16)),
-                        color: Colors.black
-                            .withOpacity(0.5), // dark overlay for readability
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Row: Daily Scripture + Day
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Move Daily Scripture down and right
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10, left: 5),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.menu_book,
-                                          color: Colors.white),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        "Daily Scripture",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Move Day 287 down and left
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 12, right: 5),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.brown.shade700,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Text(
-                                      "Day 287",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const Spacer(),
-
-                            // Bottom Row: Verse + Progress
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Move Jeremiah and Old Testament up and right
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10, left: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Jeremiah 29:11",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Old Testament • Prophet",
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Progress: Add text above 87%, move left and up
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 0, right: 5, bottom: 10),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Reading Progress",
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        "87%",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  // ...existing code...
-
-                  const SizedBox(height: 16),
-
-                  // 🔹 4-line Quote Text
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      "“For I know the plans I have for you,\n  "
-                      "declares the Lord, plans for welfare\n "
-                      "and not for evil, to give you a future\n and a hope.”",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue.shade700,
-                        fontStyle: FontStyle.italic,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, left: 16.0, right: 16.0),
-                    child: Text(
-                      "- Jeremiah 29:11",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue.shade600,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // 🔹 Bulb Container
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 26),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.lightbulb, color: Colors.amber.shade700),
-                            const SizedBox(width: 5),
-                            Text(
-                              "Context",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "This verse was spoken to the isrealites\n"
-                          "during their exile in babylon, offering\n"
-                          "hope during a dark period of their\n"
-                          "history.",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 16), // Reduce vertical space
-                  // Middle: 3 vertical containers with centered text
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 2), // Reduce horizontal padding inside
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // First vertical container
-                        Container(
-                          height: 75,
-                          width: 88, // Slightly wider for better fit
-                          decoration: BoxDecoration(
-                            color: Colors.green[50],
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 4), // Reduce inner padding
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("6",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("This Week",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.green),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 20), // Less space between containers
-                        // Second vertical container
-                        Container(
-                          height: 75,
-                          width: 88,
-                          decoration: BoxDecoration(
-                            color: Colors.white54,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 4),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("23",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.deepPurple),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Day Streak",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.deepPurple),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        // Third vertical container
-                        Container(
-                          height: 75,
-                          width: 88,
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent[50],
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 4),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Text("98%",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red),
-                                  textAlign: TextAlign.center),
-                              SizedBox(height: 2),
-                              Text("Year Goal",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.red),
-                                  textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 19),
-                  // Bottom: Note and schedule in a container
-                  Center(
-                    child: Container(
-                      width: 306,
-                      height: 55,
-                      margin: const EdgeInsets.symmetric(horizontal: 6),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center, // center all items
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.book,
-                              color: Colors.white, size: 22), // book icon
-                          SizedBox(width: 8),
-                          Text(
-                            "Read Full Reflection",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(Icons.keyboard_arrow_down,
-                              color: Colors.white, size: 22), // arrow
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 25),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center, // center containers
-                        children: [
-                          // Save Container
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 11),
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(77, 233, 228, 228),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.bookmark_border,
-                                    size: 20, color: Colors.black),
-                                SizedBox(width: 4),
-                                Text("Save",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                          //  SizedBox(width: 12),
-
-                          // Share Container
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 11),
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(77, 233, 228, 228),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.share,
-                                    size: 20, color: Colors.black),
-                                SizedBox(width: 4),
-                                Text("Share",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 12),
-
-                          // Discuss Container
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 11),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.chat_bubble_outline,
-                                    size: 20, color: Colors.blue),
-                                SizedBox(width: 4),
-                                Text("Discuss",
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-
-// Fourth Container
-          SizedBox(height: 20), // Your SizedBox before the container
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
-              height: 740,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Stack(
-                children: [
-                  // Main content
-                  Column(
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // --- Top Row: Image + Texts ---
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Profile Image
-                          Container(
-                            width: 83,
-                            height: 85,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13),
-                              image: const DecorationImage(
-                                image: AssetImage("assets/images/teresa.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-
-                          // Saint texts
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Saint Teresa of\nAvila",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 6),
-                                Text(
-                                  "Doctor of the Church, Mystic,\nReformer",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                                SizedBox(height: 6),
-                                Text(
-                                  "Feast Day: October   (1515-\n15                          1582)",
-                                  style: TextStyle(fontSize: 10),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // --- Daily Inspiration Section ---
-                      Container(
-                        height: 140,
-                        width: double.infinity,
-                        //margin: EdgeInsets.symmetric(horizontal: 20),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 236, 195, 195),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Daily Inspiration",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "\"Let nothing disturb you, All things pass.\nGod does not change. Patience obtains\nall things. Whoever has God lacks\nnothing: God alone suffices.\"",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 241, 78, 70)),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // --- Patron Saint Section ---
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: 220,
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Header with Icon + Text
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Icon(Icons.star,
-                                      size: 20, color: Colors.orange),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    "Patron Saint of:",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-
-                              // First Row of Tags (Sick People + New Tag)
-                              Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade100,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: const Text(
-                                      "Spain",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.teal.shade100,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: const Text(
-                                      "Writers",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Second Row of Tags (Religious Orders)
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade100,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Text(
-                                  "Headache Sufferers",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 0),
-                              // Third Row of Tags (Spain)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.purple.shade100,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Text(
-                                  "People in Religious Orders",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 7),
-                              // Third Row of Tags (Spain)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.purple.shade100,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Text(
-                                  "Sick People",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 19),
-                      // Bottom: Note and schedule in a container
-                      Center(
-                        child: Container(
-                          width: 306,
-                          height: 55,
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.pink,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center, // center all items
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.person,
-                                  color: Colors.white, size: 22), // book icon
-                              SizedBox(width: 8),
-                              Text(
-                                "Read Full Biography",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(Icons.keyboard_arrow_down,
-                                  color: Colors.white, size: 22), // arrow
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 25),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center, // center containers
-                            children: [
-                              // Save Container
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 9),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: const [
-                                    FaIcon(FontAwesomeIcons.calendar,
-                                        size: 20, color: Colors.black),
-                                    SizedBox(width: 4),
-                                    Text("Set\nReminder",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16)),
-                                  ],
-                                ),
-                              ),
-                              //  SizedBox(width: 12),
-
-                              // Share Container
-                              Container(
-                                height: 65,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 9),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade50,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.share,
-                                        size: 20, color: Colors.blue),
-                                    SizedBox(width: 4),
-                                    Text("Share",
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 12),
-
-                              // Discuss Container
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 9),
-                                decoration: BoxDecoration(
-                                  color: Colors.purple.shade50,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.bookOpen,
-                                        size: 20, color: Colors.purple),
-                                    SizedBox(width: 4),
-                                    Text("Learn\nMore",
-                                        style: TextStyle(
-                                            color: Colors.purple,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // 👉 Add your next container here
-                      // Example:
-                      // Container(
-                      //   margin: const EdgeInsets.only(top: 16),
-                      //   padding: const EdgeInsets.all(12),
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.white,
-                      //     borderRadius: BorderRadius.circular(12),
-                      //   ),
-                      //   child: const Text("Another Section Here"),
-                      // ),
-                    ],
-                  ),
-
-                  // --- Love icon back to top-right ---
-                  Positioned(
-                    top: 15,
-                    right: 25,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.favorite,
-                          color: Colors.red, size: 22),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-// Fifth Container
-          const SizedBox(height: 30),
-
-          // 🔹 Main Container
-          Container(
-            height: 820,
-            margin: const EdgeInsets.symmetric(
-                horizontal: 16), // space from screen edges
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(children: [
-              // 🔹 Image with content overlay
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(16)),
-                  image: DecorationImage(
-                    image: AssetImage(
-                        "assets/images/Image_fx (1).jpg"), // your image
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(16)),
-                    color: Colors.black
-                        .withOpacity(0.5), // dark overlay for readability
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Row: Daily Scripture + Day
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Move Daily Scripture down and right
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10, left: 5),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.timer, color: Colors.white),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    "Prayer Timer",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Move Day 287 down and left
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12, right: 5),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.brown.shade700,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Text(
-                                  "General Prayer",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const Spacer(),
-
-                        // Bottom Row: Verse + Progress
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Move Jeremiah and Old Testament up and right
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Today`s progress",
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  Text(
-                                    "47 minutes",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Progress: Add text above 87%, move left and up
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 0, right: 5, bottom: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "Sessions",
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    "3",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // ...existing code...
-
-              const SizedBox(height: 30),
-
-// 🔹 Weekly Goal Progress Container
-              Container(
-                width: 310,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Weekly Goal Progress",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                              fontSize: 15),
-                        ),
-                        Text(
-                          "90%",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                              fontSize: 15),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    LinearProgressIndicator(
-                      value: 0.9,
-                      color: Colors.green.shade700,
-                      backgroundColor: Colors.green.shade200,
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("180 minutes",
-                            style:
-                                TextStyle(color: Colors.green, fontSize: 13)),
-                        Text("210 minutes goal",
-                            style:
-                                TextStyle(color: Colors.green, fontSize: 13)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-// 🔹 Timer Circle Container
-              Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.blue.shade700, width: 8),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
                       Text(
-                        "15:00",
+                        "Welcome Back!",
                         style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 0),
-                      Text(
-                        "15 min session",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        "General Prayer",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 19),
-
-// 🔹 Start Prayer & Reset Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 23, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(19),
-                      ),
-                    ),
-                    child: Text("Start Prayer",
-                        style: TextStyle(fontSize: 15, color: Colors.white)),
-                  ),
-                  const SizedBox(width: 16),
-                  // Reset container
-                  GestureDetector(
-                    onTap: () {
-                      // Add your reset logic here
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 23, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade50, // background color
-                        borderRadius: BorderRadius.circular(19),
-                        //border: Border.all(color: Colors.red), // optional border
-                      ),
-                      child: Text(
-                        "Reset",
-                        style: TextStyle(
-                          color: Colors.blue,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
+                          foreground: Paint()
+                            ..shader = LinearGradient(
+                              colors: [Colors.blue.shade700, Colors.purple.shade700],
+                            ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Continue your spiritual journey",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-
-              const SizedBox(height: 16), // Reduce vertical space
-              // Middle: 3 vertical containers with centered text
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 2), // Reduce horizontal padding inside
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // First vertical container
-                    Container(
-                      height: 75,
-                      width: 88, // Slightly wider for better fit
-                      decoration: BoxDecoration(
-                        color: Colors.green[50],
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 4), // Reduce inner padding
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Text("47m",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                              textAlign: TextAlign.center),
-                          SizedBox(height: 2),
-                          Text("Today",
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.green),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 20), // Less space between containers
-                    // Second vertical container
-                    Container(
-                      height: 75,
-                      width: 88,
-                      decoration: BoxDecoration(
-                        color: Colors.white54,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Text("20m",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple),
-                              textAlign: TextAlign.center),
-                          SizedBox(height: 2),
-                          Text("Longest",
-                              style: TextStyle(
-                                  fontSize: 13, color: Colors.deepPurple),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    // Third vertical container
-                    Container(
-                      height: 75,
-                      width: 88,
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent[50],
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Text("23",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red),
-                              textAlign: TextAlign.center),
-                          SizedBox(height: 2),
-                          Text("Day Streak",
-                              style: TextStyle(fontSize: 13, color: Colors.red),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-// 🔹 Settings & History Containers
-              Container(
-                width: 310,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue), // optional border
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        FaIcon(FontAwesomeIcons.slideshare,
-                            size: 20, color: Colors.blue),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Timer Settings",
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.keyboard_arrow_down, color: Colors.blue),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              Container(
-                width: 310,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: Colors.purpleAccent), // optional border
-
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.timer, size: 20, color: Colors.purpleAccent),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Prayer History",
-                          style: TextStyle(color: Colors.purpleAccent),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.keyboard_arrow_down, color: Colors.purpleAccent),
-                  ],
-                ),
-              ),
-            ]),
+                _buildStreakBadge(),
+              ],
+            ),
           ),
+        );
+      },
+    );
+  }
 
-// Sixed  Container
-          const SizedBox(height: 30),
+  Widget _buildSectionHeader(String title, String actionText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.blue,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Text(
+              actionText,
+              style: const TextStyle(
+                color: Colors.blue,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-          // 🔹 Main Container
-          Container(
-            height: 1600,
-            margin: const EdgeInsets.symmetric(
-                horizontal: 16), // space from screen edges
+  Widget _buildStreakBadge() {
+    return AnimatedBuilder(
+      animation: _floatingAnimationController,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _floatingAnimation.value / 2),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                colors: [Colors.amber.shade400, Colors.orange.shade500],
+              ),
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 3),
+                  color: Colors.orange.withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
-            child: Column(children: [
-              // 🔹 Image with content overlay
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(16)),
-                  image: DecorationImage(
-                    image: AssetImage(
-                        "assets/images/Image_fx (1).jpg"), // your image
-                    fit: BoxFit.cover,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.local_fire_department, color: Colors.white, size: 20),
+                const SizedBox(width: 6),
+                Text(
+                  "$_streakDays Days",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(16)),
-                    color: Colors.black
-                        .withOpacity(0.5), // dark overlay for readability
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Stack(
-                      children: [
-                        // 🔹 Existing Column (everything stays the same)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Top Row
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Daily Scripture
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10, left: 5),
-                                  child: Row(
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.trophy,
-                                          color: Colors.white),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        "Spiritual Progress",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Day/General Prayer
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 12, right: 5),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.brown.shade700,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Text(
-                                      "Level 7",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const Spacer(),
-
-                            // Bottom Row: Verse + Progress
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10, left: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Overall progress",
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "70%",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 0, right: 5, bottom: 8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Achievements",
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        "3",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        // 🔹 New Bottom Center Texts
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 10, left: 21), // adjust if needed
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "Current Streak",
-                                    style: TextStyle(
-                                        color: Colors.white70,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "12 days",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40), // existing SizedBox
-
-// 🔹 Wrap in DefaultTabController
-              DefaultTabController(
-                length: 3,
-                child: Column(
-                  children: [
-                    // 🔹 Styled TabBar
-                    Container(
-                      width: 310,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 6), // space around tabs
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: TabBar(
-                        indicator: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        indicatorSize: TabBarIndicatorSize
-                            .tab, // indicator matches tab size
-                        indicatorColor:
-                            Colors.transparent, // ✅ removes the underline
-                        labelColor: Colors.blue,
-                        unselectedLabelColor: Colors.grey,
-                        tabs: [
-                          Container(
-                            width: 100,
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: const Text("Daily",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Container(
-                            width: 100,
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: const Text("Weekly",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Container(
-                            width: 100,
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: const Text("Monthly",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Center(
-                                      // ✅ Center the FaIcon
-                                      child: FaIcon(
-                                        FontAwesomeIcons.handHoldingHeart,
-                                        color: Colors.white,
-                                        size:
-                                            20, // optional: control the icon size
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Prayer Time",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "47 of 60 minutes",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "78%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "12 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.8,
-                            color: Colors.blue.shade700,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 23 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "13 minutes remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 228, 208, 208),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.purple,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Center(
-                                      // ✅ Center the FaIcon
-                                      child: FaIcon(
-                                        FontAwesomeIcons.bookOpen,
-                                        color: Colors.white,
-                                        size:
-                                            20, // optional: control the icon size
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Scripture Reading",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "6 of 7 days",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "86%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.purple,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "6 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.9,
-                            color: Colors.purple.shade700,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 28 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "1 days remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Center(
-                                      // ✅ Center the FaIcon
-                                      child: FaIcon(
-                                        FontAwesomeIcons.slideshare,
-                                        color: Colors.white,
-                                        size:
-                                            20, // optional: control the icon size
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Rosary Prayers",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "4 of 7 rosaries",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "57%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "4 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.5,
-                            color: Colors.red,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 15 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "3 rosaries remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    // child: Center( // ✅ Center the FaIcon
-                                    //   child: FaIcon(
-                                    //     FontAwesomeIcons.bookOpen,
-                                    //     color: Colors.white,
-                                    //     size: 20, // optional: control the icon size
-                                    //   ),
-                                    // ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Mass Attendance",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "2 of 3 times",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "67%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "12 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.6,
-                            color: Colors.green.shade700,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 8 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "1 times remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.yellow.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    // child: Center( // ✅ Center the FaIcon
-                                    //   child: FaIcon(
-                                    //     FontAwesomeIcons.bookOpen,
-                                    //     color: Colors.white,
-                                    //     size: 20, // optional: control the icon size
-                                    //   ),
-                                    // ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Meditation",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "3 of 5 sessions",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "60%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.yellow,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "12 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.5,
-                            color: Colors.yellow.shade700,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 12 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "2 sessions remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-// 🔹 Weekly Goal Progress Container
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Top Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // 🔹 Icon + Left Side Texts
-                              Row(
-                                children: [
-                                  // Small Icon Container
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.orangeAccent,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Center(
-                                      // ✅ Center the FaIcon
-                                      child: FaIcon(
-                                        FontAwesomeIcons.heart,
-                                        color: Colors.white,
-                                        size:
-                                            20, // optional: control the icon size
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  // Left side 2 lines text
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Acts of Charity",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        "5 of 7 acts",
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              // 🔹 Right side 2 lines text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text(
-                                    "71%",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.orangeAccent,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    "5 day streak",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // 🔹 Linear Progress Bar
-                          LinearProgressIndicator(
-                            value: 0.6,
-                            color: Colors.orangeAccent.shade700,
-                            backgroundColor: Colors.white70,
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // 🔹 Bottom Row Texts
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "Best streak: 10 days",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                              Text(
-                                "2 acts remaining",
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-
-                    Container(
-                      width: 310,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 16),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 240, 198, 198),
-                        borderRadius: BorderRadius.circular(12),
-                        border:
-                            Border.all(color: Colors.red), // optional border
-
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.timer, size: 20, color: Colors.red),
-                              const SizedBox(width: 13),
-                              Text(
-                                "Achievements & Badges",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.keyboard_arrow_down, color: Colors.red),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 40),
-// 🔹 Main Container
-                    Container(
-                      width: 310,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 🔹 Title Row
-                          Row(
-                            children: const [
-                              FaIcon(FontAwesomeIcons.lightbulb,
-                                  color: Colors.black, size: 16),
-                              SizedBox(width: 8),
-                              Text(
-                                "Weekly Insights",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          // 🔹 Great Improvement Container
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.arrow_upward,
-                                    color: Colors.green, size: 20),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Great improvement!",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        "Your prayer time increased by 23% this week",
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // 🔹 Almost There Container
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // const Icon(Icons.flag_outlined, color: Colors.orange, size: 20),
-                                const SizedBox(width: 5),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Almost there!",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        "You're 2 sessions away from your weekly goal",
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // 🔹 Consistency Key Container
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.event_note,
-                                    color: Colors.purple, size: 20),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Consistency key",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        "Try to attend one more Mass this week",
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ]),
+              ],
+            ),
           ),
+        );
+      },
+    );
+  }
 
-          SizedBox(height: 30),
-// 🔹 Main Container
-          Container(
-            width: 366,
-            padding: const EdgeInsets.all(16),
+  Widget _buildProgressCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: AnimatedBuilder(
+        animation: _progressAnimation,
+        builder: (context, child) {
+          return Container(
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                colors: [Colors.blue.shade400, Colors.purple.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 3),
+                  color: Colors.blue.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
                 ),
               ],
             ),
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // 🔹 Center the child containers
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🔹 Title Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin:
-                              const EdgeInsets.only(left: 13), // 🔹 push right
-                          padding: const EdgeInsets.all(8),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.favorite_border,
-                              color: Colors.white, size: 18),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          "Prayer\nIntentions",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
+                    const Text(
+                      "Today's Progress",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 19), // 🔹 move "Add Intention" left
-                      child: const Text(
-                        "Add\nIntention",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      "${(_todayProgress * _progressAnimation.value).toInt()}%",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // 🔹 Intention 1
-                Container(
-                  width: 310,
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "For world peace and unity",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Requested by Maria Santos • 3 days\n ago",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 35), // 🔹 move icon slightly down
-                        child: Row(
-                          children: const [
-                            Icon(Icons.favorite, color: Colors.blue, size: 16),
-                            SizedBox(width: 4),
-                            Text("247"),
-                          ],
-                        ),
-                      )
-                    ],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: LinearProgressIndicator(
+                    value: (_todayProgress / 100) * _progressAnimation.value,
+                    backgroundColor: Colors.white.withOpacity(0.3),
+                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                    minHeight: 12,
                   ),
                 ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildProgressStat("Prayers", "3/4", Icons.favorite),
+                    _buildProgressStat("Reading", "15 min", Icons.menu_book),
+                    _buildProgressStat("Reflection", "Done", Icons.check_circle),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-                // 🔹 Intention 2
+  Widget _buildProgressStat(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Icon(icon, color: Colors.white.withOpacity(0.9), size: 22),
+        const SizedBox(height: 6),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: 11,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeaturedDevotional() {
+    final current = _devotionalContent[_currentDevotionalIndex];
+    
+    return AnimatedBuilder(
+      animation: _cardsFadeAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _cardsFadeAnimation.value,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: current["gradient"] as List<Color>,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (current["color"] as Color).withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(
+                            current["icon"] as IconData,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                current["title"] as String,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(Icons.access_time, 
+                                    color: Colors.white.withOpacity(0.9), 
+                                    size: 16
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    "${current["time"]} • ${current["duration"]}",
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      current["description"] as String,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.95),
+                        fontSize: 15,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: current["color"] as Color,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: const Text(
+                              "Start Now",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.bookmark_border, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDailySchedule() {
+    return SizedBox(
+      height: 180,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _devotionalContent.length,
+        itemBuilder: (context, index) {
+          final item = _devotionalContent[index];
+          return _buildScheduleCard(item, index);
+        },
+      ),
+    );
+  }
+
+  Widget _buildScheduleCard(Map<String, dynamic> item, int index) {
+    return Container(
+      width: 160,
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Container(
-                  width: 310,
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: (item["color"] as Color).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    item["icon"] as IconData,
+                    color: item["color"] as Color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  item["title"] as String,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 14,
+                      color: Colors.grey.shade600,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      item["time"] as String,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    item["duration"] as String,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.green.shade700,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (index % 2 == 0)
+            Positioned(
+              top: 12,
+              right: 12,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade400,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 14,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickPrayers() {
+    return SizedBox(
+      height: 80,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _quickPrayers.length,
+        itemBuilder: (context, index) {
+          return _buildQuickPrayerChip(_quickPrayers[index]);
+        },
+      ),
+    );
+  }
+
+  Widget _buildQuickPrayerChip(Map<String, String> prayer) {
+    return Container(
+      margin: const EdgeInsets.only(right: 12),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.blue.shade700,
+          elevation: 4,
+          shadowColor: Colors.blue.withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              prayer["title"]!,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              prayer["duration"]!,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDevotionalCategories() {
+    return SizedBox(
+      height: 140,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _devotionalCategories.length,
+        itemBuilder: (context, index) {
+          final category = _devotionalCategories[index];
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 140,
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: (category["color"] as Color).withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: (category["color"] as Color).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      category["icon"] as IconData,
+                      color: category["color"] as Color,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    category["title"] as String,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Spacer(),
+                  Text(
+                    category["count"] as String,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWeeklyGoals() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Weekly Goals",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.green.shade50,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Healing for my grandmother",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Requested by John Mitchell • 1 week \nago",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 35), // 🔹 adjust position
-                        child: Row(
-                          children: const [
-                            Icon(Icons.favorite, color: Colors.green, size: 16),
-                            SizedBox(width: 4),
-                            Text("156"),
-                          ],
-                        ),
-                      )
-                    ],
+                  child: Text(
+                    "5 Days Left",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.green.shade700,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            ..._weeklyGoals.map((goal) => _buildGoalItem(goal)).toList(),
+          ],
+        ),
+      ),
+    );
+  }
 
-                // 🔹 Intention 3
+  Widget _buildGoalItem(Map<String, dynamic> goal) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: (goal["color"] as Color).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  goal["icon"] as IconData,
+                  color: goal["color"] as Color,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      goal["title"] as String,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "${goal["current"]}/${goal["target"]} completed",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                "${(goal["progress"] as double).toInt()}%",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: goal["color"] as Color,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: goal["progress"] as double,
+              backgroundColor: Colors.grey.shade200,
+              valueColor: AlwaysStoppedAnimation<Color>(goal["color"] as Color),
+              minHeight: 8,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSpiritualPractices() {
+    return SizedBox(
+      height: 160,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: _spiritualPractices.length,
+        itemBuilder: (context, index) {
+          final practice = _spiritualPractices[index];
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 180,
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    (practice["color"] as Color).withOpacity(0.7),
+                    (practice["color"] as Color),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: (practice["color"] as Color).withOpacity(0.3),
+                    blurRadius: 15,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    practice["icon"] as IconData,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    practice["title"] as String,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    practice["subtitle"] as String,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.schedule,
+                        color: Colors.white.withOpacity(0.9),
+                        size: 14,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        practice["duration"] as String,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildInspirationalQuote() {
+    return AnimatedBuilder(
+      animation: _pulseAnimation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _pulseAnimation.value,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.amber.shade200, Colors.orange.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange.withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.format_quote,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        "Inspirational Quote",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _inspirationalQuotes[_currentInspirationIndex]["quote"]!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      "— ${_inspirationalQuotes[_currentInspirationIndex]["author"]}",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.9),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildUpcomingFeasts() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.red.shade300, Colors.pink.shade400],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.red.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.celebration, color: Colors.white, size: 28),
+                const SizedBox(width: 12),
+                const Text(
+                  "Upcoming Feast Days",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ..._upcomingFeasts.map((feast) => _buildFeastItem(feast)).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeastItem(Map<String, String> feast) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(
+              Icons.calendar_today,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  feast["name"]!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  feast["type"]!,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            feast["date"]!,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSpiritualGrowthTracker() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.teal.shade300, Colors.cyan.shade400],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.teal.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.trending_up, color: Colors.white, size: 28),
+                const SizedBox(width: 12),
+                const Text(
+                  "Spiritual Growth",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildGrowthMetric("Prayer Time", "45 min", "↑ 15% this week", Icons.timelapse),
+            const SizedBox(height: 12),
+            _buildGrowthMetric("Bible Chapters", "12", "↑ 3 from last week", Icons.book),
+            const SizedBox(height: 12),
+            _buildGrowthMetric("Consistency", "12 Days", "Keep going!", Icons.emoji_events),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGrowthMetric(String label, String value, String change, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 13,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            change,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.9),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPrayerIntentions() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple.shade300, Colors.purple.shade500],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.purple.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.volunteer_activism, color: Colors.white, size: 28),
+                    const SizedBox(width: 12),
+                    const Text(
+                      "Prayer Intentions",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
-                  width: 310,
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.purple.shade50,
+                    color: Colors.white.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "For all healthcare workers",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Requested by Parish Community • 2 \nweeks ago",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 35), // 🔹 tweak position
-                        child: Row(
-                          children: const [
-                            Icon(Icons.favorite,
-                                color: Colors.purple, size: 16),
-                            SizedBox(width: 4),
-                            Text("89"),
-                          ],
-                        ),
-                      )
-                    ],
+                  child: const Text(
+                    "247 Active",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-
-          SizedBox(height: 30),
-// 🔹 Main Container
-          Container(
-            width: 366,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 3),
+            const SizedBox(height: 16),
+            Text(
+              "Join thousands of faithful in prayer. Share your intentions and pray for others in our community.",
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.95),
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add, size: 18),
+                    label: const Text("Add Intention"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.purple.shade700,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite, size: 18),
+                    label: const Text("Pray for Others"),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.white, width: 2),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // 🔹 Center the child containers
-                children: [
-                  // 🔹 Title Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                                left: 13), // 🔹 push right
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              color: Colors.purple,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              // ✅ Center the FaIcon
-                              child: FaIcon(
-                                FontAwesomeIcons.userFriends,
-                                color: Colors.white,
-                                size: 16, // optional: control the icon size
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            "Community Activities",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(right: 19), // 🔹 move "Add Intention" left
-                      //   child: const Text(
-                      //     "Add\nIntention",
-                      //     textAlign: TextAlign.right,
-                      //     style: TextStyle(
-                      //       color: Colors.pink,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  const SizedBox(height: 16),
-
-// 🔹 Intention 1
-                  Container(
-                    width: 310,
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // 🔹 Icon + Texts
-                        Row(
-                          children: [
-                            Container(
-                              width: 33,
-                              height: 33,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: Center(
-                                // ✅ Center the FaIcon
-                                child: FaIcon(
-                                  FontAwesomeIcons.bookOpen,
-                                  color: Colors.white,
-                                  size: 16, // optional: control the icon size
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Bible Study Group",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 0),
-                                Text(
-                                  "Wednessdaays 7:00 PM. Parish\nHall",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        // 🔹 Right-side container with text
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Text(
-                            "join",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-// 🔹 Intention 2
-                  Container(
-                    width: 310,
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // 🔹 Icon + Texts
-                        Row(
-                          children: [
-                            Container(
-                              width: 33,
-                              height: 33,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: Center(
-                                // ✅ Center the FaIcon
-                                child: FaIcon(
-                                  FontAwesomeIcons.handHoldingHeart,
-                                  color: Colors.white,
-                                  size: 16, // optional: control the icon size
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Charity Drive",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 0),
-                                Text(
-                                  "Food Collection . Ends\nSunday",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        // 🔹 Right-side container with text
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Text(
-                            "Donate",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-// 🔹 Intention 3
-                  Container(
-                    width: 310,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.purple.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // 🔹 Icon + Texts
-                        Row(
-                          children: [
-                            Container(
-                              width: 33,
-                              height: 33,
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: const Icon(Icons.music_note,
-                                  color: Colors.white, size: 16),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Youth Choir Practice",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 0),
-                                Text(
-                                  "Saturdays 10:00 AM . Church",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        // 🔹 Right-side container with text
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.purple,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Text(
-                            "Info",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-          ),
-        ])));
+          ],
+        ),
+      ),
+    );
   }
 }
+
+
+
+
+// import 'package:faith_plus/common/constants.dart';
+// import 'package:flutter/material.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:glass/glass.dart';
+
 
 // class DevotionalsScreen extends StatelessWidget {
 //   const DevotionalsScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:church_app/common/constants.dart';
+import 'package:faith_plus/common/constants.dart';
 
 class SpiritualResourceDetailScreen extends StatefulWidget {
   final String resourceTitle;

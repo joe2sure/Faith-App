@@ -1,5 +1,6 @@
+import 'package:faith_plus/common/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:church_app/common/constants.dart';
+// import 'package:church_app/common/constants.dart';
 
 class DailyChallengeScreen extends StatefulWidget {
   final String? challengeTitle;
