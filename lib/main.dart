@@ -1,6 +1,6 @@
 import 'package:faith_plus/screens/dashboards/dashboard.dart';
 import 'package:faith_plus/screens/dashboards/devotional.dart';
-import 'package:faith_plus/screens/dashboards/games.dart';
+import 'package:faith_plus/screens/dashboards/fun_zone.dart';
 import 'package:faith_plus/screens/dashboards/profile.dart';
 import 'package:flutter/material.dart';
 
