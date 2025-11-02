@@ -1,9 +1,72 @@
+import 'dart:async';
+
 import 'package:faith_plus/common/constants.dart';
 import 'package:flutter/material.dart';
 
-class FunZoneScreen extends StatelessWidget {
+class FunZoneScreen extends StatefulWidget {
   const FunZoneScreen({super.key});
-  
+
+  @override
+  State<FunZoneScreen> createState() => _FunZoneScreenState();
+}
+
+class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMixin  {
+  late AnimationController _headerAnimationController;
+  late AnimationController _floatingAnimationController;
+
+ 
+  late Animation<double> _headerSlideAnimation;
+  late Animation<double> _floatingAnimation;
+
+  int _streakDays = 12;
+
+  // Harmonious color palette - Soft, calming religious theme
+  final Color _deepPurple = const Color(0xFF6B5B95);
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Header slide-in animation controller
+    _headerAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    // Floating badge animation controller
+    _floatingAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true); // Repeats up/down float
+
+    // Header slide: from -100 to 0 (slides down from above)
+    _headerSlideAnimation = Tween<double>(begin: -100, end: 0).animate(
+      CurvedAnimation(
+        parent: _headerAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    // Floating animation: subtle up/down movement
+    _floatingAnimation = Tween<double>(begin: -10, end: 10).animate(
+      CurvedAnimation(
+        parent: _floatingAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Start header animation
+    _headerAnimationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _headerAnimationController.dispose();
+    _floatingAnimationController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +82,10 @@ class FunZoneScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
-        children: const [
+        children:  [
           SizedBox(height: 8),
+          _buildWelcomeHeader(),
+          const SizedBox(height: 20),
           _UserProfileBanner(),
           SizedBox(height: 20),
           _SectionTitle(title: 'Featured for you'),
@@ -41,6 +106,75 @@ class FunZoneScreen extends StatelessWidget {
           _CollectionsGrid(),
         ],
       ),
+    );
+  }
+
+    Widget _buildWelcomeHeader() {
+    return AnimatedBuilder(
+      animation: _headerSlideAnimation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _headerSlideAnimation.value),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Welcome Back!",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: _deepPurple,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Continue your spiritual journey",
+                        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
+                ),
+                _buildStreakBadge(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStreakBadge() {
+    return AnimatedBuilder(
+      animation: _floatingAnimationController,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _floatingAnimation.value / 2),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [const Color(0xFFFF6B35), const Color(0xFFFF8C42)]),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(color: const Color(0xFFFF6B35).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.local_fire_department, color: Colors.white, size: 20),
+                const SizedBox(width: 6),
+                Text("$_streakDays Days", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
