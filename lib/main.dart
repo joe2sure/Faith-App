@@ -53,7 +53,7 @@ class _RootShellState extends State<RootShell> {
           ),
           NavigationDestination(
             icon: Icon(Icons.menu_book_outlined),
-            label: 'Devotionals',
+            label: 'Devotions',
           ),
           NavigationDestination(
             icon: Icon(Icons.videogame_asset_outlined),
