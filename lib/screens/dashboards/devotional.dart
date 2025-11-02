@@ -4,6 +4,13 @@ import 'dart:async';
 
 import '../features/devotionals/challenges/challenge_detail_screen.dart';
 import '../features/devotionals/challenges/challenge_view_all_screen.dart';
+import '../features/devotionals/practices/devotional_practice_detail_screen.dart';
+import '../features/devotionals/practices/devotional_practice_explore_screen.dart';
+import '../features/devotionals/prayers/prayers_detail_sreen.dart';
+import '../features/devotionals/prayers/prayers_view_all_screen.dart';
+import '../features/devotionals/today_scripture/customize_scripture_screen.dart';
+import '../features/devotionals/today_scripture/scripture_detail_screen.dart';
+
 
 class DevotionalDashboardScreen extends StatefulWidget {
   const DevotionalDashboardScreen({super.key});
@@ -354,15 +361,39 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
           const SizedBox(height: 12),
           _buildChallengeSection(),
           const SizedBox(height: 25),
-          _buildSectionHeader('Today\'s Scripture', 'Customize'),
+          // _buildSectionHeader('Today\'s Scripture', 'Customize'),
+          _buildSectionHeader('Today\'s Scripture', 'Customize', onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CustomizeScriptureScreen(),
+              ),
+            );
+          }),          
           const SizedBox(height: 12),
           _buildDailySchedule(),
           const SizedBox(height: 25),
-          _buildSectionHeader('Quick Prayers', 'View All'),
+          // _buildSectionHeader('Quick Prayers', 'View All'),
+          _buildSectionHeader('Quick Prayers', 'View All', onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PrayersViewAllScreen(),
+              ),
+            );
+          }),
           const SizedBox(height: 12),
           _buildQuickPrayers(),
           const SizedBox(height: 25),
-          _buildSectionHeader('Devotional Practices', 'Explore'),
+          // _buildSectionHeader('Devotional Practices', 'Explore'),
+          _buildSectionHeader('Devotional Practices', 'Explore', onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const DevotionalPracticesExploreScreen(),
+              ),
+            );
+          }),
           const SizedBox(height: 12),
           _buildDevotionalCategories(),
           const SizedBox(height: 25),
@@ -911,8 +942,11 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
   }
 
   void _viewScriptureDetails(Map<String, dynamic> item) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Opening ${item['title']}...")),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScriptureDetailScreen(scripture: item),
+      ),
     );
   }
 
@@ -1049,93 +1083,91 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
     );
   }
 
-  void _viewPrayerDetails(Map<String, dynamic> prayer) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(prayer["title"]!),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Duration: ${prayer["duration"]}",
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              prayer["content"] as String,
-              style: const TextStyle(height: 1.5),
-            ),
-          ],
+    void _viewPrayerDetails(Map<String, dynamic> prayer) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PrayerDetailScreen(prayer: prayer),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Close"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _playAudio(prayer["audioUrl"] as String);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _primaryBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-            child: const Text("Listen"),
-          ),
-        ],
-      ),
-    );
-  }
+      );
+    }
 
-  Widget _buildDevotionalCategories() {
-    return SizedBox(
-      height: 140,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: _devotionalCategories.length,
-        itemBuilder: (context, index) {
-          final category = _devotionalCategories[index];
-          return GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 140,
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(color: (category["color"] as Color).withOpacity(0.15), blurRadius: 10, offset: const Offset(0, 4)),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: (category["color"] as Color).withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
+    Widget _buildDevotionalCategories() {
+      return SizedBox(
+        height: 140,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          itemCount: _devotionalCategories.length,
+          itemBuilder: (context, index) {
+            final category = _devotionalCategories[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DevotionalPracticeDetailScreen(
+                      practice: category,
                     ),
-                    child: Icon(category["icon"] as IconData, color: category["color"] as Color, size: 24),
                   ),
-                  const SizedBox(height: 12),
-                  Text(category["title"] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis),
-                  const Spacer(),
-                  Text(category["count"] as String, style: TextStyle(fontSize: 11, color: Colors.grey.shade600)),
-                ],
+                );
+              },
+              child: Container(
+                width: 140,
+                margin: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (category["color"] as Color).withOpacity(0.15),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: (category["color"] as Color).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        category["icon"] as IconData,
+                        color: category["color"] as Color,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      category["title"] as String,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
+                    Text(
+                      category["count"] as String,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+            );
+          },
+        ),
+      );
+    }
 
   Widget _buildPrayerIntentions() {
     return Padding(
