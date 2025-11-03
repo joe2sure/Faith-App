@@ -20,7 +20,11 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
 
   int _streakDays = 12;
 
-  // Harmonious color palette - Soft, calming religious theme
+  final Color _primaryBlue = const Color(0xFF4A90E2);
+  final Color _softTeal = const Color(0xFF50B5B0);
+  final Color _warmGold = const Color(0xFFD4A574);
+  final Color _roseRed = const Color(0xFFD97687);
+  final Color _sageGreen = const Color(0xFF7CB798);
   final Color _deepPurple = const Color(0xFF6B5B95);
 
   @override
@@ -125,7 +129,7 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcome Back!",
+                        "Play & Learn!",
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -134,13 +138,13 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Continue your spiritual journey",
+                        "Discover faith-building games",
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
                 ),
-                _buildStreakBadge(),
+                _buildGameBadge(),
               ],
             ),
           ),
@@ -149,7 +153,7 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
     );
   }
 
-  Widget _buildStreakBadge() {
+  Widget _buildGameBadge() {
     return AnimatedBuilder(
       animation: _floatingAnimationController,
       builder: (context, child) {
@@ -158,18 +162,18 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [const Color(0xFFFF6B35), const Color(0xFFFF8C42)]),
+              gradient: LinearGradient(colors: [const Color(0xFFEC4899), const Color(0xFFF59E0B)]),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: const Color(0xFFFF6B35).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+                BoxShadow(color: const Color(0xFFEC4899).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
               ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.local_fire_department, color: Colors.white, size: 20),
+                const Icon(Icons.sports_esports, color: Colors.white, size: 20),
                 const SizedBox(width: 6),
-                Text("$_streakDays Days", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                Text("$_streakDays Games", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
               ],
             ),
           ),
@@ -286,54 +290,80 @@ class _UserProfileBanner extends StatelessWidget {
   }
 }
 
-class _SectionTitle extends StatelessWidget {
-  final String title;
-  final String? action;
-  
-  const _SectionTitle({required this.title, this.action});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1F2937),
-            ),
-          ),
-          if (action != null)
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                children: [
-                  Text(
-                    action!,
-                    style: const TextStyle(
-                      color: Color(0xFF667EEA),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xFF667EEA),
-                    size: 16,
-                  ),
-                ],
+  class _SectionTitle extends StatelessWidget {
+    final String title;
+    final String? action;
+    final VoidCallback? onTap;
+    
+    const _SectionTitle({required this.title, this.action, this.onTap});
+    
+    @override
+    Widget build(BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(color: Color(0xFF6B5B95), fontSize: 20, fontWeight: FontWeight.w600)),
+            if (action != null)
+              GestureDetector(
+                onTap: onTap ?? () {},
+                child: Text(action!, style: const TextStyle(color: Color(0xFF4A90E2), fontSize: 14, fontWeight: FontWeight.w500)),
               ),
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
-}
+
+// class _SectionTitle extends StatelessWidget {
+//   final String title;
+//   final String? action;
+  
+//   const _SectionTitle({required this.title, this.action});
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Text(
+//             title,
+//             style: const TextStyle(
+//               fontSize: 20,
+//               fontWeight: FontWeight.bold,
+//               color: Color(0xFF1F2937),
+//             ),
+//           ),
+//           if (action != null)
+//             GestureDetector(
+//               onTap: () {},
+//               child: Row(
+//                 children: [
+//                   Text(
+//                     action!,
+//                     style: const TextStyle(
+//                       color: Color(0xFF667EEA),
+//                       fontWeight: FontWeight.w600,
+//                       fontSize: 14,
+//                     ),
+//                   ),
+//                   const SizedBox(width: 4),
+//                   const Icon(
+//                     Icons.arrow_forward,
+//                     color: Color(0xFF667EEA),
+//                     size: 16,
+//                   ),
+//                 ],
+//               ),
+//             ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _FeaturedGameCarousel extends StatelessWidget {
   const _FeaturedGameCarousel();

@@ -424,7 +424,7 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcome Back!",
+                        "Daily Devotion!",
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -433,7 +433,7 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Continue your spiritual journey",
+                        "Deepen your prayer life today",
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                     ],

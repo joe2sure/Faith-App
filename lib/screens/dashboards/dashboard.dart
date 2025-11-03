@@ -49,7 +49,12 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
   Timer? _reflectionTimer;
   int _currentReflectionIndex = 0;
 
+  final Color _primaryBlue = const Color(0xFF4A90E2);
   final Color _deepPurple = const Color(0xFF6B5B95);
+  final Color _softTeal = const Color(0xFF50B5B0);
+  final Color _warmGold = const Color(0xFFD4A574);
+  final Color _roseRed = const Color(0xFFD97687);
+  final Color _sageGreen = const Color(0xFF7CB798);
 
   final List<Map<String, String>> _reflections = [
     {
@@ -245,14 +250,9 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
           const SizedBox(height: 25),
           _buildFeaturedDevotional(),
 
-          // Bible & Scripture Section
-          const SizedBox(height: 23),
-          _buildSectionHeader('Bible', 'View All', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BibleVersionsScreen()),
-            );
+          const SizedBox(height: 25),
+          _buildSectionHeader('Bible', 'View All', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BibleVersionsScreen()));
           }),
 
           const SizedBox(height: 15),
@@ -264,12 +264,8 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Catholic Documents (renamed from Catholic Teachings)
           const SizedBox(height: 24),
-          _buildSectionHeader('Catholic Documents', 'Explore', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CatholicDocumentsScreen()),
-            );
+          _buildSectionHeader('Catholic Documents', 'Explore', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const CatholicDocumentsScreen()));
           }),
 
           const SizedBox(height: 14),
@@ -277,13 +273,8 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Saints & Feast Days
           const SizedBox(height: 23),
-          _buildSectionHeader('Saints & Feast Days', 'Calendar', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SaintsCalendarScreen(),
-              ),
-            );
+          _buildSectionHeader('Saints & Feast Days', 'Calendar', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SaintsCalendarScreen()));
           }),
 
           const SizedBox(height: 15),
@@ -294,25 +285,16 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Church Calendar
           const SizedBox(height: 23),
-          _buildSectionHeader('Church', 'Full Calendar', () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const FullCalendarScreen(),
-            ),
-          );
+          _buildSectionHeader('Church', 'Full Calendar', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const FullCalendarScreen()));
           }),
 
           CustomCalendar(),
 
           // Daily Challenges Section
           const SizedBox(height: 24),
-          _buildSectionHeader('Daily Challenges', 'View All', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const DailyChallengesViewAllScreen()),
-            );
+          _buildSectionHeader('Daily Challenges', 'View All', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyChallengesViewAllScreen()));
           }),
 
           const SizedBox(height: 14),
@@ -320,12 +302,8 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Spiritual Resources
           const SizedBox(height: 24),
-          _buildSectionHeader('Spiritual Resources', 'Browse All', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SpiritualResourcesScreen()),
-            );
+          _buildSectionHeader('Spiritual Resources', 'Browse All', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SpiritualResourcesScreen()));
           }),
 
           const SizedBox(height: 14),
@@ -357,7 +335,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcome Back!",
+                        "Grow in Faith!",
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -366,13 +344,14 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Continue your spiritual journey",
+                        "Explore the treasures of Catholic faith",
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
                 ),
-                _buildStreakBadge(),
+                
+                _buildFaithBadge(), 
               ],
             ),
           ),
@@ -381,7 +360,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  Widget _buildStreakBadge() {
+  Widget _buildFaithBadge() {
     return AnimatedBuilder(
       animation: _floatingAnimationController,
       builder: (context, child) {
@@ -390,18 +369,18 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [const Color(0xFFFF6B35), const Color(0xFFFF8C42)]),
+              gradient: LinearGradient(colors: [_deepPurple, _primaryBlue]),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: const Color(0xFFFF6B35).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+                BoxShadow(color: _deepPurple.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
               ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.local_fire_department, color: Colors.white, size: 20),
+                const Icon(Icons.church, color: Colors.white, size: 20),
                 const SizedBox(width: 6),
-                Text("$_streakDays Days", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                Text("Level $_streakDays", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
               ],
             ),
           ),
@@ -495,35 +474,51 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  Widget _buildSectionHeader(
-      String title, String actionText, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 17),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.blue,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
+  // Widget _buildSectionHeader(
+  //     String title, String actionText, VoidCallback onTap) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 17),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           title,
+  //           style: const TextStyle(
+  //             color: Colors.blue,
+  //             fontSize: 20,
+  //             fontWeight: FontWeight.w600,
+  //           ),
+  //         ),
+  //         GestureDetector(
+  //           onTap: onTap,
+  //           child: Text(
+  //             actionText,
+  //             style: const TextStyle(
+  //               color: Colors.blue,
+  //               fontSize: 14,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+    Widget _buildSectionHeader(String title, String actionText, {VoidCallback? onTap}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: TextStyle(color: _deepPurple, fontSize: 20, fontWeight: FontWeight.w600)),
+            GestureDetector(
+              onTap: onTap ?? () {},
+              child: Text(actionText, style: TextStyle(color: _primaryBlue, fontSize: 14, fontWeight: FontWeight.w500)),
             ),
-          ),
-          GestureDetector(
-            onTap: onTap,
-            child: Text(
-              actionText,
-              style: const TextStyle(
-                color: Colors.blue,
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
+    }
 
   Widget _buildEnhancedCarousel() {
     return CarouselSlider(
