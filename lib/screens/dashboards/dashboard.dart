@@ -1,6 +1,5 @@
-// import 'package:intl/intl.dart';
 import 'package:faith_plus/common/custom_calendar.dart';
-import 'package:faith_plus/common/constants.dart';
+import 'package:faith_plus/common/constants.dart' hide SectionHeader;
 import 'package:faith_plus/screens/features/faith/dashboard_detail/bible_readnow_screen.dart';
 import 'package:faith_plus/screens/features/faith/dashboard_detail/catholic_document_detail_screen.dart';
 import 'package:faith_plus/screens/features/faith/dashboard_detail/daily_challenge_screen.dart';
@@ -16,6 +15,11 @@ import 'package:faith_plus/screens/features/faith/dashboard_view_all/spiritual_r
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:async';
+
+import '../../common/reusable_widget.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/themes/text_styles.dart';
+import '../features/faith/dashboard_detail/devotional_detail_screen.dart';
 
 class FaithDashboardScreen extends StatefulWidget {
   const FaithDashboardScreen({super.key});
@@ -49,39 +53,30 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
   Timer? _reflectionTimer;
   int _currentReflectionIndex = 0;
 
-  final Color _primaryBlue = const Color(0xFF4A90E2);
-  final Color _deepPurple = const Color(0xFF6B5B95);
-  final Color _softTeal = const Color(0xFF50B5B0);
-  final Color _warmGold = const Color(0xFFD4A574);
-  final Color _roseRed = const Color(0xFFD97687);
-  final Color _sageGreen = const Color(0xFF7CB798);
+  int _currentQuoteIndex = 0;
+  Timer? _quoteTimer;
 
-  final List<Map<String, String>> _reflections = [
-    {
-      "quote":
-          "Faith is taking the first step even when you don't see the whole staircase. Trust in God's plan and walk forward with courage.",
-      "reference": "— Reflection for Today",
-      "verse": "Proverbs 3:5-6"
-    },
-    {
-      "quote":
-          "Be still and know that I am God. In the quiet moments, we find His peace and strength for our journey.",
-      "reference": "— Morning Reflection",
-      "verse": "Psalm 46:10"
-    },
-    {
-      "quote":
-          "The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you and quiet you with his love.",
-      "reference": "— Evening Reflection",
-      "verse": "Zephaniah 3:17"
-    },
-    {
-      "quote":
-          "Cast all your anxiety on him because he cares for you. His love is boundless and His mercy endures forever.",
-      "reference": "— Daily Encouragement",
-      "verse": "1 Peter 5:7"
-    }
-  ];
+
+
+final List<Map<String, String>> _saintQuotes = [
+  {
+    "quote": "Faith seeking understanding.",
+    "author": "St. Anselm of Canterbury",
+  },
+  {
+    "quote": "To one who has faith, no explanation is necessary. To one without faith, no explanation is possible.",
+    "author": "St. Thomas Aquinas",
+  },
+  {
+    "quote": "Prayer is the place of refuge for every worry, a foundation for cheerfulness.",
+    "author": "St. John Chrysostom",
+  },
+  {
+    "quote": "The goal of a virtuous life is to become like God.",
+    "author": "St. Gregory of Nyssa",
+  },
+];
+
 
   final List<Map<String, dynamic>> _devotionalContent = [
     {
@@ -90,7 +85,8 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
       "duration": "10 min",
       "description": "Start your day with gratitude and surrender to God's will",
       "icon": Icons.wb_sunny,
-      "colors": [const Color(0xFFFFB75E), const Color(0xFFED8F03)],
+      "colors": [const Color(0xFF9B7EBD), const Color(0xFF6B5B95)],
+      // "colors": [const Color(0xFFFFB75E), const Color(0xFFED8F03)],
     },
     {
       "title": "Scripture Reading",
@@ -98,7 +94,8 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
       "duration": "15 min",
       "description": "Dive deep into God's Word and find wisdom for today",
       "icon": Icons.menu_book,
-      "colors": [const Color(0xFF4A90E2), const Color(0xFF3A7BC8)],
+      "colors": [const Color(0xFF5B7C99), const Color(0xFF3E5469)],
+      // "colors": [const Color(0xFF4A90E2), const Color(0xFF3A7BC8)],
     },
     {
       "title": "Rosary",
@@ -197,13 +194,6 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     _floatingAnimationController.repeat(reverse: true);
     _progressAnimationController.forward();
 
-    // Start reflection rotation timer
-    _reflectionTimer = Timer.periodic(const Duration(seconds: 8), (timer) {
-      setState(() {
-        _currentReflectionIndex =
-            (_currentReflectionIndex + 1) % _reflections.length;
-      });
-    });
 
     // Start devotional rotation timer
     _devotionalTimer = Timer.periodic(const Duration(seconds: 6), (timer) {
@@ -212,6 +202,12 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
             (_currentDevotionalIndex + 1) % _devotionalContent.length;
       });
     });
+
+  _quoteTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    setState(() {
+      _currentQuoteIndex = (_currentQuoteIndex + 1) % _saintQuotes.length;
+    });
+  });
   }
 
   @override
@@ -224,6 +220,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     _progressAnimationController.dispose();
     _reflectionTimer?.cancel();
     _devotionalTimer?.cancel();
+    _quoteTimer?.cancel();
     super.dispose();
   }
 
@@ -311,7 +308,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Enhanced Daily Reflection
           const SizedBox(height: 20),
-          _buildEnhancedReflectionCard(),
+          // _buildEnhancedReflectionCard(),
 
           const SizedBox(height: 20),
         ],
@@ -319,75 +316,49 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  Widget _buildWelcomeHeader() {
-    return AnimatedBuilder(
-      animation: _headerSlideAnimation,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _headerSlideAnimation.value),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Grow in Faith!",
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: _deepPurple,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Explore the treasures of Catholic faith",
-                        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                _buildFaithBadge(), 
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
-  Widget _buildFaithBadge() {
-    return AnimatedBuilder(
-      animation: _floatingAnimationController,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _floatingAnimation.value / 2),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [_deepPurple, _primaryBlue]),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(color: _deepPurple.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.church, color: Colors.white, size: 20),
-                const SizedBox(width: 6),
-                Text("Level $_streakDays", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
-              ],
-            ),
+Widget _buildWelcomeHeader() {
+  return AnimatedBuilder(
+    animation: _headerSlideAnimation,
+    builder: (context, child) {
+      return Transform.translate(
+        offset: Offset(0, _headerSlideAnimation.value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _saintQuotes[_currentQuoteIndex]["quote"]!,
+                      style: AppTextStyles.h5.copyWith(
+                        color: AppColors.primaryPurple,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "— ${_saintQuotes[_currentQuoteIndex]["author"]}",
+                      style: AppTextStyles.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              StreakBadge(streakCount: _streakDays),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   Widget _buildFeaturedDevotional() {
     final current = _devotionalContent[_currentDevotionalIndex];
@@ -400,7 +371,21 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
-              onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DevotionalDetailScreen(
+                    title: current["title"] as String,
+                    time: current["time"] as String,
+                    duration: current["duration"] as String,
+                    description: current["description"] as String,
+                    icon: current["icon"] as IconData,
+                    colors: current["colors"] as List<Color>,
+                  ),
+                ),
+              );
+            },
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -446,7 +431,22 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            // onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DevotionalDetailScreen(
+                                    title: current["title"] as String,
+                                    time: current["time"] as String,
+                                    duration: current["duration"] as String,
+                                    description: current["description"] as String,
+                                    icon: current["icon"] as IconData,
+                                    colors: current["colors"] as List<Color>,
+                                  ),
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: (current["colors"] as List<Color>)[1],
@@ -474,51 +474,14 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  // Widget _buildSectionHeader(
-  //     String title, String actionText, VoidCallback onTap) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 17),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(
-  //           title,
-  //           style: const TextStyle(
-  //             color: Colors.blue,
-  //             fontSize: 20,
-  //             fontWeight: FontWeight.w600,
-  //           ),
-  //         ),
-  //         GestureDetector(
-  //           onTap: onTap,
-  //           child: Text(
-  //             actionText,
-  //             style: const TextStyle(
-  //               color: Colors.blue,
-  //               fontSize: 14,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildSectionHeader(String title, String actionText, {VoidCallback? onTap}) {
+    return SectionHeader(
+      title: title,
+      actionText: actionText,
+      onActionTap: onTap,
+    );
+  }
 
-    Widget _buildSectionHeader(String title, String actionText, {VoidCallback? onTap}) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: TextStyle(color: _deepPurple, fontSize: 20, fontWeight: FontWeight.w600)),
-            GestureDetector(
-              onTap: onTap ?? () {},
-              child: Text(actionText, style: TextStyle(color: _primaryBlue, fontSize: 14, fontWeight: FontWeight.w500)),
-            ),
-          ],
-        ),
-      );
-    }
 
   Widget _buildEnhancedCarousel() {
     return CarouselSlider(
@@ -535,172 +498,430 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  List<Widget> _getScriptureCards() {
-    final scriptures = [
-      {
-        "title": "Daily Bible Reading",
-        "subtitle": "Today's Scripture",
-        "content": "Matthew 13:1-23 - The Parable of the Sower",
-        "hasNavigation": true,
-      },
-      {
-        "title": "Daily Bible Reading",
-        "subtitle": "Today's Scripture",
-        "content": "John 3:16 - For God so loved the world...",
-        "hasNavigation": true,
-      },
-      {
-        "title": "Daily Bible Reading",
-        "subtitle": "Today's Scripture",
-        "content": "Psalm 23 - The Lord is my Shepherd",
-        "hasNavigation": true,
-      },
-    ];
 
-    return scriptures.map((scripture) {
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          elevation: 8,
-          shadowColor: Colors.blue.withOpacity(0.3),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    child: Image.asset(
-                      "assets/images/Image_fx_1.jpg",
-                      height: 120,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.6),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 12,
-                    bottom: 15,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          scripture["title"] as String,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(blurRadius: 3, color: Colors.black),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          scripture["subtitle"] as String,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            shadows: [
-                              Shadow(blurRadius: 3, color: Colors.black),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+// List<Widget> _getScriptureCards() {
+//   final plans = [
+//     {
+//       "title": "Chronological Plan",
+//       "subtitle": "Read the Bible in Historical Order",
+//       "content": "Experience Scripture as events unfolded in time",
+//       "image": "assets/images/chronological_plan.jpg",
+//       "color": AppColors.primaryBlue,
+//     },
+//     {
+//       "title": "Canonical Plan",
+//       "subtitle": "Traditional Book Order",
+//       "content": "Follow the traditional arrangement of biblical books",
+//       "image": "assets/images/canonical_plan.jpg",
+//       "color": AppColors.primaryPurple,
+//     },
+//     {
+//       "title": "Thematic Plan",
+//       "subtitle": "Topics and Themes",
+//       "content": "Explore Scripture through key spiritual themes",
+//       "image": "assets/images/thematic_plan.jpg",
+//       "color": AppColors.accentTeal,
+//     },
+//     {
+//       "title": "One-Year Bible",
+//       "subtitle": "Complete in 365 Days",
+//       "content": "Read through the entire Bible in one year",
+//       "image": "assets/images/one_year_plan.jpg",
+//       "color": AppColors.accentGold,
+//     },
+//     {
+//       "title": "Custom Plan",
+//       "subtitle": "Create Your Own",
+//       "content": "Design a personalized reading schedule",
+//       "image": "assets/images/custom_plan.jpg",
+//       "color": AppColors.accentRose,
+//     },
+//   ];
+
+//   return plans.map((plan) {
+//     return GestureDetector(
+//       onTap: () {
+//         Navigator.push(
+//           context,
+//           MaterialPageRoute(
+//             builder: (context) => ScriptureReadingScreen(
+//               title: plan["title"] as String,
+//               content: plan["content"] as String,
+//               reference: plan["subtitle"] as String,
+//             ),
+//           ),
+//         );
+//       },
+//       child: Container(
+//         margin: const EdgeInsets.symmetric(horizontal: 8),
+//         child: Card(
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+//           elevation: 8,
+//           shadowColor: (plan["color"] as Color).withOpacity(0.3),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Stack(
+//                 children: [
+//                   ClipRRect(
+//                     borderRadius: const BorderRadius.only(
+//                       topLeft: Radius.circular(20),
+//                       topRight: Radius.circular(20),
+//                     ),
+//                     child: Image.asset(
+//                       plan["image"] as String,
+//                       height: 120,
+//                       width: double.infinity,
+//                       fit: BoxFit.cover,
+//                       errorBuilder: (context, error, stackTrace) {
+//                         return Container(
+//                           height: 120,
+//                           color: (plan["color"] as Color).withOpacity(0.3),
+//                           child: Icon(
+//                             Icons.menu_book,
+//                             size: 48,
+//                             color: plan["color"] as Color,
+//                           ),
+//                         );
+//                       },
+//                     ),
+//                   ),
+//                   Container(
+//                     height: 120,
+//                     decoration: BoxDecoration(
+//                       borderRadius: const BorderRadius.only(
+//                         topLeft: Radius.circular(20),
+//                         topRight: Radius.circular(20),
+//                       ),
+//                       gradient: LinearGradient(
+//                         begin: Alignment.topCenter,
+//                         end: Alignment.bottomCenter,
+//                         colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+//                       ),
+//                     ),
+//                   ),
+//                   Positioned(
+//                     left: 12,
+//                     bottom: 15,
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text(
+//                           plan["title"] as String,
+//                           style: AppTextStyles.h4.copyWith(
+//                             color: Colors.white,
+//                             shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
+//                           ),
+//                         ),
+//                         const SizedBox(height: 4),
+//                         Text(
+//                           plan["subtitle"] as String,
+//                           style: AppTextStyles.bodySmall.copyWith(
+//                             color: Colors.white70,
+//                             shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               Expanded(
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(12.0),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         plan["content"] as String,
+//                         style: AppTextStyles.bodyMedium.copyWith(color: plan["color"] as Color),
+//                       ),
+//                       const Spacer(),
+//                       Row(
+//                         children: [
+//                           const Icon(Icons.bookmark_border, size: 20, color: Colors.grey),
+//                           const SizedBox(width: 4),
+//                           const Text("Save", style: TextStyle(color: Colors.grey)),
+//                           const SizedBox(width: 20),
+//                           const Icon(Icons.share, size: 20, color: Colors.grey),
+//                           const SizedBox(width: 4),
+//                           const Text("Share", style: TextStyle(color: Colors.grey)),
+//                           const Spacer(),
+//                           AppButton(
+//                             text: "Read Now",
+//                             onPressed: () {
+//                               Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                   builder: (context) => ScriptureReadingScreen(
+//                                     title: plan["title"] as String,
+//                                     content: plan["content"] as String,
+//                                     reference: plan["subtitle"] as String,
+//                                   ),
+//                                 ),
+//                               );
+//                             },
+//                             isPrimary: true,
+//                           ),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }).toList();
+// }
+
+
+List<Widget> _getScriptureCards() {
+  final plans = [
+    {
+      "title": "Chronological Plan",
+      "subtitle": "Read the Bible in Historical Order",
+      "content": "Experience Scripture as events unfolded in time",
+      "image": "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?w=800",
+      "color": AppColors.primaryBlue,
+    },
+    {
+      "title": "Canonical Plan",
+      "subtitle": "Traditional Book Order",
+      "content": "Follow the traditional arrangement of biblical books",
+      "image": "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=800",
+      "color": AppColors.primaryPurple,
+    },
+    {
+      "title": "Thematic Plan",
+      "subtitle": "Topics and Themes",
+      "content": "Explore Scripture through key spiritual themes",
+      "image": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800",
+      "color": AppColors.accentTeal,
+    },
+    {
+      "title": "One-Year Bible",
+      "subtitle": "Complete in 365 Days",
+      "content": "Read through the entire Bible in one year",
+      "image": "https://images.unsplash.com/photo-1474631245212-32dc3c8310c6?w=800",
+      "color": AppColors.accentGold,
+    },
+    {
+      "title": "Custom Plan",
+      "subtitle": "Create Your Own",
+      "content": "Design a personalized reading schedule",
+      "image": "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800",
+      "color": AppColors.accentRose,
+    },
+  ];
+
+  return plans.map((plan) {
+    bool isSaved = false; // Track saved state locally
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScriptureReadingScreen(
+                  title: plan["title"] as String,
+                  content: plan["content"] as String,
+                  reference: plan["subtitle"] as String,
+                ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 8,
+              shadowColor: (plan["color"] as Color).withOpacity(0.3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
                     children: [
-                      Text(
-                        scripture["content"] as String,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        child: Image.network(
+                          plan["image"] as String,
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              height: 120,
+                              color: (plan["color"] as Color).withOpacity(0.2),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                  color: plan["color"] as Color,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 120,
+                              color: (plan["color"] as Color).withOpacity(0.3),
+                              child: Icon(
+                                Icons.menu_book,
+                                size: 48,
+                                color: plan["color"] as Color,
+                              ),
+                            );
+                          },
                         ),
                       ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          const Icon(Icons.bookmark_border,
-                              size: 20, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          const Text("Save",
-                              style: TextStyle(color: Colors.grey)),
-                          const SizedBox(width: 20),
-                          const Icon(Icons.share, size: 20, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          const Text("Share",
-                              style: TextStyle(color: Colors.grey)),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ScriptureReadingScreen(
-                                    title: scripture["title"] as String,
-                                    content: scripture["content"] as String,
-                                    reference: scripture["subtitle"] as String,
-                                  ),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                            ),
-                            child: const Text(
-                              "Read Now",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                      Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
-                        ],
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 12,
+                        bottom: 15,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              plan["title"] as String,
+                              style: AppTextStyles.h4.copyWith(
+                                color: Colors.white,
+                                shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              plan["subtitle"] as String,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.white70,
+                                shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              )
-            ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            plan["content"] as String,
+                            style: AppTextStyles.bodyMedium.copyWith(color: plan["color"] as Color),
+                          ),
+                          const Spacer(),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isSaved = !isSaved;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(isSaved ? 'Saved to library' : 'Removed from library'),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      isSaved ? Icons.bookmark : Icons.bookmark_border,
+                                      size: 20,
+                                      color: isSaved ? plan["color"] as Color : Colors.grey,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "Save",
+                                      style: TextStyle(
+                                        color: isSaved ? plan["color"] as Color : Colors.grey,
+                                        fontWeight: isSaved ? FontWeight.w600 : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              InkWell(
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Sharing "${plan["title"]}"...'),
+                                      duration: const Duration(seconds: 2),
+                                      action: SnackBarAction(
+                                        label: 'OK',
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.share, size: 20, color: Colors.grey),
+                                    SizedBox(width: 4),
+                                    Text("Share", style: TextStyle(color: Colors.grey)),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              AppButton(
+                                text: "Read Now",
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScriptureReadingScreen(
+                                        title: plan["title"] as String,
+                                        content: plan["content"] as String,
+                                        reference: plan["subtitle"] as String,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                isPrimary: true,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      );
-    }).toList();
-  }
+        );
+      },
+    );
+  }).toList();
+}
 
   Widget _buildTestamentCards() {
     return Row(
@@ -708,7 +929,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
       children: [
         _buildTestamentCard(
           "Old Testament",
-          "39 Books",
+          "46 Books",
           "assets/images/Image_fx_4.jpg",
         ),
         _buildTestamentCard(
@@ -1198,116 +1419,6 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
           );
         },
       ),
-    );
-  }
-
-  Widget _buildEnhancedReflectionCard() {
-    return AnimatedBuilder(
-      animation: _reflectionPulseAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _reflectionPulseAnimation.value,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.amber.shade200, Colors.orange.shade200],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.amber.withOpacity(0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.amber[600],
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.amber.withOpacity(0.5),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(Icons.lightbulb,
-                        color: Colors.white, size: 24),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Daily Reflection",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _reflections[_currentReflectionIndex]["quote"]!,
-                          style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 15,
-                            color: Colors.black87,
-                            height: 1.4,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _reflections[_currentReflectionIndex]
-                                  ["reference"]!,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                _reflections[_currentReflectionIndex]["verse"]!,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

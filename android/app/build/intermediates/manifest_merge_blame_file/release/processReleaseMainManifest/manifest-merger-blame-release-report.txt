@@ -1,0 +1,164 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.faith_plus"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="35" />
+10
+11    <queries>
+11-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:28:5-33:15
+12        <intent>
+12-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:29:9-32:18
+13            <action android:name="android.intent.action.PROCESS_TEXT" />
+13-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:30:13-72
+13-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:30:21-70
+14
+15            <data android:mimeType="text/plain" />
+15-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:31:13-50
+15-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:31:19-48
+16        </intent>
+17    </queries>
+18
+19    <permission
+19-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+20        android:name="com.example.faith_plus.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+20-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+21        android:protectionLevel="signature" />
+21-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+22
+23    <uses-permission android:name="com.example.faith_plus.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+23-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+23-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+24
+25    <application
+26        android:name="android.app.Application"
+26-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:4:9-42
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.13.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\7bdb3fe17a0850c126f0f4e6902c2cc5\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+28        android:extractNativeLibs="true"
+29        android:icon="@mipmap/ic_launcher"
+29-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:5:9-43
+30        android:label="Faith Plus" >
+30-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:3:9-35
+31        <activity
+31-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:6:9-23:20
+32            android:name="com.example.faith_plus.MainActivity"
+32-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:7:13-41
+33            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+33-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:12:13-163
+34            android:exported="true"
+34-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:8:13-36
+35            android:hardwareAccelerated="true"
+35-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:13:13-47
+36            android:launchMode="singleTop"
+36-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:9:13-43
+37            android:taskAffinity=""
+37-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:10:13-36
+38            android:theme="@style/LaunchTheme"
+38-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:11:13-47
+39            android:windowSoftInputMode="adjustResize" >
+39-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:14:13-55
+40            <meta-data
+40-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:15:13-18:17
+41                android:name="io.flutter.embedding.android.NormalTheme"
+41-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:16:15-70
+42                android:resource="@style/NormalTheme" />
+42-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:17:15-52
+43
+44            <intent-filter>
+44-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:19:13-22:29
+45                <action android:name="android.intent.action.MAIN" />
+45-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:20:17-68
+45-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:20:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:21:17-76
+47-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:21:27-74
+48            </intent-filter>
+49        </activity>
+50
+51        <meta-data
+51-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:24:9-26:33
+52            android:name="flutterEmbedding"
+52-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:25:13-44
+53            android:value="2" />
+53-->C:\Users\IFEANYI\flutter-app\faith_church\android\app\src\main\AndroidManifest.xml:26:13-30
+54
+55        <uses-library
+55-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:23:9-25:40
+56            android:name="androidx.window.extensions"
+56-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:24:13-54
+57            android:required="false" />
+57-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:25:13-37
+58        <uses-library
+58-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:26:9-28:40
+59            android:name="androidx.window.sidecar"
+59-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:27:13-51
+60            android:required="false" />
+60-->[androidx.window:window:1.2.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\e460326426724285258e67693704f53a\transformed\jetified-window-1.2.0\AndroidManifest.xml:28:13-37
+61
+62        <provider
+62-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:24:9-32:20
+63            android:name="androidx.startup.InitializationProvider"
+63-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:25:13-67
+64            android:authorities="com.example.faith_plus.androidx-startup"
+64-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:26:13-68
+65            android:exported="false" >
+65-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:27:13-37
+66            <meta-data
+66-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+67                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+67-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+68                android:value="androidx.startup" />
+68-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\IFEANYI\.gradle\caches\transforms-4\5b08b0282d21b6f5342fb1fc4e5a2199\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+69            <meta-data
+69-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+70                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+70-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+71                android:value="androidx.startup" />
+71-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+72        </provider>
+73
+74        <receiver
+74-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+75            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+75-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+76            android:directBootAware="false"
+76-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+77            android:enabled="true"
+77-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+78            android:exported="true"
+78-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+79            android:permission="android.permission.DUMP" >
+79-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+80            <intent-filter>
+80-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+81                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+82            </intent-filter>
+83            <intent-filter>
+83-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+84                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+85            </intent-filter>
+86            <intent-filter>
+86-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+87                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+88            </intent-filter>
+89            <intent-filter>
+89-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+90                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IFEANYI\.gradle\caches\transforms-4\11ce28b1a86253bed1737e3d930122b0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+91            </intent-filter>
+92        </receiver>
+93    </application>
+94
+95</manifest>

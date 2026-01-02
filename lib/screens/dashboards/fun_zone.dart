@@ -10,11 +10,11 @@ class FunZoneScreen extends StatefulWidget {
   State<FunZoneScreen> createState() => _FunZoneScreenState();
 }
 
-class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMixin  {
+class _FunZoneScreenState extends State<FunZoneScreen>
+    with TickerProviderStateMixin {
   late AnimationController _headerAnimationController;
   late AnimationController _floatingAnimationController;
 
- 
   late Animation<double> _headerSlideAnimation;
   late Animation<double> _floatingAnimation;
 
@@ -70,7 +70,6 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +85,7 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
-        children:  [
+        children: [
           SizedBox(height: 8),
           _buildWelcomeHeader(),
           const SizedBox(height: 20),
@@ -113,7 +112,7 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
     );
   }
 
-    Widget _buildWelcomeHeader() {
+  Widget _buildWelcomeHeader() {
     return AnimatedBuilder(
       animation: _headerSlideAnimation,
       builder: (context, child) {
@@ -139,7 +138,8 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
                       const SizedBox(height: 4),
                       Text(
                         "Discover faith-building games",
-                        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                        style: TextStyle(
+                            fontSize: 14, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
@@ -162,10 +162,14 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [const Color(0xFFEC4899), const Color(0xFFF59E0B)]),
+              gradient: LinearGradient(
+                  colors: [const Color(0xFFEC4899), const Color(0xFFF59E0B)]),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: const Color(0xFFEC4899).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+                BoxShadow(
+                    color: const Color(0xFFEC4899).withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4)),
               ],
             ),
             child: Row(
@@ -173,7 +177,11 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
               children: [
                 const Icon(Icons.sports_esports, color: Colors.white, size: 20),
                 const SizedBox(width: 6),
-                Text("$_streakDays Games", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                Text("$_streakDays Games",
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14)),
               ],
             ),
           ),
@@ -185,12 +193,12 @@ class _FunZoneScreenState extends State<FunZoneScreen>with TickerProviderStateMi
 
 class _UserProfileBanner extends StatelessWidget {
   const _UserProfileBanner();
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
@@ -206,80 +214,72 @@ class _UserProfileBanner extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Your Gaming Stats',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            child: const CircleAvatar(
-              radius: 28,
-              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=45'),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Welcome back, Sarah!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.stars, color: Colors.amber, size: 16),
-                          SizedBox(width: 4),
-                          Text(
-                            'Level 5',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text(
-                        '12 Badges',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.stars, color: Colors.amber, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Level 5',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
                       ),
                     ),
                   ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildStatCard('Games Played', '47', Icons.gamepad),
+              _buildStatCard('High Score', '12,450', Icons.emoji_events),
+              _buildStatCard('Achievements', '23', Icons.workspace_premium),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.trending_up, color: Colors.amber, size: 18),
+                SizedBox(width: 8),
+                Text(
+                  'You\'re in the top 15% this week!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
@@ -288,94 +288,99 @@ class _UserProfileBanner extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildStatCard(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: Colors.white, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.9),
+            fontSize: 11,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-  class _SectionTitle extends StatelessWidget {
-    final String title;
-    final String? action;
-    final VoidCallback? onTap;
-    
-    const _SectionTitle({required this.title, this.action, this.onTap});
-    
-    @override
-    Widget build(BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: const TextStyle(color: Color(0xFF6B5B95), fontSize: 20, fontWeight: FontWeight.w600)),
-            if (action != null)
-              GestureDetector(
-                onTap: onTap ?? () {},
-                child: Text(action!, style: const TextStyle(color: Color(0xFF4A90E2), fontSize: 14, fontWeight: FontWeight.w500)),
-              ),
-          ],
-        ),
-      );
-    }
-  }
+class _SectionTitle extends StatelessWidget {
+  final String title;
+  final String? action;
+  final VoidCallback? onTap;
 
-// class _SectionTitle extends StatelessWidget {
-//   final String title;
-//   final String? action;
-  
-//   const _SectionTitle({required this.title, this.action});
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             title,
-//             style: const TextStyle(
-//               fontSize: 20,
-//               fontWeight: FontWeight.bold,
-//               color: Color(0xFF1F2937),
-//             ),
-//           ),
-//           if (action != null)
-//             GestureDetector(
-//               onTap: () {},
-//               child: Row(
-//                 children: [
-//                   Text(
-//                     action!,
-//                     style: const TextStyle(
-//                       color: Color(0xFF667EEA),
-//                       fontWeight: FontWeight.w600,
-//                       fontSize: 14,
-//                     ),
-//                   ),
-//                   const SizedBox(width: 4),
-//                   const Icon(
-//                     Icons.arrow_forward,
-//                     color: Color(0xFF667EEA),
-//                     size: 16,
-//                   ),
-//                 ],
-//               ),
-//             ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  const _SectionTitle({required this.title, this.action, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title,
+              style: const TextStyle(
+                  color: Color(0xFF6B5B95),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600)),
+          if (action != null)
+            GestureDetector(
+              onTap: onTap ?? () {},
+              child: Text(action!,
+                  style: const TextStyle(
+                      color: Color(0xFF4A90E2),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500)),
+            ),
+        ],
+      ),
+    );
+  }
+}
 
 class _FeaturedGameCarousel extends StatelessWidget {
   const _FeaturedGameCarousel();
-  
+
   @override
   Widget build(BuildContext context) {
     final games = [
-      {'title': 'Bible Trivia Challenge', 'subtitle': 'Test your biblical knowledge', 'rating': '4.8', 'downloads': '10K+'},
-      {'title': 'Saints Quest', 'subtitle': 'Learn about Catholic saints', 'rating': '4.9', 'downloads': '5K+'},
-      {'title': 'Scripture Memory', 'subtitle': 'Memorize verses daily', 'rating': '4.7', 'downloads': '8K+'},
+      {
+        'title': 'Bible Trivia Challenge',
+        'subtitle': 'Test your biblical knowledge',
+        'rating': '4.8',
+        'downloads': '10K+'
+      },
+      {
+        'title': 'Saints Quest',
+        'subtitle': 'Learn about Catholic saints',
+        'rating': '4.9',
+        'downloads': '5K+'
+      },
+      {
+        'title': 'Scripture Memory',
+        'subtitle': 'Memorize verses daily',
+        'rating': '4.7',
+        'downloads': '8K+'
+      },
     ];
-    
+
     return SizedBox(
       height: 200,
       child: ListView.builder(
@@ -448,7 +453,8 @@ class _FeaturedGameCarousel extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const Icon(Icons.star, color: Color(0xFFFBBF24), size: 16),
+                                const Icon(Icons.star,
+                                    color: Color(0xFFFBBF24), size: 16),
                                 const SizedBox(width: 4),
                                 Text(
                                   game['rating']!,
@@ -472,18 +478,28 @@ class _FeaturedGameCarousel extends StatelessWidget {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // Navigate to game play screen
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Launching ${game['title']}...'),
+                                      duration: const Duration(seconds: 1),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF667EEA),
                                   foregroundColor: Colors.white,
                                   elevation: 0,
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
                                 child: const Text(
-                                  'Install',
+                                  'Play Now',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
@@ -508,16 +524,30 @@ class _FeaturedGameCarousel extends StatelessWidget {
 
 class _RecommendedGamesList extends StatelessWidget {
   const _RecommendedGamesList();
-  
+
   @override
   Widget build(BuildContext context) {
-    final games = List.generate(5, (i) => {
-      'title': ['Scripture Word Search', 'Catholic Crosswords', 'Rosary Guide', 'Saint Matching', 'Prayer Timer'][i],
-      'subtitle': ['Find biblical words', 'Faith puzzles', 'Interactive prayer', 'Match saints', 'Track prayers'][i],
-      'rating': ['4.6', '4.7', '4.9', '4.5', '4.8'][i],
-      'size': ['25MB', '18MB', '32MB', '22MB', '15MB'][i],
-    });
-    
+    final games = List.generate(
+        5,
+        (i) => {
+              'title': [
+                'Scripture Word Search',
+                'Catholic Crosswords',
+                'Rosary Guide',
+                'Saint Matching',
+                'Prayer Timer'
+              ][i],
+              'subtitle': [
+                'Find biblical words',
+                'Faith puzzles',
+                'Interactive prayer',
+                'Match saints',
+                'Track prayers'
+              ][i],
+              'rating': ['4.6', '4.7', '4.9', '4.5', '4.8'][i],
+              'size': ['25MB', '18MB', '32MB', '22MB', '15MB'][i],
+            });
+
     return SizedBox(
       height: 280,
       child: ListView.builder(
@@ -526,66 +556,76 @@ class _RecommendedGamesList extends StatelessWidget {
         itemCount: games.length,
         itemBuilder: (context, index) {
           final game = games[index];
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    randomPhoto(300, 300),
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.cover,
-                  ),
+          return GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Loading ${game['title']}...'),
+                  duration: const Duration(seconds: 1),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  game['title']!,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  game['subtitle']!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF6B7280),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Color(0xFFFBBF24), size: 14),
-                    const SizedBox(width: 2),
-                    Text(
-                      game['rating']!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
-                      ),
+              );
+            },
+            child: Container(
+              width: 140,
+              margin: const EdgeInsets.only(right: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      randomPhoto(300, 300),
+                      width: 140,
+                      height: 140,
+                      fit: BoxFit.cover,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  game['size']!,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF9CA3AF),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    game['title']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    game['subtitle']!,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF6B7280),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Color(0xFFFBBF24), size: 14),
+                      const SizedBox(width: 2),
+                      Text(
+                        game['rating']!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1F2937),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    game['size']!,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF9CA3AF),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -596,15 +636,33 @@ class _RecommendedGamesList extends StatelessWidget {
 
 class _TopChartsSection extends StatelessWidget {
   const _TopChartsSection();
-  
+
   @override
   Widget build(BuildContext context) {
     final games = [
-      {'rank': '1', 'title': 'Bible Stories', 'subtitle': 'Interactive stories', 'rating': '4.9', 'category': 'Educational'},
-      {'rank': '2', 'title': 'Faith Quiz', 'subtitle': 'Test your knowledge', 'rating': '4.8', 'category': 'Trivia'},
-      {'rank': '3', 'title': 'Prayer Journey', 'subtitle': 'Daily devotions', 'rating': '4.7', 'category': 'Lifestyle'},
+      {
+        'rank': '1',
+        'title': 'Bible Stories',
+        'subtitle': 'Interactive stories',
+        'rating': '4.9',
+        'category': 'Educational'
+      },
+      {
+        'rank': '2',
+        'title': 'Faith Quiz',
+        'subtitle': 'Test your knowledge',
+        'rating': '4.8',
+        'category': 'Trivia'
+      },
+      {
+        'rank': '3',
+        'title': 'Prayer Journey',
+        'subtitle': 'Daily devotions',
+        'rating': '4.7',
+        'category': 'Lifestyle'
+      },
     ];
-    
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -622,11 +680,12 @@ class _TopChartsSection extends StatelessWidget {
         children: games.asMap().entries.map((entry) {
           final game = entry.value;
           final isLast = entry.key == games.length - 1;
-          
+
           return Column(
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 leading: Container(
                   width: 56,
                   height: 56,
@@ -694,7 +753,8 @@ class _TopChartsSection extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Color(0xFFFBBF24), size: 14),
+                          const Icon(Icons.star,
+                              color: Color(0xFFFBBF24), size: 14),
                           const SizedBox(width: 2),
                           Text(
                             game['rating']!,
@@ -722,13 +782,14 @@ class _TopChartsSection extends StatelessWidget {
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xFFF3F4F6),
                     foregroundColor: const Color(0xFF667EEA),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: const Text(
-                    'Install',
+                    'Play',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
@@ -736,8 +797,7 @@ class _TopChartsSection extends StatelessWidget {
                   ),
                 ),
               ),
-              if (!isLast)
-                const Divider(height: 1, indent: 88, endIndent: 16),
+              if (!isLast) const Divider(height: 1, indent: 88, endIndent: 16),
             ],
           );
         }).toList(),
@@ -746,60 +806,275 @@ class _TopChartsSection extends StatelessWidget {
   }
 }
 
-class _NewUpdatedGamesList extends StatelessWidget {
-  const _NewUpdatedGamesList();
-  
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return Container(
-            width: 100,
-            margin: const EdgeInsets.only(right: 12),
-            child: Column(
-              children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      randomPhoto(200, 200),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+  class _NewUpdatedGamesList extends StatefulWidget {
+    const _NewUpdatedGamesList();
+
+    @override
+    State<_NewUpdatedGamesList> createState() => _NewUpdatedGamesListState();
   }
-}
+
+  class _NewUpdatedGamesListState extends State<_NewUpdatedGamesList> {
+    final games = [
+      {
+        'title': 'Bible Heroes',
+        'status': 'NEW',
+        'color': const Color(0xFFEC4899),
+        'icon': Icons.military_tech
+      },
+      {
+        'title': 'Praise Party',
+        'status': 'UPDATED',
+        'color': const Color(0xFF8B5CF6),
+        'icon': Icons.music_note
+      },
+      {
+        'title': 'Faith Builder',
+        'status': 'NEW',
+        'color': const Color(0xFFF59E0B),
+        'icon': Icons.construction
+      },
+      {
+        'title': 'Scripture Rush',
+        'status': 'UPDATED',
+        'color': const Color(0xFF10B981),
+        'icon': Icons.flash_on
+      },
+      {
+        'title': 'Angel Quest',
+        'status': 'NEW',
+        'color': const Color(0xFF3B82F6),
+        'icon': Icons.auto_awesome
+      },
+      {
+        'title': 'Prayer Power',
+        'status': 'UPDATED',
+        'color': const Color(0xFFEF4444),
+        'icon': Icons.favorite
+      },
+    ];
+
+    @override
+    Widget build(BuildContext context) {
+      return SizedBox(
+        height: 200,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          itemCount: games.length,
+          itemBuilder: (context, index) {
+            final game = games[index];
+            final isNew = game['status'] == 'NEW';
+
+            return GestureDetector(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Starting ${game['title']}...'),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+              },
+              child: Container(
+                width: 140,
+                margin: const EdgeInsets.only(right: 12),
+                child: Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Main game card with gradient
+                        Container(
+                          width: 140,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                (game['color'] as Color).withOpacity(0.7),
+                                game['color'] as Color,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: (game['color'] as Color).withOpacity(0.4),
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Stack(
+                              children: [
+                                // Background pattern
+                                Positioned.fill(
+                                  child: Opacity(
+                                    opacity: 0.2,
+                                    child: Image.network(
+                                      randomPhoto(300, 300),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                // Icon overlay
+                                Center(
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      game['icon'] as IconData,
+                                      color: Colors.white,
+                                      size: 32,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // NEW/UPDATED Badge
+                        Positioned(
+                          top: -8,
+                          right: -8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: isNew
+                                    ? [
+                                        const Color(0xFFFFD700),
+                                        const Color(0xFFFFA500)
+                                      ]
+                                    : [
+                                        const Color(0xFF06B6D4),
+                                        const Color(0xFF0284C7)
+                                      ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (isNew
+                                          ? const Color(0xFFFFD700)
+                                          : const Color(0xFF06B6D4))
+                                      .withOpacity(0.5),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  isNew ? Icons.new_releases : Icons.update,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  game['status'] as String,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Sparkle effect
+                        if (isNew)
+                          Positioned(
+                            top: 10,
+                            left: 10,
+                            child: Icon(
+                              Icons.auto_awesome,
+                              color: Colors.white.withOpacity(0.8),
+                              size: 20,
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    // Game title
+                    Text(
+                      game['title'] as String,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1F2937),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    // Play button
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: (game['color'] as Color).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.play_arrow,
+                            size: 14,
+                            color: game['color'] as Color,
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            'PLAY',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: game['color'] as Color,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
+  }
 
 class _CategoryChipsRow extends StatelessWidget {
   const _CategoryChipsRow();
-  
+
   @override
   Widget build(BuildContext context) {
-    final categories = ['All', 'Trivia', 'Educational', 'Puzzle', 'Prayer', 'Stories'];
-    
+    final categories = [
+      'All',
+      'Trivia',
+      'Educational',
+      'Puzzle',
+      'Prayer',
+      'Stories'
+    ];
+
     return SizedBox(
       height: 40,
       child: ListView.builder(
@@ -836,16 +1111,32 @@ class _CategoryChipsRow extends StatelessWidget {
 
 class _CollectionsGrid extends StatelessWidget {
   const _CollectionsGrid();
-  
+
   @override
   Widget build(BuildContext context) {
     final collections = [
-      {'title': 'Family Games', 'icon': Icons.family_restroom, 'color': const Color(0xFFEC4899)},
-      {'title': 'Quick Play', 'icon': Icons.flash_on, 'color': const Color(0xFFF59E0B)},
-      {'title': 'Daily Devotions', 'icon': Icons.today, 'color': const Color(0xFF8B5CF6)},
-      {'title': 'Learning Path', 'icon': Icons.school, 'color': const Color(0xFF10B981)},
+      {
+        'title': 'Family Games',
+        'icon': Icons.family_restroom,
+        'color': const Color(0xFFEC4899)
+      },
+      {
+        'title': 'Quick Play',
+        'icon': Icons.flash_on,
+        'color': const Color(0xFFF59E0B)
+      },
+      {
+        'title': 'Daily Devotions',
+        'icon': Icons.today,
+        'color': const Color(0xFF8B5CF6)
+      },
+      {
+        'title': 'Learning Path',
+        'icon': Icons.school,
+        'color': const Color(0xFF10B981)
+      },
     ];
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GridView.builder(
@@ -882,7 +1173,14 @@ class _CollectionsGrid extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Opening ${collection['title']} games...'),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                },
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -914,10 +1212,6 @@ class _CollectionsGrid extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 // // ignore_for_file: deprecated_member_use
 

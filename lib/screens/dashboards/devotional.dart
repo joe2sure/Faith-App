@@ -334,7 +334,7 @@ class _DevotionalDashboardScreenState extends State<DevotionalDashboardScreen>
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FC),
       appBar: const AppTopBar(
-        title: 'Daily Devotional',
+        title: 'Devotional',
         actions: [
           Padding(padding: EdgeInsets.only(right: 25), child: Icon(Icons.notifications)),
           Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.settings)),

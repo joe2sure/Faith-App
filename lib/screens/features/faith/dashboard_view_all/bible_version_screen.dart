@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../../common/reusable_widget.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/themes/text_styles.dart';
 
 class BibleVersionsScreen extends StatefulWidget {
   const BibleVersionsScreen({super.key});
@@ -16,7 +19,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -30,20 +33,27 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bible Versions & Commentaries'),
-        backgroundColor: Colors.blue,
+        title: const Text('Bible Versions'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: AppColors.blueGradient,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
+          indicatorWeight: 3,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
+          labelStyle:
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           tabs: const [
             Tab(text: 'Popular'),
-            Tab(text: 'Languages'),
+            Tab(text: 'All Versions'),
             Tab(text: 'Study Bibles'),
-            Tab(text: 'Audio'),
           ],
         ),
       ),
@@ -53,10 +63,10 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: AppColors.primaryBlue,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blue.withOpacity(0.3),
+                  color: AppColors.primaryBlue.withOpacity(0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),
@@ -81,7 +91,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                         });
                       },
                       decoration: const InputDecoration(
-                        hintText: 'Search Bible versions and commentaries...',
+                        hintText: 'Search Bible versions...',
                         border: InputBorder.none,
                       ),
                     ),
@@ -107,9 +117,8 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
               controller: _tabController,
               children: [
                 _buildVersionsList(_getPopularVersions()),
-                _buildVersionsList(_getLanguageVersions()),
+                _buildVersionsList(_getAllVersions()),
                 _buildVersionsList(_getStudyBibles()),
-                _buildVersionsList(_getAudioBibles()),
               ],
             ),
           ),
@@ -163,7 +172,8 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "New American Bible (NAB)",
         "subtitle": "Catholic Standard Version",
         "language": "English",
-        "description": "Official Bible used in the Catholic Church in the United States. Features modern language and scholarly translation.",
+        "description":
+            "Official Bible used in the Catholic Church in the United States. Features modern language and scholarly translation.",
         "size": "15.2 MB",
         "features": ["Cross-references", "Footnotes", "Maps"],
         "rating": 4.8,
@@ -171,12 +181,29 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "type": "bible"
       },
       {
+        "title": "New Revised Standard Version (NRSV)",
+        "subtitle": "Catholic Edition",
+        "language": "English",
+        "description":
+            "Widely respected translation known for accuracy and readability. Includes deuterocanonical books.",
+        "size": "14.8 MB",
+        "features": ["Academic Standard", "Ecumenical", "Study Notes"],
+        "rating": 4.9,
+        "downloads": "1.8M+",
+        "type": "bible"
+      },
+      {
         "title": "Douay-Rheims Bible",
         "subtitle": "Traditional Catholic Translation",
         "language": "English",
-        "description": "Classic Catholic English translation from the Latin Vulgate. Beloved for its traditional language and accuracy.",
+        "description":
+            "Classic Catholic English translation from the Latin Vulgate. Beloved for its traditional language and accuracy.",
         "size": "12.8 MB",
-        "features": ["Traditional Language", "Deuterocanonical Books", "Historical Notes"],
+        "features": [
+          "Traditional Language",
+          "Deuterocanonical Books",
+          "Historical Notes"
+        ],
         "rating": 4.9,
         "downloads": "1.5M+",
         "type": "bible"
@@ -185,36 +212,185 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Jerusalem Bible",
         "subtitle": "Catholic Study Bible",
         "language": "English",
-        "description": "Scholarly Catholic translation with extensive notes and commentary from French biblical scholars.",
+        "description":
+            "Scholarly Catholic translation with extensive notes and commentary from French biblical scholars.",
         "size": "28.5 MB",
-        "features": ["Extensive Notes", "Cross-references", "Maps", "Study Aids"],
+        "features": [
+          "Extensive Notes",
+          "Cross-references",
+          "Maps",
+          "Study Aids"
+        ],
         "rating": 4.7,
         "downloads": "800K+",
         "type": "study"
       },
-      {
-        "title": "New Jerusalem Bible",
-        "subtitle": "Updated Catholic Translation",
-        "language": "English",
-        "description": "Revised edition of the Jerusalem Bible with updated scholarship and inclusive language options.",
-        "size": "25.3 MB",
-        "features": ["Modern Translation", "Updated Notes", "Inclusive Language"],
-        "rating": 4.6,
-        "downloads": "600K+",
-        "type": "bible"
-      },
     ];
   }
 
-  List<Map<String, dynamic>> _getLanguageVersions() {
+  List<Map<String, dynamic>> _getAllVersions() {
     return [
+      // English Versions
+      {
+        "title": "New American Bible (NAB)",
+        "subtitle": "Catholic Standard - English",
+        "language": "English",
+        "description":
+            "Official Bible used in the Catholic Church in the United States.",
+        "size": "15.2 MB",
+        "features": ["Cross-references", "Footnotes", "Maps"],
+        "rating": 4.8,
+        "downloads": "2M+",
+        "type": "bible"
+      },
+      {
+        "title": "NRSV Catholic Edition",
+        "subtitle": "Revised Standard - English",
+        "language": "English",
+        "description":
+            "Academic standard translation with deuterocanonical books.",
+        "size": "14.8 MB",
+        "features": ["Scholarly", "Liturgical", "Study Notes"],
+        "rating": 4.9,
+        "downloads": "1.8M+",
+        "type": "bible"
+      },
+      {
+        "title": "Douay-Rheims",
+        "subtitle": "Traditional Catholic - English",
+        "language": "English",
+        "description": "Classic Catholic translation from Latin Vulgate.",
+        "size": "12.8 MB",
+        "features": ["Traditional", "Deuterocanonical", "Historical"],
+        "rating": 4.9,
+        "downloads": "1.5M+",
+        "type": "bible"
+      },
+      {
+        "title": "Revised Standard Version (RSV-CE)",
+        "subtitle": "Catholic Edition - English",
+        "language": "English",
+        "description": "Reliable translation approved for Catholic use.",
+        "size": "13.5 MB",
+        "features": ["Ecumenical", "Accurate", "Traditional"],
+        "rating": 4.7,
+        "downloads": "1.2M+",
+        "type": "bible"
+      },
+
+      // Nigerian Languages
+      {
+        "title": "Baibul Nsọ (Igbo)",
+        "subtitle": "Igbo Catholic Bible",
+        "language": "Igbo",
+        "description":
+            "Complete Catholic Bible translation in Igbo language for Nigerian Catholics.",
+        "size": "18.3 MB",
+        "features": ["Complete Bible", "Cultural Context", "Audio Available"],
+        "rating": 4.8,
+        "downloads": "450K+",
+        "type": "bible"
+      },
+      {
+        "title": "Littafi Mai Tsarki (Hausa)",
+        "subtitle": "Hausa Catholic Bible",
+        "language": "Hausa",
+        "description":
+            "Catholic Bible in Hausa, serving Northern Nigerian communities.",
+        "size": "17.9 MB",
+        "features": ["Complete Bible", "Hausa Translation", "Audio"],
+        "rating": 4.7,
+        "downloads": "380K+",
+        "type": "bible"
+      },
+      {
+        "title": "Bíbélì Mímọ́ (Yoruba)",
+        "subtitle": "Yoruba Catholic Bible",
+        "language": "Yoruba",
+        "description":
+            "Catholic Bible translation for Yoruba-speaking Catholics in Nigeria.",
+        "size": "18.1 MB",
+        "features": ["Complete Bible", "Yoruba Language", "Audio Support"],
+        "rating": 4.9,
+        "downloads": "520K+",
+        "type": "bible"
+      },
+
+      // Filipino Languages
+      {
+        "title": "Ang Bibliya (Tagalog)",
+        "subtitle": "Tagalog Catholic Bible",
+        "language": "Tagalog",
+        "description":
+            "Catholic Bible in Tagalog for Filipino communities worldwide.",
+        "size": "19.2 MB",
+        "features": ["Complete Bible", "Filipino Context", "Audio"],
+        "rating": 4.8,
+        "downloads": "1.2M+",
+        "type": "bible"
+      },
+      {
+        "title": "Ang Bibliya (Bisaya/Cebuano)",
+        "subtitle": "Cebuano Catholic Bible",
+        "language": "Bisaya",
+        "description":
+            "Catholic Bible translation for Visayan-speaking Filipino Catholics.",
+        "size": "18.8 MB",
+        "features": ["Complete Bible", "Cebuano Translation", "Audio"],
+        "rating": 4.7,
+        "downloads": "890K+",
+        "type": "bible"
+      },
+
+      // African Languages
+      {
+        "title": "Biblia Takatifu (Swahili)",
+        "subtitle": "Swahili Catholic Bible",
+        "language": "Swahili",
+        "description":
+            "Catholic Bible in Swahili for East African communities.",
+        "size": "17.5 MB",
+        "features": ["Complete Bible", "East African", "Audio"],
+        "rating": 4.8,
+        "downloads": "750K+",
+        "type": "bible"
+      },
+
+      // Catholic Bibles
+      {
+        "title": "Catholic Youth Bible (NRSV)",
+        "subtitle": "Youth Edition",
+        "language": "English",
+        "description":
+            "Bible designed for young Catholics with relatable content and study tools.",
+        "size": "32.4 MB",
+        "features": ["Youth Focused", "Study Articles", "Life Application"],
+        "rating": 4.9,
+        "downloads": "620K+",
+        "type": "study"
+      },
+      {
+        "title": "Good News Bible (Catholic Edition)",
+        "subtitle": "Today's English Version",
+        "language": "English",
+        "description":
+            "Clear, simple language translation approved for Catholic use.",
+        "size": "13.2 MB",
+        "features": ["Easy Reading", "Modern Language", "Illustrations"],
+        "rating": 4.6,
+        "downloads": "540K+",
+        "type": "bible"
+      },
+
+      // Other Languages
       {
         "title": "Biblia de Jerusalén",
         "subtitle": "Spanish Catholic Bible",
         "language": "Spanish",
-        "description": "Spanish translation of the Jerusalem Bible with Catholic commentary and extensive study notes.",
+        "description":
+            "Spanish translation of the Jerusalem Bible with Catholic commentary.",
         "size": "22.1 MB",
-        "features": ["Notas de Estudio", "Referencias Cruzadas", "Mapas"],
+        "features": ["Notas de Estudio", "Referencias", "Mapas"],
         "rating": 4.8,
         "downloads": "1.2M+",
         "type": "study"
@@ -223,7 +399,8 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Bible de Jérusalem",
         "subtitle": "French Catholic Bible",
         "language": "French",
-        "description": "Original French Catholic translation with scholarly notes from École Biblique de Jérusalem.",
+        "description":
+            "Original French Catholic translation with scholarly notes.",
         "size": "26.7 MB",
         "features": ["Notes Savantes", "Références", "Cartes"],
         "rating": 4.9,
@@ -234,7 +411,8 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Bibbia di Gerusalemme",
         "subtitle": "Italian Catholic Bible",
         "language": "Italian",
-        "description": "Italian Catholic translation with comprehensive commentary and study materials.",
+        "description":
+            "Italian Catholic translation with comprehensive commentary.",
         "size": "24.3 MB",
         "features": ["Note di Studio", "Riferimenti", "Mappe"],
         "rating": 4.7,
@@ -245,7 +423,8 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Bíblia de Jerusalém",
         "subtitle": "Portuguese Catholic Bible",
         "language": "Portuguese",
-        "description": "Portuguese Catholic translation widely used in Brazil and Portugal.",
+        "description":
+            "Portuguese Catholic translation for Brazil and Portugal.",
         "size": "21.8 MB",
         "features": ["Notas de Estudo", "Referências", "Mapas"],
         "rating": 4.8,
@@ -256,7 +435,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Einheitsübersetzung",
         "subtitle": "German Catholic Bible",
         "language": "German",
-        "description": "Standard German Catholic Bible translation used in liturgy and study.",
+        "description": "Standard German Catholic Bible for liturgy and study.",
         "size": "19.4 MB",
         "features": ["Liturgische Texte", "Anmerkungen", "Karten"],
         "rating": 4.6,
@@ -272,9 +451,16 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Catholic Study Bible (NAB)",
         "subtitle": "Complete Study Edition",
         "language": "English",
-        "description": "New American Bible with extensive Catholic commentary, study notes, and supplementary materials.",
+        "description":
+            "New American Bible with extensive Catholic commentary, study notes, and supplementary materials.",
         "size": "45.2 MB",
-        "features": ["Full Commentary", "Study Articles", "Maps", "Timeline", "Concordance"],
+        "features": [
+          "Full Commentary",
+          "Study Articles",
+          "Maps",
+          "Timeline",
+          "Concordance"
+        ],
         "rating": 4.9,
         "downloads": "1.8M+",
         "type": "study"
@@ -283,9 +469,14 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Ignatius Catholic Study Bible",
         "subtitle": "RSV with Scott Hahn Commentary",
         "language": "English",
-        "description": "Study Bible with commentary by Scott Hahn and Curtis Mitch, featuring Catholic interpretation.",
+        "description":
+            "Study Bible with commentary by Scott Hahn and Curtis Mitch, featuring Catholic interpretation.",
         "size": "52.7 MB",
-        "features": ["Scott Hahn Commentary", "Catholic Interpretation", "Study Questions"],
+        "features": [
+          "Scott Hahn Commentary",
+          "Catholic Interpretation",
+          "Study Questions"
+        ],
         "rating": 4.8,
         "downloads": "1.3M+",
         "type": "study"
@@ -294,9 +485,14 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Haydock Catholic Commentary",
         "subtitle": "Traditional Commentary",
         "language": "English",
-        "description": "Classical Catholic biblical commentary from the 19th century, still highly regarded.",
+        "description":
+            "Classical Catholic biblical commentary from the 19th century, still highly regarded.",
         "size": "38.9 MB",
-        "features": ["Traditional Interpretation", "Church Fathers Quotes", "Historical Context"],
+        "features": [
+          "Traditional Interpretation",
+          "Church Fathers Quotes",
+          "Historical Context"
+        ],
         "rating": 4.7,
         "downloads": "400K+",
         "type": "commentary"
@@ -305,9 +501,14 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Navarre Bible Commentary",
         "subtitle": "University of Navarre",
         "language": "English",
-        "description": "Comprehensive commentary series from the University of Navarre with spiritual and theological insights.",
+        "description":
+            "Comprehensive commentary series from the University of Navarre with spiritual and theological insights.",
         "size": "67.3 MB",
-        "features": ["Comprehensive Commentary", "Spiritual Insights", "Theological Analysis"],
+        "features": [
+          "Comprehensive Commentary",
+          "Spiritual Insights",
+          "Theological Analysis"
+        ],
         "rating": 4.9,
         "downloads": "850K+",
         "type": "commentary"
@@ -316,61 +517,33 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
         "title": "Catholic Commentary on Sacred Scripture",
         "subtitle": "Baker Academic Series",
         "language": "English",
-        "description": "Modern Catholic commentary series with contemporary scholarship and pastoral insights.",
+        "description":
+            "Modern Catholic commentary series with contemporary scholarship and pastoral insights.",
         "size": "41.6 MB",
-        "features": ["Modern Scholarship", "Pastoral Application", "Study Guides"],
+        "features": [
+          "Modern Scholarship",
+          "Pastoral Application",
+          "Study Guides"
+        ],
         "rating": 4.6,
         "downloads": "320K+",
         "type": "commentary"
       },
-    ];
-  }
-
-  List<Map<String, dynamic>> _getAudioBibles() {
-    return [
       {
-        "title": "NAB Audio Bible",
-        "subtitle": "Professional Narration",
+        "title": "The New Jerome Biblical Commentary",
+        "subtitle": "Comprehensive Catholic Commentary",
         "language": "English",
-        "description": "Complete New American Bible narrated by professional voice actors with background music.",
-        "size": "1.2 GB",
-        "features": ["Professional Narration", "Background Music", "Offline Playback"],
+        "description":
+            "Highly respected one-volume commentary by leading Catholic scholars.",
+        "size": "58.4 MB",
+        "features": [
+          "Scholarly Analysis",
+          "Historical Context",
+          "Theological Insights"
+        ],
         "rating": 4.8,
-        "downloads": "900K+",
-        "type": "audio"
-      },
-      {
-        "title": "Douay-Rheims Audio",
-        "subtitle": "Traditional Reading",
-        "language": "English",
-        "description": "Audio version of the classic Catholic translation with reverent narration.",
-        "size": "980 MB",
-        "features": ["Traditional Text", "Clear Narration", "Chapter Navigation"],
-        "rating": 4.7,
-        "downloads": "600K+",
-        "type": "audio"
-      },
-      {
-        "title": "Spanish Audio Bible",
-        "subtitle": "Biblia Católica Reina-Valera",
-        "language": "Spanish",
-        "description": "Spanish Catholic Bible audio narration with clear pronunciation and pacing.",
-        "size": "1.1 GB",
-        "features": ["Narración Clara", "Navegación por Capítulos", "Reproducción Offline"],
-        "rating": 4.9,
-        "downloads": "1.5M+",
-        "type": "audio"
-      },
-      {
-        "title": "French Audio Bible",
-        "subtitle": "Bible Louis Segond Catholique",
-        "language": "French",
-        "description": "French Catholic Bible audio with professional French narration.",
-        "size": "1.0 GB",
-        "features": ["Narration Professionnelle", "Navigation Facile", "Qualité HD"],
-        "rating": 4.6,
-        "downloads": "450K+",
-        "type": "audio"
+        "downloads": "580K+",
+        "type": "commentary"
       },
     ];
   }
@@ -406,7 +579,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        version["title"]!,
+                        version["title"],
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -415,7 +588,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        version["subtitle"]!,
+                        version["subtitle"],
                         style: TextStyle(
                           fontSize: 14,
                           color: _getTypeColor(version["type"]),
@@ -426,13 +599,14 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    version["language"]!,
+                    version["language"],
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.black87,
@@ -447,7 +621,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
 
             // Description
             Text(
-              version["description"]!,
+              version["description"],
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
@@ -468,14 +642,14 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: AppColors.primaryBlue.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           feature,
                           style: const TextStyle(
                             fontSize: 11,
-                            color: Colors.blue,
+                            color: AppColors.primaryBlue,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -490,11 +664,13 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
               children: [
                 Row(
                   children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16),
+                    const Icon(Icons.star,
+                        color: AppColors.accentGold, size: 16),
                     const SizedBox(width: 4),
                     Text(
                       version["rating"].toString(),
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -525,16 +701,16 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
 
             const SizedBox(height: 16),
 
-            // Action Buttons
+            // Action Buttons - Changed from Download/Preview to Read/Audio
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      _showDownloadDialog(version);
+                      _showReadDialog(version);
                     },
-                    icon: const Icon(Icons.download, size: 18),
-                    label: const Text('Download'),
+                    icon: const Icon(Icons.menu_book, size: 18),
+                    label: const Text('Read'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _getTypeColor(version["type"]),
                       foregroundColor: Colors.white,
@@ -549,15 +725,19 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () {
-                      _showPreviewDialog(version);
+                      _showAudioDialog(version);
                     },
-                    icon: const Icon(Icons.preview, size: 18),
-                    label: const Text('Preview'),
+                    icon: const Icon(Icons.headphones, size: 18),
+                    label: const Text('Audio'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: _getTypeColor(version["type"]),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
+                      ),
+                      side: BorderSide(
+                        color: _getTypeColor(version["type"]),
+                        width: 1.5,
                       ),
                     ),
                   ),
@@ -573,15 +753,15 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
   Color _getTypeColor(String type) {
     switch (type) {
       case 'bible':
-        return Colors.blue;
+        return AppColors.primaryBlue;
       case 'study':
-        return Colors.green;
+        return AppColors.primaryPurple;
       case 'commentary':
-        return Colors.orange;
+        return AppColors.accentTeal;
       case 'audio':
-        return Colors.purple;
+        return AppColors.accentGold;
       default:
-        return Colors.blue;
+        return AppColors.primaryBlue;
     }
   }
 
@@ -600,7 +780,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
     }
   }
 
-  void _showDownloadDialog(Map<String, dynamic> version) {
+  void _showReadDialog(Map<String, dynamic> version) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -608,27 +788,80 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: Text('Download ${version["title"]}'),
+          title: Row(
+            children: [
+              Icon(Icons.menu_book, color: _getTypeColor(version["type"])),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Read ${version["title"]}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Size: ${version["size"]}'),
-              const SizedBox(height: 8),
-              const Text('This will download the complete version including:'),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: _getTypeColor(version["type"]).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sample: John 3:16',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _getTypeColor(version["type"]),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      '"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Features included:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
               const SizedBox(height: 8),
               ...((version["features"] as List<String>).map(
                 (feature) => Padding(
-                  padding: const EdgeInsets.only(left: 16, bottom: 4),
+                  padding: const EdgeInsets.only(left: 8, bottom: 4),
                   child: Row(
                     children: [
-                      const Icon(Icons.check, size: 16, color: Colors.green),
+                      Icon(
+                        Icons.check_circle,
+                        size: 16,
+                        color: _getTypeColor(version["type"]),
+                      ),
                       const SizedBox(width: 8),
-                      Text(feature),
+                      Expanded(child: Text(feature)),
                     ],
                   ),
                 ),
               )),
+              const SizedBox(height: 8),
+              Text(
+                'Size: ${version["size"]}',
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
             ],
           ),
           actions: [
@@ -641,15 +874,21 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Downloading ${version["title"]}...'),
+                    content: Text('Opening ${version["title"]} for reading...'),
                     backgroundColor: _getTypeColor(version["type"]),
+                    action: SnackBarAction(
+                      label: 'OK',
+                      textColor: Colors.white,
+                      onPressed: () {},
+                    ),
                   ),
                 );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _getTypeColor(version["type"]),
+                foregroundColor: Colors.white,
               ),
-              child: const Text('Download'),
+              child: const Text('Start Reading'),
             ),
           ],
         );
@@ -657,7 +896,7 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
     );
   }
 
-  void _showPreviewDialog(Map<String, dynamic> version) {
+  void _showAudioDialog(Map<String, dynamic> version) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -665,47 +904,821 @@ class _BibleVersionsScreenState extends State<BibleVersionsScreen>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: Text('Preview ${version["title"]}'),
+          title: Row(
+            children: [
+              Icon(Icons.headphones, color: _getTypeColor(version["type"])),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Audio - ${version["title"]}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: _getTypeColor(version["type"]).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
-                  'John 3:16\n\n"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                    height: 1.5,
-                  ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.graphic_eq,
+                      size: 48,
+                      color: _getTypeColor(version["type"]),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Audio Bible Features:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _getTypeColor(version["type"]),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('This is a sample preview of the biblical text.'),
+              _buildAudioFeature(
+                  Icons.record_voice_over, 'Professional narration'),
+              _buildAudioFeature(Icons.offline_pin, 'Offline playback'),
+              _buildAudioFeature(Icons.speed, 'Adjustable speed'),
+              _buildAudioFeature(Icons.timer, 'Sleep timer'),
+              _buildAudioFeature(Icons.bookmark, 'Bookmark chapters'),
+              const SizedBox(height: 12),
+              Text(
+                'Audio Size: ${version["size"]} (Download required)',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: const Text('Cancel'),
             ),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).pop();
-                _showDownloadDialog(version);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Preparing audio for ${version["title"]}...'),
+                    backgroundColor: _getTypeColor(version["type"]),
+                    duration: const Duration(seconds: 3),
+                    action: SnackBarAction(
+                      label: 'OK',
+                      textColor: Colors.white,
+                      onPressed: () {},
+                    ),
+                  ),
+                );
               },
+              icon: const Icon(Icons.play_arrow, size: 18),
+              label: const Text('Play Audio'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _getTypeColor(version["type"]),
+                foregroundColor: Colors.white,
               ),
-              child: const Text('Download'),
             ),
           ],
         );
       },
     );
   }
+
+  Widget _buildAudioFeature(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: AppColors.primaryBlue),
+          const SizedBox(width: 12),
+          Text(text, style: const TextStyle(fontSize: 14)),
+        ],
+      ),
+    );
+  }
 }
+
+
+// import 'package:flutter/material.dart';
+
+// class BibleVersionsScreen extends StatefulWidget {
+//   const BibleVersionsScreen({super.key});
+
+//   @override
+//   State<BibleVersionsScreen> createState() => _BibleVersionsScreenState();
+// }
+
+// class _BibleVersionsScreenState extends State<BibleVersionsScreen>
+//     with SingleTickerProviderStateMixin {
+//   late TabController _tabController;
+//   final TextEditingController _searchController = TextEditingController();
+//   String _searchQuery = '';
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _tabController = TabController(length: 4, vsync: this);
+//   }
+
+//   @override
+//   void dispose() {
+//     _tabController.dispose();
+//     _searchController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Bible Versions & Commentaries'),
+//         backgroundColor: Colors.blue,
+//         foregroundColor: Colors.white,
+//         elevation: 0,
+//         bottom: TabBar(
+//           controller: _tabController,
+//           indicatorColor: Colors.white,
+//           labelColor: Colors.white,
+//           unselectedLabelColor: Colors.white70,
+//           tabs: const [
+//             Tab(text: 'Popular'),
+//             Tab(text: 'Languages'),
+//             Tab(text: 'Study Bibles'),
+//             Tab(text: 'Audio'),
+//           ],
+//         ),
+//       ),
+//       body: Column(
+//         children: [
+//           // Search Bar
+//           Container(
+//             padding: const EdgeInsets.all(16),
+//             decoration: BoxDecoration(
+//               color: Colors.blue,
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: Colors.blue.withOpacity(0.3),
+//                   blurRadius: 10,
+//                   offset: const Offset(0, 5),
+//                 ),
+//               ],
+//             ),
+//             child: Container(
+//               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+//               decoration: BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.circular(12),
+//               ),
+//               child: Row(
+//                 children: [
+//                   const Icon(Icons.search, color: Colors.grey),
+//                   const SizedBox(width: 12),
+//                   Expanded(
+//                     child: TextField(
+//                       controller: _searchController,
+//                       onChanged: (value) {
+//                         setState(() {
+//                           _searchQuery = value.toLowerCase();
+//                         });
+//                       },
+//                       decoration: const InputDecoration(
+//                         hintText: 'Search Bible versions and commentaries...',
+//                         border: InputBorder.none,
+//                       ),
+//                     ),
+//                   ),
+//                   if (_searchQuery.isNotEmpty)
+//                     IconButton(
+//                       icon: const Icon(Icons.clear, color: Colors.grey),
+//                       onPressed: () {
+//                         setState(() {
+//                           _searchController.clear();
+//                           _searchQuery = '';
+//                         });
+//                       },
+//                     ),
+//                 ],
+//               ),
+//             ),
+//           ),
+
+//           // Tab Content
+//           Expanded(
+//             child: TabBarView(
+//               controller: _tabController,
+//               children: [
+//                 _buildVersionsList(_getPopularVersions()),
+//                 _buildVersionsList(_getLanguageVersions()),
+//                 _buildVersionsList(_getStudyBibles()),
+//                 _buildVersionsList(_getAudioBibles()),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget _buildVersionsList(List<Map<String, dynamic>> versions) {
+//     final filteredVersions = _searchQuery.isEmpty
+//         ? versions
+//         : versions.where((version) {
+//             return version["title"].toLowerCase().contains(_searchQuery) ||
+//                 version["subtitle"].toLowerCase().contains(_searchQuery) ||
+//                 version["description"].toLowerCase().contains(_searchQuery);
+//           }).toList();
+
+//     if (filteredVersions.isEmpty) {
+//       return Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+//             const SizedBox(height: 16),
+//             Text(
+//               'No results found',
+//               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+//             ),
+//             const SizedBox(height: 8),
+//             Text(
+//               'Try a different search term',
+//               style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+//             ),
+//           ],
+//         ),
+//       );
+//     }
+
+//     return ListView.builder(
+//       padding: const EdgeInsets.all(16),
+//       itemCount: filteredVersions.length,
+//       itemBuilder: (context, index) {
+//         return _buildVersionCard(filteredVersions[index]);
+//       },
+//     );
+//   }
+
+//   List<Map<String, dynamic>> _getPopularVersions() {
+//     return [
+//       {
+//         "title": "New American Bible (NAB)",
+//         "subtitle": "Catholic Standard Version",
+//         "language": "English",
+//         "description": "Official Bible used in the Catholic Church in the United States. Features modern language and scholarly translation.",
+//         "size": "15.2 MB",
+//         "features": ["Cross-references", "Footnotes", "Maps"],
+//         "rating": 4.8,
+//         "downloads": "2M+",
+//         "type": "bible"
+//       },
+//       {
+//         "title": "Douay-Rheims Bible",
+//         "subtitle": "Traditional Catholic Translation",
+//         "language": "English",
+//         "description": "Classic Catholic English translation from the Latin Vulgate. Beloved for its traditional language and accuracy.",
+//         "size": "12.8 MB",
+//         "features": ["Traditional Language", "Deuterocanonical Books", "Historical Notes"],
+//         "rating": 4.9,
+//         "downloads": "1.5M+",
+//         "type": "bible"
+//       },
+//       {
+//         "title": "Jerusalem Bible",
+//         "subtitle": "Catholic Study Bible",
+//         "language": "English",
+//         "description": "Scholarly Catholic translation with extensive notes and commentary from French biblical scholars.",
+//         "size": "28.5 MB",
+//         "features": ["Extensive Notes", "Cross-references", "Maps", "Study Aids"],
+//         "rating": 4.7,
+//         "downloads": "800K+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "New Jerusalem Bible",
+//         "subtitle": "Updated Catholic Translation",
+//         "language": "English",
+//         "description": "Revised edition of the Jerusalem Bible with updated scholarship and inclusive language options.",
+//         "size": "25.3 MB",
+//         "features": ["Modern Translation", "Updated Notes", "Inclusive Language"],
+//         "rating": 4.6,
+//         "downloads": "600K+",
+//         "type": "bible"
+//       },
+//     ];
+//   }
+
+//   List<Map<String, dynamic>> _getLanguageVersions() {
+//     return [
+//       {
+//         "title": "Biblia de Jerusalén",
+//         "subtitle": "Spanish Catholic Bible",
+//         "language": "Spanish",
+//         "description": "Spanish translation of the Jerusalem Bible with Catholic commentary and extensive study notes.",
+//         "size": "22.1 MB",
+//         "features": ["Notas de Estudio", "Referencias Cruzadas", "Mapas"],
+//         "rating": 4.8,
+//         "downloads": "1.2M+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Bible de Jérusalem",
+//         "subtitle": "French Catholic Bible",
+//         "language": "French",
+//         "description": "Original French Catholic translation with scholarly notes from École Biblique de Jérusalem.",
+//         "size": "26.7 MB",
+//         "features": ["Notes Savantes", "Références", "Cartes"],
+//         "rating": 4.9,
+//         "downloads": "900K+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Bibbia di Gerusalemme",
+//         "subtitle": "Italian Catholic Bible",
+//         "language": "Italian",
+//         "description": "Italian Catholic translation with comprehensive commentary and study materials.",
+//         "size": "24.3 MB",
+//         "features": ["Note di Studio", "Riferimenti", "Mappe"],
+//         "rating": 4.7,
+//         "downloads": "750K+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Bíblia de Jerusalém",
+//         "subtitle": "Portuguese Catholic Bible",
+//         "language": "Portuguese",
+//         "description": "Portuguese Catholic translation widely used in Brazil and Portugal.",
+//         "size": "21.8 MB",
+//         "features": ["Notas de Estudo", "Referências", "Mapas"],
+//         "rating": 4.8,
+//         "downloads": "1.1M+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Einheitsübersetzung",
+//         "subtitle": "German Catholic Bible",
+//         "language": "German",
+//         "description": "Standard German Catholic Bible translation used in liturgy and study.",
+//         "size": "19.4 MB",
+//         "features": ["Liturgische Texte", "Anmerkungen", "Karten"],
+//         "rating": 4.6,
+//         "downloads": "650K+",
+//         "type": "bible"
+//       },
+//     ];
+//   }
+
+//   List<Map<String, dynamic>> _getStudyBibles() {
+//     return [
+//       {
+//         "title": "Catholic Study Bible (NAB)",
+//         "subtitle": "Complete Study Edition",
+//         "language": "English",
+//         "description": "New American Bible with extensive Catholic commentary, study notes, and supplementary materials.",
+//         "size": "45.2 MB",
+//         "features": ["Full Commentary", "Study Articles", "Maps", "Timeline", "Concordance"],
+//         "rating": 4.9,
+//         "downloads": "1.8M+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Ignatius Catholic Study Bible",
+//         "subtitle": "RSV with Scott Hahn Commentary",
+//         "language": "English",
+//         "description": "Study Bible with commentary by Scott Hahn and Curtis Mitch, featuring Catholic interpretation.",
+//         "size": "52.7 MB",
+//         "features": ["Scott Hahn Commentary", "Catholic Interpretation", "Study Questions"],
+//         "rating": 4.8,
+//         "downloads": "1.3M+",
+//         "type": "study"
+//       },
+//       {
+//         "title": "Haydock Catholic Commentary",
+//         "subtitle": "Traditional Commentary",
+//         "language": "English",
+//         "description": "Classical Catholic biblical commentary from the 19th century, still highly regarded.",
+//         "size": "38.9 MB",
+//         "features": ["Traditional Interpretation", "Church Fathers Quotes", "Historical Context"],
+//         "rating": 4.7,
+//         "downloads": "400K+",
+//         "type": "commentary"
+//       },
+//       {
+//         "title": "Navarre Bible Commentary",
+//         "subtitle": "University of Navarre",
+//         "language": "English",
+//         "description": "Comprehensive commentary series from the University of Navarre with spiritual and theological insights.",
+//         "size": "67.3 MB",
+//         "features": ["Comprehensive Commentary", "Spiritual Insights", "Theological Analysis"],
+//         "rating": 4.9,
+//         "downloads": "850K+",
+//         "type": "commentary"
+//       },
+//       {
+//         "title": "Catholic Commentary on Sacred Scripture",
+//         "subtitle": "Baker Academic Series",
+//         "language": "English",
+//         "description": "Modern Catholic commentary series with contemporary scholarship and pastoral insights.",
+//         "size": "41.6 MB",
+//         "features": ["Modern Scholarship", "Pastoral Application", "Study Guides"],
+//         "rating": 4.6,
+//         "downloads": "320K+",
+//         "type": "commentary"
+//       },
+//     ];
+//   }
+
+//   List<Map<String, dynamic>> _getAudioBibles() {
+//     return [
+//       {
+//         "title": "NAB Audio Bible",
+//         "subtitle": "Professional Narration",
+//         "language": "English",
+//         "description": "Complete New American Bible narrated by professional voice actors with background music.",
+//         "size": "1.2 GB",
+//         "features": ["Professional Narration", "Background Music", "Offline Playback"],
+//         "rating": 4.8,
+//         "downloads": "900K+",
+//         "type": "audio"
+//       },
+//       {
+//         "title": "Douay-Rheims Audio",
+//         "subtitle": "Traditional Reading",
+//         "language": "English",
+//         "description": "Audio version of the classic Catholic translation with reverent narration.",
+//         "size": "980 MB",
+//         "features": ["Traditional Text", "Clear Narration", "Chapter Navigation"],
+//         "rating": 4.7,
+//         "downloads": "600K+",
+//         "type": "audio"
+//       },
+//       {
+//         "title": "Spanish Audio Bible",
+//         "subtitle": "Biblia Católica Reina-Valera",
+//         "language": "Spanish",
+//         "description": "Spanish Catholic Bible audio narration with clear pronunciation and pacing.",
+//         "size": "1.1 GB",
+//         "features": ["Narración Clara", "Navegación por Capítulos", "Reproducción Offline"],
+//         "rating": 4.9,
+//         "downloads": "1.5M+",
+//         "type": "audio"
+//       },
+//       {
+//         "title": "French Audio Bible",
+//         "subtitle": "Bible Louis Segond Catholique",
+//         "language": "French",
+//         "description": "French Catholic Bible audio with professional French narration.",
+//         "size": "1.0 GB",
+//         "features": ["Narration Professionnelle", "Navigation Facile", "Qualité HD"],
+//         "rating": 4.6,
+//         "downloads": "450K+",
+//         "type": "audio"
+//       },
+//     ];
+//   }
+
+//   Widget _buildVersionCard(Map<String, dynamic> version) {
+//     return Card(
+//       margin: const EdgeInsets.only(bottom: 16),
+//       elevation: 4,
+//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             // Header
+//             Row(
+//               children: [
+//                 Container(
+//                   padding: const EdgeInsets.all(12),
+//                   decoration: BoxDecoration(
+//                     color: _getTypeColor(version["type"]).withOpacity(0.1),
+//                     borderRadius: BorderRadius.circular(12),
+//                   ),
+//                   child: Icon(
+//                     _getTypeIcon(version["type"]),
+//                     color: _getTypeColor(version["type"]),
+//                     size: 24,
+//                   ),
+//                 ),
+//                 const SizedBox(width: 12),
+//                 Expanded(
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         version["title"]!,
+//                         style: const TextStyle(
+//                           fontSize: 16,
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.black87,
+//                         ),
+//                       ),
+//                       const SizedBox(height: 2),
+//                       Text(
+//                         version["subtitle"]!,
+//                         style: TextStyle(
+//                           fontSize: 14,
+//                           color: _getTypeColor(version["type"]),
+//                           fontWeight: FontWeight.w500,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//                 Container(
+//                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+//                   decoration: BoxDecoration(
+//                     color: Colors.grey.withOpacity(0.1),
+//                     borderRadius: BorderRadius.circular(8),
+//                   ),
+//                   child: Text(
+//                     version["language"]!,
+//                     style: const TextStyle(
+//                       fontSize: 12,
+//                       color: Colors.black87,
+//                       fontWeight: FontWeight.w600,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+
+//             const SizedBox(height: 12),
+
+//             // Description
+//             Text(
+//               version["description"]!,
+//               style: TextStyle(
+//                 fontSize: 14,
+//                 color: Colors.grey[700],
+//                 height: 1.4,
+//               ),
+//             ),
+
+//             const SizedBox(height: 12),
+
+//             // Features
+//             Wrap(
+//               spacing: 8,
+//               runSpacing: 4,
+//               children: (version["features"] as List<String>)
+//                   .map((feature) => Container(
+//                         padding: const EdgeInsets.symmetric(
+//                           horizontal: 8,
+//                           vertical: 4,
+//                         ),
+//                         decoration: BoxDecoration(
+//                           color: Colors.blue.withOpacity(0.1),
+//                           borderRadius: BorderRadius.circular(12),
+//                         ),
+//                         child: Text(
+//                           feature,
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             color: Colors.blue,
+//                             fontWeight: FontWeight.w500,
+//                           ),
+//                         ),
+//                       ))
+//                   .toList(),
+//             ),
+
+//             const SizedBox(height: 12),
+
+//             // Stats
+//             Row(
+//               children: [
+//                 Row(
+//                   children: [
+//                     Icon(Icons.star, color: Colors.amber, size: 16),
+//                     const SizedBox(width: 4),
+//                     Text(
+//                       version["rating"].toString(),
+//                       style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+//                     ),
+//                   ],
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Row(
+//                   children: [
+//                     Icon(Icons.download, color: Colors.grey[600], size: 16),
+//                     const SizedBox(width: 4),
+//                     Text(
+//                       version["downloads"],
+//                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+//                     ),
+//                   ],
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Row(
+//                   children: [
+//                     Icon(Icons.storage, color: Colors.grey[600], size: 16),
+//                     const SizedBox(width: 4),
+//                     Text(
+//                       version["size"],
+//                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+
+//             const SizedBox(height: 16),
+
+//             // Action Buttons
+//             Row(
+//               children: [
+//                 Expanded(
+//                   child: ElevatedButton.icon(
+//                     onPressed: () {
+//                       _showDownloadDialog(version);
+//                     },
+//                     icon: const Icon(Icons.download, size: 18),
+//                     label: const Text('Download'),
+//                     style: ElevatedButton.styleFrom(
+//                       backgroundColor: _getTypeColor(version["type"]),
+//                       foregroundColor: Colors.white,
+//                       padding: const EdgeInsets.symmetric(vertical: 12),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(width: 12),
+//                 Expanded(
+//                   child: OutlinedButton.icon(
+//                     onPressed: () {
+//                       _showPreviewDialog(version);
+//                     },
+//                     icon: const Icon(Icons.preview, size: 18),
+//                     label: const Text('Preview'),
+//                     style: OutlinedButton.styleFrom(
+//                       foregroundColor: _getTypeColor(version["type"]),
+//                       padding: const EdgeInsets.symmetric(vertical: 12),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   Color _getTypeColor(String type) {
+//     switch (type) {
+//       case 'bible':
+//         return Colors.blue;
+//       case 'study':
+//         return Colors.green;
+//       case 'commentary':
+//         return Colors.orange;
+//       case 'audio':
+//         return Colors.purple;
+//       default:
+//         return Colors.blue;
+//     }
+//   }
+
+//   IconData _getTypeIcon(String type) {
+//     switch (type) {
+//       case 'bible':
+//         return Icons.menu_book;
+//       case 'study':
+//         return Icons.school;
+//       case 'commentary':
+//         return Icons.comment;
+//       case 'audio':
+//         return Icons.headphones;
+//       default:
+//         return Icons.menu_book;
+//     }
+//   }
+
+//   void _showDownloadDialog(Map<String, dynamic> version) {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(16),
+//           ),
+//           title: Text('Download ${version["title"]}'),
+//           content: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text('Size: ${version["size"]}'),
+//               const SizedBox(height: 8),
+//               const Text('This will download the complete version including:'),
+//               const SizedBox(height: 8),
+//               ...((version["features"] as List<String>).map(
+//                 (feature) => Padding(
+//                   padding: const EdgeInsets.only(left: 16, bottom: 4),
+//                   child: Row(
+//                     children: [
+//                       const Icon(Icons.check, size: 16, color: Colors.green),
+//                       const SizedBox(width: 8),
+//                       Text(feature),
+//                     ],
+//                   ),
+//                 ),
+//               )),
+//             ],
+//           ),
+//           actions: [
+//             TextButton(
+//               onPressed: () => Navigator.of(context).pop(),
+//               child: const Text('Cancel'),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text('Downloading ${version["title"]}...'),
+//                     backgroundColor: _getTypeColor(version["type"]),
+//                   ),
+//                 );
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: _getTypeColor(version["type"]),
+//               ),
+//               child: const Text('Download'),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+
+//   void _showPreviewDialog(Map<String, dynamic> version) {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(16),
+//           ),
+//           title: Text('Preview ${version["title"]}'),
+//           content: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.all(16),
+//                 decoration: BoxDecoration(
+//                   color: Colors.grey[100],
+//                   borderRadius: BorderRadius.circular(8),
+//                 ),
+//                 child: const Text(
+//                   'John 3:16\n\n"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."',
+//                   style: TextStyle(
+//                     fontSize: 16,
+//                     fontStyle: FontStyle.italic,
+//                     height: 1.5,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(height: 16),
+//               const Text('This is a sample preview of the biblical text.'),
+//             ],
+//           ),
+//           actions: [
+//             TextButton(
+//               onPressed: () => Navigator.of(context).pop(),
+//               child: const Text('Close'),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//                 _showDownloadDialog(version);
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: _getTypeColor(version["type"]),
+//               ),
+//               child: const Text('Download'),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
