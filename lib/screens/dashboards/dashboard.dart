@@ -1,6 +1,6 @@
 import 'package:faith_plus/common/custom_calendar.dart';
 import 'package:faith_plus/common/constants.dart' hide SectionHeader;
-import 'package:faith_plus/screens/features/faith/dashboard_detail/bible_readnow_screen.dart';
+import 'package:faith_plus/screens/features/faith/dashboard_detail/scripture_reading_screen.dart';
 import 'package:faith_plus/screens/features/faith/dashboard_detail/catholic_document_detail_screen.dart';
 import 'package:faith_plus/screens/features/faith/dashboard_detail/daily_challenge_screen.dart';
 import 'package:faith_plus/screens/features/faith/dashboard_detail/dashboard_read_biography.dart';
