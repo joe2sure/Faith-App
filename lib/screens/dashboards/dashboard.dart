@@ -39,7 +39,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
   late AnimationController _cardsAnimationController;
   late AnimationController _floatingAnimationController;
   late AnimationController _progressAnimationController;
-  
+
   late Animation<double> _headerSlideAnimation;
   late Animation<double> _cardsFadeAnimation;
   late Animation<double> _floatingAnimation;
@@ -56,34 +56,34 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
   int _currentQuoteIndex = 0;
   Timer? _quoteTimer;
 
-
-
-final List<Map<String, String>> _saintQuotes = [
-  {
-    "quote": "Faith seeking understanding.",
-    "author": "St. Anselm of Canterbury",
-  },
-  {
-    "quote": "To one who has faith, no explanation is necessary. To one without faith, no explanation is possible.",
-    "author": "St. Thomas Aquinas",
-  },
-  {
-    "quote": "Prayer is the place of refuge for every worry, a foundation for cheerfulness.",
-    "author": "St. John Chrysostom",
-  },
-  {
-    "quote": "The goal of a virtuous life is to become like God.",
-    "author": "St. Gregory of Nyssa",
-  },
-];
-
+  final List<Map<String, String>> _saintQuotes = [
+    {
+      "quote": "Faith seeking understanding.",
+      "author": "St. Anselm of Canterbury",
+    },
+    {
+      "quote":
+          "To one who has faith, no explanation is necessary. To one without faith, no explanation is possible.",
+      "author": "St. Thomas Aquinas",
+    },
+    {
+      "quote":
+          "Prayer is the place of refuge for every worry, a foundation for cheerfulness.",
+      "author": "St. John Chrysostom",
+    },
+    {
+      "quote": "The goal of a virtuous life is to become like God.",
+      "author": "St. Gregory of Nyssa",
+    },
+  ];
 
   final List<Map<String, dynamic>> _devotionalContent = [
     {
       "title": "Morning Prayer",
       "time": "6:00 AM",
       "duration": "10 min",
-      "description": "Start your day with gratitude and surrender to God's will",
+      "description":
+          "Start your day with gratitude and surrender to God's will",
       "icon": Icons.wb_sunny,
       "colors": [const Color(0xFF9B7EBD), const Color(0xFF6B5B95)],
       // "colors": [const Color(0xFFFFB75E), const Color(0xFFED8F03)],
@@ -172,8 +172,7 @@ final List<Map<String, String>> _saintQuotes = [
     );
 
     _cardsFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-          parent: _cardsAnimationController, curve: Curves.easeIn),
+      CurvedAnimation(parent: _cardsAnimationController, curve: Curves.easeIn),
     );
 
     _floatingAnimation = Tween<double>(begin: -10.0, end: 10.0).animate(
@@ -194,7 +193,6 @@ final List<Map<String, String>> _saintQuotes = [
     _floatingAnimationController.repeat(reverse: true);
     _progressAnimationController.forward();
 
-
     // Start devotional rotation timer
     _devotionalTimer = Timer.periodic(const Duration(seconds: 6), (timer) {
       setState(() {
@@ -203,11 +201,11 @@ final List<Map<String, String>> _saintQuotes = [
       });
     });
 
-  _quoteTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-    setState(() {
-      _currentQuoteIndex = (_currentQuoteIndex + 1) % _saintQuotes.length;
+    _quoteTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      setState(() {
+        _currentQuoteIndex = (_currentQuoteIndex + 1) % _saintQuotes.length;
+      });
     });
-  });
   }
 
   @override
@@ -249,7 +247,10 @@ final List<Map<String, String>> _saintQuotes = [
 
           const SizedBox(height: 25),
           _buildSectionHeader('Bible', 'View All', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const BibleVersionsScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BibleVersionsScreen()));
           }),
 
           const SizedBox(height: 15),
@@ -262,7 +263,10 @@ final List<Map<String, String>> _saintQuotes = [
           // Catholic Documents (renamed from Catholic Teachings)
           const SizedBox(height: 24),
           _buildSectionHeader('Catholic Documents', 'Explore', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const CatholicDocumentsScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CatholicDocumentsScreen()));
           }),
 
           const SizedBox(height: 14),
@@ -271,7 +275,10 @@ final List<Map<String, String>> _saintQuotes = [
           // Saints & Feast Days
           const SizedBox(height: 23),
           _buildSectionHeader('Saints & Feast Days', 'Calendar', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SaintsCalendarScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SaintsCalendarScreen()));
           }),
 
           const SizedBox(height: 15),
@@ -281,17 +288,24 @@ final List<Map<String, String>> _saintQuotes = [
           _buildSaintsHorizontalList(),
 
           // Church Calendar
-          const SizedBox(height: 23),
-          _buildSectionHeader('Church', 'Full Calendar', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const FullCalendarScreen()));
-          }),
+          // const SizedBox(height: 23),
+          // _buildSectionHeader('Church', 'Full Calendar', onTap: () {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => const FullCalendarScreen()));
+          // }),
 
-          CustomCalendar(),
+          // CustomCalendar(),
 
           // Daily Challenges Section
           const SizedBox(height: 24),
           _buildSectionHeader('Daily Challenges', 'View All', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyChallengesViewAllScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const DailyChallengesViewAllScreen()));
           }),
 
           const SizedBox(height: 14),
@@ -300,11 +314,15 @@ final List<Map<String, String>> _saintQuotes = [
           // Spiritual Resources
           const SizedBox(height: 24),
           _buildSectionHeader('Spiritual Resources', 'Browse All', onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SpiritualResourcesScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SpiritualResourcesScreen()));
           }),
 
           const SizedBox(height: 14),
-          _buildHorizontalScrollableCards(_getSpiritualResources()),
+          // _buildHorizontalScrollableCards(_getSpiritualResources()),
+          _buildSpiritualResourcesGrid(),
 
           // Enhanced Daily Reflection
           const SizedBox(height: 20),
@@ -316,53 +334,51 @@ final List<Map<String, String>> _saintQuotes = [
     );
   }
 
-
-Widget _buildWelcomeHeader() {
-  return AnimatedBuilder(
-    animation: _headerSlideAnimation,
-    builder: (context, child) {
-      return Transform.translate(
-        offset: Offset(0, _headerSlideAnimation.value),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _saintQuotes[_currentQuoteIndex]["quote"]!,
-                      style: AppTextStyles.h5.copyWith(
-                        color: AppColors.primaryPurple,
-                        fontStyle: FontStyle.italic,
+  Widget _buildWelcomeHeader() {
+    return AnimatedBuilder(
+      animation: _headerSlideAnimation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _headerSlideAnimation.value),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _saintQuotes[_currentQuoteIndex]["quote"]!,
+                        style: AppTextStyles.h5.copyWith(
+                          color: AppColors.primaryPurple,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "— ${_saintQuotes[_currentQuoteIndex]["author"]}",
-                      style: AppTextStyles.bodySmall,
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        "— ${_saintQuotes[_currentQuoteIndex]["author"]}",
+                        style: AppTextStyles.bodySmall,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              StreakBadge(streakCount: _streakDays),
-            ],
+                const SizedBox(width: 12),
+                StreakBadge(streakCount: _streakDays),
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   Widget _buildFeaturedDevotional() {
     final current = _devotionalContent[_currentDevotionalIndex];
-    
+
     return AnimatedBuilder(
       animation: _cardsFadeAnimation,
       builder: (context, child) {
@@ -371,28 +387,35 @@ Widget _buildWelcomeHeader() {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DevotionalDetailScreen(
-                    title: current["title"] as String,
-                    time: current["time"] as String,
-                    duration: current["duration"] as String,
-                    description: current["description"] as String,
-                    icon: current["icon"] as IconData,
-                    colors: current["colors"] as List<Color>,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DevotionalDetailScreen(
+                      title: current["title"] as String,
+                      time: current["time"] as String,
+                      duration: current["duration"] as String,
+                      description: current["description"] as String,
+                      icon: current["icon"] as IconData,
+                      colors: current["colors"] as List<Color>,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: current["colors"] as List<Color>, begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  gradient: LinearGradient(
+                      colors: current["colors"] as List<Color>,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
-                    BoxShadow(color: (current["colors"] as List<Color>)[0].withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 10)),
+                    BoxShadow(
+                        color: (current["colors"] as List<Color>)[0]
+                            .withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10)),
                   ],
                 ),
                 child: Column(
@@ -402,21 +425,34 @@ Widget _buildWelcomeHeader() {
                       children: [
                         Container(
                           padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.3), borderRadius: BorderRadius.circular(16)),
-                          child: Icon(current["icon"] as IconData, color: Colors.white, size: 28),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Icon(current["icon"] as IconData,
+                              color: Colors.white, size: 28),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(current["title"] as String, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                              Text(current["title"] as String,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold)),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  Icon(Icons.access_time, color: Colors.white.withOpacity(0.9), size: 16),
+                                  Icon(Icons.access_time,
+                                      color: Colors.white.withOpacity(0.9),
+                                      size: 16),
                                   const SizedBox(width: 4),
-                                  Text("${current["time"]} • ${current["duration"]}", style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13)),
+                                  Text(
+                                      "${current["time"]} • ${current["duration"]}",
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(0.9),
+                                          fontSize: 13)),
                                 ],
                               ),
                             ],
@@ -425,7 +461,11 @@ Widget _buildWelcomeHeader() {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Text(current["description"] as String, style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 15, height: 1.5)),
+                    Text(current["description"] as String,
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.95),
+                            fontSize: 15,
+                            height: 1.5)),
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -440,7 +480,8 @@ Widget _buildWelcomeHeader() {
                                     title: current["title"] as String,
                                     time: current["time"] as String,
                                     duration: current["duration"] as String,
-                                    description: current["description"] as String,
+                                    description:
+                                        current["description"] as String,
                                     icon: current["icon"] as IconData,
                                     colors: current["colors"] as List<Color>,
                                   ),
@@ -449,18 +490,27 @@ Widget _buildWelcomeHeader() {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              foregroundColor: (current["colors"] as List<Color>)[1],
+                              foregroundColor:
+                                  (current["colors"] as List<Color>)[1],
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
                               elevation: 0,
                             ),
-                            child: const Text("Start Now", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            child: const Text("Start Now",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Container(
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.3), borderRadius: BorderRadius.circular(12)),
-                          child: IconButton(onPressed: () {}, icon: const Icon(Icons.bookmark_border, color: Colors.white)),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.bookmark_border,
+                                  color: Colors.white)),
                         ),
                       ],
                     ),
@@ -474,14 +524,14 @@ Widget _buildWelcomeHeader() {
     );
   }
 
-  Widget _buildSectionHeader(String title, String actionText, {VoidCallback? onTap}) {
+  Widget _buildSectionHeader(String title, String actionText,
+      {VoidCallback? onTap}) {
     return SectionHeader(
       title: title,
       actionText: actionText,
       onActionTap: onTap,
     );
   }
-
 
   Widget _buildEnhancedCarousel() {
     return CarouselSlider(
@@ -498,251 +548,284 @@ Widget _buildWelcomeHeader() {
     );
   }
 
+  List<Widget> _getScriptureCards() {
+    final plans = [
+      {
+        "title": "Chronological Plan",
+        "subtitle": "Read the Bible in Historical Order",
+        "content": "Experience Scripture as events unfolded in time",
+        "image":
+            "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?w=800",
+        "color": AppColors.primaryBlue,
+      },
+      {
+        "title": "Canonical Plan",
+        "subtitle": "Traditional Book Order",
+        "content": "Follow the traditional arrangement of biblical books",
+        "image":
+            "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=800",
+        "color": AppColors.primaryPurple,
+      },
+      {
+        "title": "Thematic Plan",
+        "subtitle": "Topics and Themes",
+        "content": "Explore Scripture through key spiritual themes",
+        "image":
+            "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800",
+        "color": AppColors.accentTeal,
+      },
+      {
+        "title": "One-Year Bible",
+        "subtitle": "Complete in 365 Days",
+        "content": "Read through the entire Bible in one year",
+        "image":
+            "https://images.unsplash.com/photo-1474631245212-32dc3c8310c6?w=800",
+        "color": AppColors.accentGold,
+      },
+      {
+        "title": "Custom Plan",
+        "subtitle": "Create Your Own",
+        "content": "Design a personalized reading schedule",
+        "image":
+            "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800",
+        "color": AppColors.accentRose,
+      },
+    ];
 
-List<Widget> _getScriptureCards() {
-  final plans = [
-    {
-      "title": "Chronological Plan",
-      "subtitle": "Read the Bible in Historical Order",
-      "content": "Experience Scripture as events unfolded in time",
-      "image": "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?w=800",
-      "color": AppColors.primaryBlue,
-    },
-    {
-      "title": "Canonical Plan",
-      "subtitle": "Traditional Book Order",
-      "content": "Follow the traditional arrangement of biblical books",
-      "image": "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=800",
-      "color": AppColors.primaryPurple,
-    },
-    {
-      "title": "Thematic Plan",
-      "subtitle": "Topics and Themes",
-      "content": "Explore Scripture through key spiritual themes",
-      "image": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800",
-      "color": AppColors.accentTeal,
-    },
-    {
-      "title": "One-Year Bible",
-      "subtitle": "Complete in 365 Days",
-      "content": "Read through the entire Bible in one year",
-      "image": "https://images.unsplash.com/photo-1474631245212-32dc3c8310c6?w=800",
-      "color": AppColors.accentGold,
-    },
-    {
-      "title": "Custom Plan",
-      "subtitle": "Create Your Own",
-      "content": "Design a personalized reading schedule",
-      "image": "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800",
-      "color": AppColors.accentRose,
-    },
-  ];
+    return plans.map((plan) {
+      bool isSaved = false; // Track saved state locally
 
-  return plans.map((plan) {
-    bool isSaved = false; // Track saved state locally
-
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ScriptureReadingScreen(
-                  title: plan["title"] as String,
-                  content: plan["content"] as String,
-                  reference: plan["subtitle"] as String,
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScriptureReadingScreen(
+                    title: plan["title"] as String,
+                    content: plan["content"] as String,
+                    reference: plan["subtitle"] as String,
+                  ),
                 ),
-              ),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              elevation: 8,
-              shadowColor: (plan["color"] as Color).withOpacity(0.3),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                        child: Image.network(
-                          plan["image"] as String,
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              height: 120,
-                              color: (plan["color"] as Color).withOpacity(0.2),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                  color: plan["color"] as Color,
-                                ),
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              height: 120,
-                              color: (plan["color"] as Color).withOpacity(0.3),
-                              child: Icon(
-                                Icons.menu_book,
-                                size: 48,
-                                color: plan["color"] as Color,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Container(
-                        height: 120,
-                        decoration: BoxDecoration(
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                elevation: 8,
+                shadowColor: (plan["color"] as Color).withOpacity(0.3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+                          child: Image.network(
+                            plan["image"] as String,
+                            height: 120,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                height: 120,
+                                color:
+                                    (plan["color"] as Color).withOpacity(0.2),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    color: plan["color"] as Color,
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 120,
+                                color:
+                                    (plan["color"] as Color).withOpacity(0.3),
+                                child: Icon(
+                                  Icons.menu_book,
+                                  size: 48,
+                                  color: plan["color"] as Color,
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                      Positioned(
-                        left: 12,
-                        bottom: 15,
+                        Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.6)
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 12,
+                          bottom: 15,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                plan["title"] as String,
+                                style: AppTextStyles.h4.copyWith(
+                                  color: Colors.white,
+                                  shadows: [
+                                    const Shadow(
+                                        blurRadius: 3, color: Colors.black)
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                plan["subtitle"] as String,
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: Colors.white70,
+                                  shadows: [
+                                    const Shadow(
+                                        blurRadius: 3, color: Colors.black)
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              plan["title"] as String,
-                              style: AppTextStyles.h4.copyWith(
-                                color: Colors.white,
-                                shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
-                              ),
+                              plan["content"] as String,
+                              style: AppTextStyles.bodyMedium
+                                  .copyWith(color: plan["color"] as Color),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              plan["subtitle"] as String,
-                              style: AppTextStyles.bodySmall.copyWith(
-                                color: Colors.white70,
-                                shadows: [const Shadow(blurRadius: 3, color: Colors.black)],
-                              ),
+                            const Spacer(),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      isSaved = !isSaved;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(isSaved
+                                            ? 'Saved to library'
+                                            : 'Removed from library'),
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        isSaved
+                                            ? Icons.bookmark
+                                            : Icons.bookmark_border,
+                                        size: 20,
+                                        color: isSaved
+                                            ? plan["color"] as Color
+                                            : Colors.grey,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        "Save",
+                                        style: TextStyle(
+                                          color: isSaved
+                                              ? plan["color"] as Color
+                                              : Colors.grey,
+                                          fontWeight: isSaved
+                                              ? FontWeight.w600
+                                              : FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                InkWell(
+                                  onTap: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Sharing "${plan["title"]}"...'),
+                                        duration: const Duration(seconds: 2),
+                                        action: SnackBarAction(
+                                          label: 'OK',
+                                          onPressed: () {},
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.share,
+                                          size: 20, color: Colors.grey),
+                                      SizedBox(width: 4),
+                                      Text("Share",
+                                          style: TextStyle(color: Colors.grey)),
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                AppButton(
+                                  text: "Read Now",
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ScriptureReadingScreen(
+                                          title: plan["title"] as String,
+                                          content: plan["content"] as String,
+                                          reference: plan["subtitle"] as String,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  isPrimary: true,
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            plan["content"] as String,
-                            style: AppTextStyles.bodyMedium.copyWith(color: plan["color"] as Color),
-                          ),
-                          const Spacer(),
-                          Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isSaved = !isSaved;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(isSaved ? 'Saved to library' : 'Removed from library'),
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      isSaved ? Icons.bookmark : Icons.bookmark_border,
-                                      size: 20,
-                                      color: isSaved ? plan["color"] as Color : Colors.grey,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      "Save",
-                                      style: TextStyle(
-                                        color: isSaved ? plan["color"] as Color : Colors.grey,
-                                        fontWeight: isSaved ? FontWeight.w600 : FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Sharing "${plan["title"]}"...'),
-                                      duration: const Duration(seconds: 2),
-                                      action: SnackBarAction(
-                                        label: 'OK',
-                                        onPressed: () {},
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.share, size: 20, color: Colors.grey),
-                                    SizedBox(width: 4),
-                                    Text("Share", style: TextStyle(color: Colors.grey)),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              AppButton(
-                                text: "Read Now",
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScriptureReadingScreen(
-                                        title: plan["title"] as String,
-                                        content: plan["content"] as String,
-                                        reference: plan["subtitle"] as String,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                isPrimary: true,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
-    );
-  }).toList();
-}
+          );
+        },
+      );
+    }).toList();
+  }
 
   Widget _buildTestamentCards() {
     return Row(
@@ -953,215 +1036,239 @@ List<Widget> _getScriptureCards() {
     ];
   }
 
+
   Widget _buildSaintCard() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 8,
-        shadowColor: Colors.orange.withOpacity(0.3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  child: Image.asset(
-                    "assets/images/Image_fx_1.jpg",
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          // Main Featured Saint Card
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SaintBiographyScreen(
+                    saintName: "St. Teresa Benedicta",
+                    feastDay: "Aug 9",
                   ),
                 ),
-                Positioned(
-                  left: 12,
-                  bottom: 15,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Saint of the Day",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(blurRadius: 3, color: Colors.black),
-                          ],
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image Section with Overlay
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        child: Image.asset(
+                          "assets/images/Image_fx_1.jpg",
+                          height: 180,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        "St. Teresa Benedicta",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          shadows: [
-                            Shadow(blurRadius: 3, color: Colors.black),
+                      Container(
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              AppColors.primaryPurpleDark.withOpacity(0.8),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 16,
+                        left: 16,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                size: 14,
+                                color: AppColors.primaryPurple,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                "Aug 9",
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.primaryPurple,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        bottom: 16,
+                        right: 16,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Saint of the Day",
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              "St. Teresa Benedicta",
+                              style: AppTextStyles.h3.copyWith(
+                                color: Colors.white,
+                                shadows: [
+                                  const Shadow(
+                                      blurRadius: 8, color: Colors.black45),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: const Text(
-                "Patron Saint of Europe, Philosopher and martyr",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.calendar_month,
-                      size: 20, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text("Aug 9", style: TextStyle(color: Colors.grey)),
-                  const SizedBox(width: 20),
-                  const Icon(Icons.favorite_border,
-                      size: 20, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text("Pray", style: TextStyle(color: Colors.grey)),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SaintBiographyScreen(
-                            saintName: "St. Teresa Benedicta",
-                            feastDay: "Aug 9",
+                  // Content Section
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Patron Saint of Europe, Philosopher and martyr",
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.primaryBlue,
+                            height: 1.4,
                           ),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 8),
-                    ),
-                    child: const Text(
-                      "Read Biography",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppButton(
+                                text: "Read Biography",
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SaintBiographyScreen(
+                                        saintName: "St. Teresa Benedicta",
+                                        feastDay: "Aug 9",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                isPrimary: true,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.primaryPurple,
+                                  width: 1.5,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Added to prayer intentions'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.favorite_border,
+                                  color: AppColors.primaryPurple,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildSaintsHorizontalList() {
     final saints = [
-      {"title": "Saints Directory", "subtitle": "500+ Saints"},
-      {"title": "Feast Calendar", "subtitle": "Liturgical Year"},
-      {"title": "Patron Saints", "subtitle": "Find Your Saint"},
-      {"title": "Modern Saints", "subtitle": "Contemporary"},
-    ];
-
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: saints.length,
-        itemBuilder: (context, index) {
-          return Container(
-            width: 130,
-            margin: const EdgeInsets.only(right: 12),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/Image_fx_4.jpg",
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  saints[index]["title"]!,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  saints[index]["subtitle"]!,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey[600],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildDailyChallenges() {
-    final challenges = [
       {
-        "title": "Scripture Memory",
-        "subtitle": "Memorize Verses",
-        "icon": Icons.psychology,
-        "color": Colors.purple,
+        "title": "Saints Directory",
+        "subtitle": "500+ Saints",
+        "icon": Icons.people,
+        "color": AppColors.primaryBlue,
       },
       {
-        "title": "Prayer Challenge",
-        "subtitle": "Daily Prayers",
-        "icon": Icons.favorite,
-        "color": Colors.red,
+        "title": "Feast Calendar",
+        "subtitle": "Liturgical Year",
+        "icon": Icons.event_note,
+        "color": AppColors.primaryPurple,
       },
       {
-        "title": "Bible Trivia",
-        "subtitle": "Test Knowledge",
-        "icon": Icons.quiz,
-        "color": Colors.green,
+        "title": "Patron Saints",
+        "subtitle": "Find Your Saint",
+        "icon": Icons.search,
+        "color": AppColors.accentTeal,
       },
       {
-        "title": "Faith Journey",
-        "subtitle": "Daily Reflection",
+        "title": "Modern Saints",
+        "subtitle": "Contemporary",
         "icon": Icons.auto_awesome,
-        "color": Colors.orange,
+        "color": AppColors.accentRose,
       },
     ];
 
@@ -1169,72 +1276,91 @@ List<Widget> _getScriptureCards() {
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: challenges.length,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: saints.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DailyChallengeScreen(
-                    challengeTitle: challenges[index]["title"] as String,
+          final saint = saints[index];
+          final title = saint["title"] as String;
+          final subtitle = saint["subtitle"] as String;
+          final icon = saint["icon"] as IconData;
+          final color = saint["color"] as Color;
+
+          return Container(
+            width: 140,
+            margin: const EdgeInsets.only(right: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  color,
+                  color.withOpacity(0.7),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Opening $title...'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          icon,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            subtitle,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white70,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-            child: Container(
-              width: 100,
-              margin: const EdgeInsets.only(right: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: challenges[index]["color"] as Color,
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                    spreadRadius: -5,
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: (challenges[index]["color"] as Color)
-                          .withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      challenges[index]["icon"] as IconData,
-                      color: challenges[index]["color"] as Color,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    challenges[index]["title"] as String,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    challenges[index]["subtitle"] as String,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey[600],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
               ),
             ),
           );
@@ -1242,6 +1368,388 @@ List<Widget> _getScriptureCards() {
       ),
     );
   }
+
+
+Widget _buildDailyChallenges() {
+  final challenges = [
+    {
+      "title": "Scripture Memory",
+      "subtitle": "Memorize Verses",
+      "description": "Learn and memorize key Bible passages",
+      "icon": Icons.psychology,
+      "gradient": [AppColors.primaryPurple, AppColors.primaryPurpleDark],
+      "progress": 0.65,
+    },
+    {
+      "title": "Prayer Challenge",
+      "subtitle": "Daily Prayers",
+      "description": "Strengthen your prayer life daily",
+      "icon": Icons.favorite,
+      "gradient": [AppColors.accentRose, AppColors.primaryPurpleDark],
+      "progress": 0.80,
+    },
+    {
+      "title": "Bible Trivia",
+      "subtitle": "Test Knowledge",
+      "description": "Challenge yourself with biblical questions",
+      "icon": Icons.quiz,
+      "gradient": [AppColors.primaryBlue, AppColors.primaryBlueDark],
+      "progress": 0.45,
+    },
+    {
+      "title": "Faith Journey",
+      "subtitle": "Daily Reflection",
+      "description": "Reflect on your spiritual growth",
+      "icon": Icons.auto_awesome,
+      "gradient": [AppColors.accentTeal, AppColors.primaryBlue],
+      "progress": 0.90,
+    },
+  ];
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Column(
+      children: challenges.asMap().entries.map((entry) {
+        final index = entry.key;
+        final challenge = entry.value;
+        final title = challenge["title"] as String;
+        final subtitle = challenge["subtitle"] as String;
+        final description = challenge["description"] as String;
+        final icon = challenge["icon"] as IconData;
+        final gradient = challenge["gradient"] as List<Color>;
+        final progress = challenge["progress"] as double;
+
+        return Container(
+          margin: EdgeInsets.only(bottom: index < challenges.length - 1 ? 16 : 0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: gradient,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: gradient[0].withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DailyChallengeScreen(
+                      challengeTitle: title,
+                    ),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    // Icon Container
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    // Content
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: AppTextStyles.h5.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            description,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          // Progress Bar
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    subtitle,
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: Colors.white.withOpacity(0.8),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${(progress * 100).toInt()}%",
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: progress,
+                                  backgroundColor: Colors.white.withOpacity(0.3),
+                                  valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                  minHeight: 6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Arrow Icon
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ),
+  );
+}
+
+
+Widget _buildSpiritualResourcesGrid() {
+  final resources = [
+    {
+      "title": "Prayer Collection",
+      "subtitle": "Traditional Prayers",
+      "icon": Icons.menu_book,
+      "color": AppColors.primaryPurple,
+    },
+    {
+      "title": "Meditation Guides",
+      "subtitle": "Spiritual Practice",
+      "icon": Icons.self_improvement,
+      "color": AppColors.primaryBlue,
+    },
+    {
+      "title": "Spiritual Articles",
+      "subtitle": "Faith Insights",
+      "icon": Icons.article,
+      "color": AppColors.accentTeal,
+    },
+    {
+      "title": "Study Materials",
+      "subtitle": "Learning Resources",
+      "icon": Icons.school,
+      "color": AppColors.accentRose,
+    },
+    {
+      "title": "Daily Devotions",
+      "subtitle": "Spiritual Growth",
+      "icon": Icons.wb_sunny,
+      "color": AppColors.accentGold,
+    },
+    {
+      "title": "Liturgical Texts",
+      "subtitle": "Mass Readings",
+      "icon": Icons.auto_stories,
+      "color": AppColors.primaryPurpleDark,
+    },
+  ];
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.75, // Changed from 0.85 to 0.75 for more height
+      ),
+      itemCount: resources.length,
+      itemBuilder: (context, index) {
+        final resource = resources[index];
+        final title = resource["title"] as String;
+        final subtitle = resource["subtitle"] as String;
+        final icon = resource["icon"] as IconData;
+        final color = resource["color"] as Color;
+
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SpiritualResourceDetailScreen(
+                  resourceTitle: title,
+                  resourceSubtitle: subtitle,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.15),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Icon Header with Gradient
+                Container(
+                  height: 90, // Reduced from 100
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [color, color.withOpacity(0.7)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(14), // Reduced from 16
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 32, // Reduced from 36
+                      ),
+                    ),
+                  ),
+                ),
+                // Content Section
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12), // Reduced from 16
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                style: AppTextStyles.h5.copyWith(
+                                  color: color,
+                                  fontSize: 14, // Reduced from 15
+                                  height: 1.2,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 3), // Reduced from 4
+                              Text(
+                                subtitle,
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 11, // Reduced from 12
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        // Action Button
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                            color: color.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Explore",
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: color,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: color,
+                                size: 14,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
 }
 
 
