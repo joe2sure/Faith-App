@@ -20,6 +20,8 @@ import '../../common/reusable_widget.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/themes/text_styles.dart';
 import '../features/faith/dashboard_detail/devotional_detail_screen.dart';
+import '../features/faith/dashboard_view_all/patron_saints_screen.dart';
+import '../features/faith/dashboard_view_all/saints_directory_screen.dart';
 
 class FaithDashboardScreen extends StatefulWidget {
   const FaithDashboardScreen({super.key});
@@ -262,7 +264,7 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           // Catholic Documents (renamed from Catholic Teachings)
           const SizedBox(height: 24),
-          _buildSectionHeader('Catholic Documents', 'Explore', onTap: () {
+          _buildSectionHeader('Church Documents', 'Explore', onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -286,17 +288,6 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
 
           const SizedBox(height: 25),
           _buildSaintsHorizontalList(),
-
-          // Church Calendar
-          // const SizedBox(height: 23),
-          // _buildSectionHeader('Church', 'Full Calendar', onTap: () {
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => const FullCalendarScreen()));
-          // }),
-
-          // CustomCalendar(),
 
           // Daily Challenges Section
           const SizedBox(height: 24),
@@ -1244,130 +1235,289 @@ class _FaithDashboardScreenState extends State<FaithDashboardScreen>
     );
   }
 
-  Widget _buildSaintsHorizontalList() {
-    final saints = [
-      {
-        "title": "Saints Directory",
-        "subtitle": "500+ Saints",
-        "icon": Icons.people,
-        "color": AppColors.primaryBlue,
-      },
-      {
-        "title": "Feast Calendar",
-        "subtitle": "Liturgical Year",
-        "icon": Icons.event_note,
-        "color": AppColors.primaryPurple,
-      },
-      {
-        "title": "Patron Saints",
-        "subtitle": "Find Your Saint",
-        "icon": Icons.search,
-        "color": AppColors.accentTeal,
-      },
-      {
-        "title": "Modern Saints",
-        "subtitle": "Contemporary",
-        "icon": Icons.auto_awesome,
-        "color": AppColors.accentRose,
-      },
-    ];
+  // Widget _buildSaintsHorizontalList() {
+  //   final saints = [
+  //     {
+  //       "title": "Saints Directory",
+  //       "subtitle": "500+ Saints",
+  //       "icon": Icons.people,
+  //       "color": AppColors.primaryBlue,
+  //     },
+  //     {
+  //       "title": "Feast Calendar",
+  //       "subtitle": "Liturgical Year",
+  //       "icon": Icons.event_note,
+  //       "color": AppColors.primaryPurple,
+  //     },
+  //     {
+  //       "title": "Patron Saints",
+  //       "subtitle": "Find Your Saint",
+  //       "icon": Icons.search,
+  //       "color": AppColors.accentTeal,
+  //     },
+  //     {
+  //       "title": "Modern Saints",
+  //       "subtitle": "Contemporary",
+  //       "icon": Icons.auto_awesome,
+  //       "color": AppColors.accentRose,
+  //     },
+  //   ];
 
-    return SizedBox(
-      height: 120,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: saints.length,
-        itemBuilder: (context, index) {
-          final saint = saints[index];
-          final title = saint["title"] as String;
-          final subtitle = saint["subtitle"] as String;
-          final icon = saint["icon"] as IconData;
-          final color = saint["color"] as Color;
+  //   return SizedBox(
+  //     height: 120,
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+  //       itemCount: saints.length,
+  //       itemBuilder: (context, index) {
+  //         final saint = saints[index];
+  //         final title = saint["title"] as String;
+  //         final subtitle = saint["subtitle"] as String;
+  //         final icon = saint["icon"] as IconData;
+  //         final color = saint["color"] as Color;
 
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  color,
-                  color.withOpacity(0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: color.withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
+  //         return Container(
+  //           width: 140,
+  //           margin: const EdgeInsets.only(right: 12),
+  //           decoration: BoxDecoration(
+  //             gradient: LinearGradient(
+  //               colors: [
+  //                 color,
+  //                 color.withOpacity(0.7),
+  //               ],
+  //               begin: Alignment.topLeft,
+  //               end: Alignment.bottomRight,
+  //             ),
+  //             borderRadius: BorderRadius.circular(16),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: color.withOpacity(0.3),
+  //                 blurRadius: 12,
+  //                 offset: const Offset(0, 6),
+  //               ),
+  //             ],
+  //           ),
+  //           child: Material(
+  //             color: Colors.transparent,
+  //             child: InkWell(
+  //               onTap: () {
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   SnackBar(
+  //                     content: Text('Opening $title...'),
+  //                     duration: const Duration(seconds: 2),
+  //                   ),
+  //                 );
+  //               },
+  //               borderRadius: BorderRadius.circular(16),
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(16),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Container(
+  //                       padding: const EdgeInsets.all(8),
+  //                       decoration: BoxDecoration(
+  //                         color: Colors.white.withOpacity(0.3),
+  //                         borderRadius: BorderRadius.circular(10),
+  //                       ),
+  //                       child: Icon(
+  //                         icon,
+  //                         color: Colors.white,
+  //                         size: 24,
+  //                       ),
+  //                     ),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           title,
+  //                           style: AppTextStyles.bodyMedium.copyWith(
+  //                             color: Colors.white,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                           maxLines: 2,
+  //                           overflow: TextOverflow.ellipsis,
+  //                         ),
+  //                         const SizedBox(height: 2),
+  //                         Text(
+  //                           subtitle,
+  //                           style: AppTextStyles.bodySmall.copyWith(
+  //                             color: Colors.white70,
+  //                             fontSize: 11,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+
+
+
+// Then update the _buildSaintsHorizontalList method in your _FaithDashboardScreenState class:
+
+Widget _buildSaintsHorizontalList() {
+  final saints = [
+    {
+      "title": "Saints Directory",
+      "subtitle": "500+ Saints",
+      "icon": Icons.people,
+      "color": AppColors.primaryBlue,
+      "route": "directory",
+    },
+    {
+      "title": "Feast Calendar",
+      "subtitle": "Liturgical Year",
+      "icon": Icons.event_note,
+      "color": AppColors.primaryPurple,
+      "route": "calendar",
+    },
+    {
+      "title": "Patron Saints",
+      "subtitle": "Find Your Saint",
+      "icon": Icons.search,
+      "color": AppColors.accentTeal,
+      "route": "patron",
+    },
+    {
+      "title": "Modern Saints",
+      "subtitle": "Contemporary",
+      "icon": Icons.auto_awesome,
+      "color": AppColors.accentRose,
+      "route": "modern",
+    },
+  ];
+
+  return SizedBox(
+    height: 120,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      itemCount: saints.length,
+      itemBuilder: (context, index) {
+        final saint = saints[index];
+        final title = saint["title"] as String;
+        final subtitle = saint["subtitle"] as String;
+        final icon = saint["icon"] as IconData;
+        final color = saint["color"] as Color;
+        final route = saint["route"] as String;
+
+        return Container(
+          width: 140,
+          margin: const EdgeInsets.only(right: 12),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color,
+                color.withOpacity(0.7),
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                // Navigate based on route
+                if (route == "directory") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SaintsDirectoryScreen(),
+                    ),
+                  );
+                } else if (route == "calendar") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SaintsCalendarScreen(),
+                    ),
+                  );
+                } else if (route == "patron") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PatronSaintsScreen(),
+                    ),
+                  );
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Opening $title...'),
                       duration: const Duration(seconds: 2),
                     ),
                   );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          icon,
-                          color: Colors.white,
-                          size: 24,
-                        ),
+                }
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            subtitle,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: Colors.white70,
-                              fontSize: 11,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 24,
                       ),
-                    ],
-                  ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Colors.white70,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
 
 Widget _buildDailyChallenges() {
@@ -1709,7 +1859,7 @@ Widget _buildSpiritualResourcesGrid() {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        // Action Button
+                        // Actio                    n Button
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 8),
